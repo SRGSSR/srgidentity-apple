@@ -12,7 +12,3 @@ NSString *RTSIdentityMarketingVersion(void)
 {
     return [NSBundle rts_identityBundle].infoDictionary[@"CFBundleShortVersionString"];
 }
-
-@implementation RTSIdentity
-
-@end
