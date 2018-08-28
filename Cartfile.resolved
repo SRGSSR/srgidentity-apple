@@ -1,0 +1,4 @@
+github "Mantle/Mantle" "2.1.0"
+github "SRGSSR/MAKVONotificationCenter" "120fb5550aee8e9b4c92439bf34533020cc43c44"
+github "SRGSSR/libextobjc" "80a882742fea920587df5c9377af68faa22be5d0"
+github "kishikawakatsumi/UICKeyChainStore" "v2.1.1"

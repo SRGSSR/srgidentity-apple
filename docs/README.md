@@ -26,7 +26,11 @@ For more information about Carthage and its use, refer to the [official document
 
 The library requires the following frameworks to be added to any target requiring it:
 
-* `RTSIdentity`: The content protection library framework.
+* `libextobjc`: A utility framework
+* `MAKVONotificationCenter`: A safe KVO framework.
+* `Mantle`: The framework used to parse the data.
+* `RTSIdentity`: The identity library framework.
+* `UICKeyChainStore`: The framework used to store credentials in keychains.
 
 ### Dynamic framework integration
 

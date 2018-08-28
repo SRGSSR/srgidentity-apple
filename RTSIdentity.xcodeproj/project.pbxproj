@@ -11,6 +11,22 @@
 		080D0BD2213445B200AA519A /* RTSIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BCD213445B200AA519A /* RTSIdentity.m */; };
 		080D0BD3213445B200AA519A /* NSBundle+RTSIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BCF213445B200AA519A /* NSBundle+RTSIdentity.h */; };
 		080D0BD4213445B200AA519A /* NSBundle+RTSIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BD0213445B200AA519A /* NSBundle+RTSIdentity.m */; };
+		080D0BD7213566C900AA519A /* RTSIdentityService.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BD5213566C900AA519A /* RTSIdentityService.m */; };
+		080D0BD8213566C900AA519A /* RTSIdentityService.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BD6213566C900AA519A /* RTSIdentityService.h */; };
+		080D0BDA21356A1200AA519A /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
+		080D0BDE21356B8600AA519A /* RTSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BDC21356B8600AA519A /* RTSAccount.h */; };
+		080D0BDF21356B8600AA519A /* RTSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BDD21356B8600AA519A /* RTSAccount.m */; };
+		080D0BE221356CB600AA519A /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
+		080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
+		080D0BE52135776000AA519A /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; };
+		080D0BE621359E4800AA519A /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; };
+		080D0BE721359E4800AA519A /* Mantle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		080D0BE821359E4800AA519A /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
+		080D0BE921359E4800AA519A /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		080D0BEA21359E4800AA519A /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
+		080D0BEB21359E4800AA519A /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
+		080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* RTSIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* RTSIdentity.bundle */; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
@@ -57,6 +73,10 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6F8A940420FDD01B00AA6434 /* RTSIdentity.framework in Embed Frameworks */,
+				080D0BEB21359E4800AA519A /* MAKVONotificationCenter.framework in Embed Frameworks */,
+				080D0BE921359E4800AA519A /* libextobjc.framework in Embed Frameworks */,
+				080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */,
+				080D0BE721359E4800AA519A /* Mantle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +98,14 @@
 		080D0BCD213445B200AA519A /* RTSIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSIdentity.m; path = Sources/RTSIdentity.m; sourceTree = "<group>"; };
 		080D0BCF213445B200AA519A /* NSBundle+RTSIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSIdentity.h"; sourceTree = "<group>"; };
 		080D0BD0213445B200AA519A /* NSBundle+RTSIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSIdentity.m"; sourceTree = "<group>"; };
+		080D0BD5213566C900AA519A /* RTSIdentityService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSIdentityService.m; sourceTree = "<group>"; };
+		080D0BD6213566C900AA519A /* RTSIdentityService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSIdentityService.h; sourceTree = "<group>"; };
+		080D0BD921356A1200AA519A /* UICKeyChainStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UICKeyChainStore.framework; path = Carthage/Build/iOS/UICKeyChainStore.framework; sourceTree = "<group>"; };
+		080D0BDC21356B8600AA519A /* RTSAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSAccount.h; sourceTree = "<group>"; };
+		080D0BDD21356B8600AA519A /* RTSAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSAccount.m; sourceTree = "<group>"; };
+		080D0BE021356CB500AA519A /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/iOS/libextobjc.framework; sourceTree = "<group>"; };
+		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
 		6F0C98E62121E1C200073AB6 /* RTSIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RTSIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,6 +141,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				080D0BE52135776000AA519A /* Mantle.framework in Frameworks */,
+				080D0BE221356CB600AA519A /* libextobjc.framework in Frameworks */,
+				080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */,
+				080D0BDA21356A1200AA519A /* UICKeyChainStore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +153,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F8A940320FDD01B00AA6434 /* RTSIdentity.framework in Frameworks */,
+				080D0BEA21359E4800AA519A /* MAKVONotificationCenter.framework in Frameworks */,
+				080D0BE821359E4800AA519A /* libextobjc.framework in Frameworks */,
+				080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */,
+				080D0BE621359E4800AA519A /* Mantle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +179,16 @@
 			);
 			name = Categories;
 			path = Sources/Categories;
+			sourceTree = "<group>";
+		};
+		080D0BDB21356B8600AA519A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				080D0BDC21356B8600AA519A /* RTSAccount.h */,
+				080D0BDD21356B8600AA519A /* RTSAccount.m */,
+			);
+			name = Model;
+			path = Sources/Model;
 			sourceTree = "<group>";
 		};
 		6F0EB52720FC7F58009C02CF = {
@@ -181,8 +227,11 @@
 			isa = PBXGroup;
 			children = (
 				080D0BCE213445B200AA519A /* Categories */,
+				080D0BDB21356B8600AA519A /* Model */,
 				080D0BCC213445B200AA519A /* RTSIdentity.h */,
 				080D0BCD213445B200AA519A /* RTSIdentity.m */,
+				080D0BD6213566C900AA519A /* RTSIdentityService.h */,
+				080D0BD5213566C900AA519A /* RTSIdentityService.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -238,6 +287,10 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				080D0BE42135776000AA519A /* Mantle.framework */,
+				080D0BE021356CB500AA519A /* libextobjc.framework */,
+				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
+				080D0BD921356A1200AA519A /* UICKeyChainStore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -274,8 +327,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				080D0BDE21356B8600AA519A /* RTSAccount.h in Headers */,
 				080D0BD1213445B200AA519A /* RTSIdentity.h in Headers */,
 				080D0BD3213445B200AA519A /* NSBundle+RTSIdentity.h in Headers */,
+				080D0BD8213566C900AA519A /* RTSIdentityService.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,7 +508,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				080D0BD4213445B200AA519A /* NSBundle+RTSIdentity.m in Sources */,
+				080D0BDF21356B8600AA519A /* RTSAccount.m in Sources */,
 				080D0BD2213445B200AA519A /* RTSIdentity.m in Sources */,
+				080D0BD7213566C900AA519A /* RTSIdentityService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
