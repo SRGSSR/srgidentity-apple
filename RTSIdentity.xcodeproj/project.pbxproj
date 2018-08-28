@@ -12,9 +12,9 @@
 		080D0BD3213445B200AA519A /* NSBundle+RTSIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BCF213445B200AA519A /* NSBundle+RTSIdentity.h */; };
 		080D0BD4213445B200AA519A /* NSBundle+RTSIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BD0213445B200AA519A /* NSBundle+RTSIdentity.m */; };
 		080D0BD7213566C900AA519A /* RTSIdentityService.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BD5213566C900AA519A /* RTSIdentityService.m */; };
-		080D0BD8213566C900AA519A /* RTSIdentityService.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BD6213566C900AA519A /* RTSIdentityService.h */; };
+		080D0BD8213566C900AA519A /* RTSIdentityService.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BD6213566C900AA519A /* RTSIdentityService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		080D0BDA21356A1200AA519A /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
-		080D0BDE21356B8600AA519A /* RTSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BDC21356B8600AA519A /* RTSAccount.h */; };
+		080D0BDE21356B8600AA519A /* RTSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 080D0BDC21356B8600AA519A /* RTSAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		080D0BDF21356B8600AA519A /* RTSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 080D0BDD21356B8600AA519A /* RTSAccount.m */; };
 		080D0BE221356CB600AA519A /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
 		080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
