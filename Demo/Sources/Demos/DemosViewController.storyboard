@@ -18,13 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABh-BA-JwP">
-                                <rect key="frame" x="16" y="119" width="343" height="30"/>
-                                <state key="normal" title="Logout"/>
-                                <connections>
-                                    <action selector="logout:" destination="LH4-t5-Usg" eventType="touchUpInside" id="40j-ql-PK8"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not logged" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYz-fx-9RE">
                                 <rect key="frame" x="16" y="36" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -34,26 +27,53 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5l-8d-ifK">
                                 <rect key="frame" x="16" y="73" width="343" height="30"/>
                                 <state key="normal" title="Login"/>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="login:" destination="LH4-t5-Usg" eventType="touchUpInside" id="hZC-Of-LAt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABh-BA-JwP">
+                                <rect key="frame" x="16" y="165" width="343" height="30"/>
+                                <state key="normal" title="Logout"/>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="logout:" destination="LH4-t5-Usg" eventType="touchUpInside" id="40j-ql-PK8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eI3-12-Rbt">
+                                <rect key="frame" x="16" y="119" width="343" height="30"/>
+                                <state key="normal" title="Account"/>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="account:" destination="LH4-t5-Usg" eventType="touchUpInside" id="Ur2-U4-REJ"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Pwa-jI-HdC" firstAttribute="trailing" secondItem="fYz-fx-9RE" secondAttribute="trailing" constant="16" id="547-XD-TeJ"/>
+                            <constraint firstItem="ABh-BA-JwP" firstAttribute="top" secondItem="eI3-12-Rbt" secondAttribute="bottom" constant="16" id="6zb-RG-GeH"/>
                             <constraint firstItem="fYz-fx-9RE" firstAttribute="leading" secondItem="Pwa-jI-HdC" secondAttribute="leading" constant="16" id="EDD-gA-NWX"/>
-                            <constraint firstItem="ABh-BA-JwP" firstAttribute="top" secondItem="p5l-8d-ifK" secondAttribute="bottom" constant="16" id="LeX-WI-XJV"/>
                             <constraint firstItem="p5l-8d-ifK" firstAttribute="trailing" secondItem="fYz-fx-9RE" secondAttribute="trailing" id="Oh4-q3-nys"/>
                             <constraint firstItem="p5l-8d-ifK" firstAttribute="leading" secondItem="fYz-fx-9RE" secondAttribute="leading" id="Vpg-kl-fkU"/>
                             <constraint firstItem="ABh-BA-JwP" firstAttribute="leading" secondItem="fYz-fx-9RE" secondAttribute="leading" id="WNW-NI-1CL"/>
+                            <constraint firstItem="eI3-12-Rbt" firstAttribute="top" secondItem="p5l-8d-ifK" secondAttribute="bottom" constant="16" id="kJf-Di-Ao8"/>
                             <constraint firstItem="p5l-8d-ifK" firstAttribute="top" secondItem="fYz-fx-9RE" secondAttribute="bottom" constant="16" id="lJh-tb-8Zb"/>
                             <constraint firstItem="ABh-BA-JwP" firstAttribute="trailing" secondItem="fYz-fx-9RE" secondAttribute="trailing" id="mP9-8M-vZJ"/>
+                            <constraint firstItem="eI3-12-Rbt" firstAttribute="trailing" secondItem="fYz-fx-9RE" secondAttribute="trailing" id="n8t-rw-zFd"/>
+                            <constraint firstItem="eI3-12-Rbt" firstAttribute="leading" secondItem="fYz-fx-9RE" secondAttribute="leading" id="pUW-Sk-E71"/>
                             <constraint firstItem="fYz-fx-9RE" firstAttribute="top" secondItem="Pwa-jI-HdC" secondAttribute="top" constant="16" id="uIG-RS-36z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Pwa-jI-HdC"/>
                     </view>
                     <connections>
+                        <outlet property="accountButton" destination="eI3-12-Rbt" id="zPo-RA-egV"/>
                         <outlet property="displayNameLabel" destination="fYz-fx-9RE" id="lot-1X-OLs"/>
                         <outlet property="loginButton" destination="p5l-8d-ifK" id="urw-c9-x8v"/>
                         <outlet property="logoutButton" destination="ABh-BA-JwP" id="Ilp-o9-S8g"/>

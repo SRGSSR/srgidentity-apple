@@ -6,6 +6,7 @@
 
 #import "DemosViewController.h"
 
+#import "AccountViewController.h"
 #import "LoginViewController.h"
 
 #import <AVKit/AVKit.h>
@@ -15,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *accountButton;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 
 @property (nonatomic) NSURLSessionTask *sessionTask;
@@ -91,6 +93,7 @@
     
     self.displayNameLabel.text = isLogged ? [RTSIdentityService currentIdentityService].displayName : @"Not logged.";
     self.loginButton.enabled = !isLogged;
+    self.accountButton.enabled = isLogged;
     self.logoutButton.enabled = isLogged;
 }
 
@@ -98,6 +101,12 @@
 
 - (IBAction)login:(id)sender {
     LoginViewController *viewController = [[LoginViewController alloc] initWithTitle:@"Login"];
+    UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navigationViewController animated:YES completion:nil];
+}
+
+- (IBAction)account:(id)sender {
+    AccountViewController *viewController = [[AccountViewController alloc] initWithTitle:@"Account"];
     UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navigationViewController animated:YES completion:nil];
 }

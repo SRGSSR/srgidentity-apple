@@ -11,5 +11,6 @@ FOUNDATION_EXPORT NSString *RTSIdentityMarketingVersion(void);
 
 // Public headers.
 #import "RTSAccount.h"
+#import "RTSIdentityAccountView.h"
 #import "RTSIdentityService.h"
 #import "RTSIdentityLoginView.h"
