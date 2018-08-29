@@ -8,12 +8,17 @@
 
 #import "DemosViewController.h"
 
+#import <RTSIdentity/RTSIdentity.h>
+
 @implementation AppDelegate
 
 #pragma mark UIApplicationDelegate protocol
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"]];
+    [RTSIdentityService setCurrentIdentityService:identityService];
+    
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];
     

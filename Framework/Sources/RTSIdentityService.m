@@ -5,6 +5,7 @@
 //
 
 #import "RTSIdentityService.h"
+#import "RTSIdentityService+Private.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
@@ -152,7 +153,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
         }
         
         NSString *emailAddress = self.emailAddress;
-        if (account.emailAddress && ![account.emailAddress isEqualToString:emailAddress]) {
+        if (!self.emailAddress || ![account.emailAddress isEqualToString:emailAddress]) {
             [self.keyChainStore setString:account.emailAddress forKey:ServiceIdentifierEmailStoreKey];
         }
         [self.keyChainStore setString:account.displayName forKey:ServiceIdentifierDisplayNameStoreKey];
@@ -172,6 +173,20 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserLoggedOutNotification
                                                         object:self
                                                       userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+}
+
+#pragma mark Private
+
+- (void)loggedWithAccessToken:(NSString *)accessToken
+{
+    [self.keyChainStore setString:accessToken forKey:ServiceIdentifierAccessTokenStoreKey];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *emailAddress = self.emailAddress;
+        [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserLoggedInNotification
+                                                            object:self
+                                                          userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+    });
 }
 
 @end
