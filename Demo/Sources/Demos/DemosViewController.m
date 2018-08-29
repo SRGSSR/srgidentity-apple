@@ -35,7 +35,7 @@
 
 - (void)viewDidLoad
 {
-    [self refresh];
+    [self reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
                                                  name:RTSIdentityServiceUserLoggedInNotification
@@ -48,6 +48,12 @@
                                              selector:@selector(userChanged:)
                                                  name:RTSIdentityServiceUserMetadatasUpdateNotification
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self refresh];
 }
 
 #pragma mark Getters and setters
@@ -81,12 +87,11 @@
 }
 
 - (void)reloadData {
-    if (! [RTSIdentityService currentIdentityService].token) {
-       self.displayNameLabel.text = @"Not logged.";
-    }
-    else {
-        self.displayNameLabel.text = [RTSIdentityService currentIdentityService].displayName;
-    }
+    BOOL isLogged = ([RTSIdentityService currentIdentityService].token != nil);
+    
+    self.displayNameLabel.text = isLogged ? [RTSIdentityService currentIdentityService].displayName : @"Not logged.";
+    self.loginButton.enabled = !isLogged;
+    self.logoutButton.enabled = isLogged;
 }
 
 #pragma mark Actions
