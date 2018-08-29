@@ -110,6 +110,11 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     return [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         RTSAccountCompletionBlock requestCompletionBlock = ^(RTSAccount * _Nullable account, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (account) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserMetadatasUpdateNotification
+                                                                        object:self
+                                                                      userInfo:@{ RTSIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
+                }
                 completionBlock(account, error);
             });
         };
@@ -154,9 +159,6 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
         NSString *uid = account.uid ? account.uid.stringValue : nil;
         [self.keyChainStore setString:uid forKey:ServiceIdentifierUserIdStoreKey];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserMetadatasUpdateNotification
-                                                            object:self
-                                                          userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         requestCompletionBlock(account, nil);
     }];
 }
