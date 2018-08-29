@@ -63,6 +63,13 @@ static void commonInit(RTSIdentityLoginView *self);
     
     if (service) {
         NSURL *URL = [NSURL URLWithString:@"responsive/login?redirect=https://identity" relativeToURL:self.service.serviceURL];
+        if (self.service.emailAddress) {
+            NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:self.service.emailAddress];
+            
+            NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+            URLComponents.queryItems = [URLComponents.queryItems arrayByAddingObject:emailQueryItem];
+            URL = URLComponents.URL;
+        }
         [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
     }
     else {

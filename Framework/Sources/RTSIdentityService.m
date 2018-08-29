@@ -170,6 +170,8 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     
     [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
     
+    [self.keyChainStore setString:emailAddress forKey:ServiceIdentifierEmailStoreKey];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserLoggedOutNotification
                                                         object:self
                                                       userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
