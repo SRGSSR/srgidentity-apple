@@ -12,7 +12,7 @@ static RTSIdentityService *s_currentIdentityService;
 
 NSString * const RTSIdentityServiceUserLoggedInNotification = @"RTSIdentityServiceUserLoggedInNotification";
 NSString * const RTSIdentityServiceUserLoggedOutNotification = @"RTSIdentityServiceUserLoggedOutNotification";
-NSString * const RTSIdentityServiceUserMetadatasUpdateNotification = @"RTSIdentityServiceUserMetadatasUpdatedNotification";
+NSString * const RTSIdentityServiceUserMetadatasUpdateNotification = @"RTSIdentityServiceUserMetadatasUpdateNotification";
 
 NSString * const RTSIdentityServiceEmailAddressKey = @"RTSIdentityServiceEmailAddressKey";
 
