@@ -17,7 +17,6 @@ OBJC_EXPORT NSString * const RTSIdentityServiceUserMetadatasUpdateNotification;
 OBJC_EXPORT NSString * const RTSIdentityServiceEmailAddressKey;
 
 typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSError * _Nullable error);
-typedef void (^RTSTokenCompletionBlock)(NSString * _Nullable accessToken, NSError * _Nullable error);
 
 @interface RTSIdentityService : NSObject
 
