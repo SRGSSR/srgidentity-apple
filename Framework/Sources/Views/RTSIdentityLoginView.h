@@ -15,7 +15,7 @@ typedef void (^CompletionBlock)(NSError * _Nullable error);
 @interface RTSIdentityLoginView : UIView
 
 /**
- *  Identity service linked to save authentification.
+ *  Identity service to save the authentification.
  */
 @property (nonatomic, nullable) RTSIdentityService *service;
 
