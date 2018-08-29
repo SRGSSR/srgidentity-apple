@@ -98,12 +98,12 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 - (NSURLSessionTask *)accountWithCompletionBlock:(RTSAccountCompletionBlock)completionBlock
 {
-    NSURL *URL = [NSURL URLWithString:@"oauth2/user_profile" relativeToURL:self.serviceURL];
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
     NSString *accessToken = [self.keyChainStore stringForKey:ServiceIdentifierAccessTokenStoreKey];
     if (accessToken) {
-        [request setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
+        [request setValue:[NSString stringWithFormat:@"sessionToken %@", accessToken] forHTTPHeaderField:@"Authorization"];
     }
     
     // TODO: Proper error codes and domain. Factor out common requewst logic if possible / meaningful
