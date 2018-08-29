@@ -53,6 +53,11 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
 - (void)logout;
 
 /**
+ *  The service URL.
+ */
+@property (nonatomic, readonly) NSURL *serviceURL;
+
+/**
  *  The logged in email address, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
