@@ -99,7 +99,10 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 - (NSString *)serviceIdentifier
 {
-    return  [[NSBundle mainBundle].bundleIdentifier stringByAppendingString:@".identity"];
+    NSArray *hostSplited = [self.serviceURL.host componentsSeparatedByString:@"."];
+    NSArray *reverseHostSplited = [[hostSplited reverseObjectEnumerator] allObjects];
+    NSString *domain = [reverseHostSplited componentsJoinedByString:@"."];
+    return  [domain stringByAppendingString:@".identity"];
 }
 
 #pragma mark Services
