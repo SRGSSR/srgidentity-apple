@@ -78,11 +78,10 @@
     if ([RTSIdentityService currentIdentityService].isLogged) {
         self.displayNameLabel.text = @"Refreshing…";
         self.sessionTask = [[RTSIdentityService currentIdentityService] accountWithCompletionBlock:^(RTSAccount * _Nullable account, NSError * _Nullable error) {
-            if (! error) {
-                [self reloadData];
-            }
-            else {
+            [self reloadData];
+            if ([error.domain isEqualToString:@"http"] && error.code == 401) {
                 self.displayNameLabel.text = @"Session expired.";
+                [[RTSIdentityService currentIdentityService] logout];
             }
         }];
         [self.sessionTask resume];
