@@ -66,7 +66,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"RTSIdentity %@", RTSIdentityMarketingVersion()];
+    return [NSString stringWithFormat:@"RTSIdentity %@ (demo %ld)", RTSIdentityMarketingVersion(), [[NSBundle mainBundle].infoDictionary[@"DemoNumber"] integerValue]];
 }
 
 #pragma mark Datas

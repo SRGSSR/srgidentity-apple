@@ -39,6 +39,26 @@
 		086FB2DE2136D8EE00DE4CF2 /* RTSIdentityAccountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2D92136D8D500DE4CF2 /* RTSIdentityAccountView.xib */; };
 		086FB2E22136DA5000DE4CF2 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */; };
 		086FB2E32136DA5000DE4CF2 /* AccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */; };
+		086FB31721380D1300DE4CF2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2D021368E4200DE4CF2 /* LoginViewController.m */; };
+		086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
+		086FB31921380D1300DE4CF2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
+		086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
+		086FB31B21380D1300DE4CF2 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */; };
+		086FB31D21380D1300DE4CF2 /* RTSIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */; };
+		086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
+		086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
+		086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
+		086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; };
+		086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
+		086FB32421380D1300DE4CF2 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */; };
+		086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
+		086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
+		086FB32721380D1300DE4CF2 /* AccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */; };
+		086FB32921380D1300DE4CF2 /* RTSIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		086FB32C21380D1300DE4CF2 /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* RTSIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* RTSIdentity.bundle */; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
@@ -78,6 +98,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		086FB32821380D1300DE4CF2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				086FB32921380D1300DE4CF2 /* RTSIdentity.framework in Embed Frameworks */,
+				086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */,
+				086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */,
+				086FB32C21380D1300DE4CF2 /* UICKeyChainStore.framework in Embed Frameworks */,
+				086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F8A940720FDD01B00AA6434 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,10 +168,14 @@
 		086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
 		086FB2E02136DA4F00DE4CF2 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
 		086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AccountViewController.storyboard; sourceTree = "<group>"; };
+		086FB33321380D1300DE4CF2 /* RTSIdentity-demo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSIdentity-demo2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		086FB33421380D1300DE4CF2 /* RTSIdentity-demo copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RTSIdentity-demo copy-Info.plist"; path = "/Users/pyb/Documents/git/RTSIdentity/RTSIdentity-demo copy-Info.plist"; sourceTree = "<absolute>"; };
+		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
 		6F0C98E62121E1C200073AB6 /* RTSIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RTSIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSIdentity-demo1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F8A93F420FDCAA800AA6434 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -144,7 +183,6 @@
 		6F8A93F620FDCAA800AA6434 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6F8A93F820FDCAA800AA6434 /* DemosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemosViewController.h; sourceTree = "<group>"; };
 		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
-		6F8A93FA20FDCAA800AA6434 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DemosViewController.storyboard; sourceTree = "<group>"; };
 		6FB74D672101D4D200E2D365 /* RTSIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* RTSIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSIdentityTestCase.m; sourceTree = "<group>"; };
@@ -157,6 +195,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		086FB31C21380D1300DE4CF2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				086FB31D21380D1300DE4CF2 /* RTSIdentity.framework in Frameworks */,
+				086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */,
+				086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */,
+				086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */,
+				086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E32121E1C200073AB6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,6 +288,7 @@
 				6F8A93EE20FDCAA800AA6434 /* Demo */,
 				6F0EB53220FC7F58009C02CF /* Products */,
 				6F8A945521006A9E00AA6434 /* Frameworks */,
+				086FB33421380D1300DE4CF2 /* RTSIdentity-demo copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -245,9 +296,10 @@
 			isa = PBXGroup;
 			children = (
 				6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */,
-				6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo.app */,
+				6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo1.app */,
 				6FB74D672101D4D200E2D365 /* RTSIdentity-tests.xctest */,
 				6F0C98E62121E1C200073AB6 /* RTSIdentity.bundle */,
+				086FB33321380D1300DE4CF2 /* RTSIdentity-demo2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -282,7 +334,8 @@
 			children = (
 				6F8A93F220FDCAA800AA6434 /* Sources */,
 				6F8A93EF20FDCAA800AA6434 /* Resources */,
-				6F8A93FA20FDCAA800AA6434 /* Info.plist */,
+				086FB33521380D9300DE4CF2 /* Info.plist */,
+				086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -389,6 +442,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		086FB31321380D1300DE4CF2 /* RTSIdentity-demo2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 086FB32E21380D1300DE4CF2 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo2" */;
+			buildPhases = (
+				086FB31621380D1300DE4CF2 /* Sources */,
+				086FB31C21380D1300DE4CF2 /* Frameworks */,
+				086FB32221380D1300DE4CF2 /* Resources */,
+				086FB32821380D1300DE4CF2 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				086FB31421380D1300DE4CF2 /* PBXTargetDependency */,
+			);
+			name = "RTSIdentity-demo2";
+			productName = "SRGContentProtection-demo";
+			productReference = 086FB33321380D1300DE4CF2 /* RTSIdentity-demo2.app */;
+			productType = "com.apple.product-type.application";
+		};
 		6F0C98E52121E1C200073AB6 /* RTSIdentity-resources */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "RTSIdentity-resources" */;
@@ -425,9 +497,9 @@
 			productReference = 6F0EB53120FC7F58009C02CF /* RTSIdentity.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		6F8A93D720FDCA0800AA6434 /* RTSIdentity-demo */ = {
+		6F8A93D720FDCA0800AA6434 /* RTSIdentity-demo1 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo" */;
+			buildConfigurationList = 6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo1" */;
 			buildPhases = (
 				6F8A93D420FDCA0800AA6434 /* Sources */,
 				6F8A93D520FDCA0800AA6434 /* Frameworks */,
@@ -439,9 +511,9 @@
 			dependencies = (
 				6F8A940620FDD01B00AA6434 /* PBXTargetDependency */,
 			);
-			name = "RTSIdentity-demo";
+			name = "RTSIdentity-demo1";
 			productName = "SRGContentProtection-demo";
-			productReference = 6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo.app */;
+			productReference = 6F8A93D820FDCA0800AA6434 /* RTSIdentity-demo1.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6FB74D662101D4D200E2D365 /* RTSIdentity-tests */ = {
@@ -472,6 +544,13 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
+					086FB31321380D1300DE4CF2 = {
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
 					6F0C98E52121E1C200073AB6 = {
 						CreatedOnToolsVersion = 9.4;
 					};
@@ -480,6 +559,11 @@
 					};
 					6F8A93D720FDCA0800AA6434 = {
 						CreatedOnToolsVersion = 9.4;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					6FB74D662101D4D200E2D365 = {
 						CreatedOnToolsVersion = 9.4;
@@ -505,13 +589,26 @@
 			targets = (
 				6F0EB53020FC7F58009C02CF /* RTSIdentity */,
 				6F0C98E52121E1C200073AB6 /* RTSIdentity-resources */,
-				6F8A93D720FDCA0800AA6434 /* RTSIdentity-demo */,
+				6F8A93D720FDCA0800AA6434 /* RTSIdentity-demo1 */,
+				086FB31321380D1300DE4CF2 /* RTSIdentity-demo2 */,
 				6FB74D662101D4D200E2D365 /* RTSIdentity-tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		086FB32221380D1300DE4CF2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */,
+				086FB32421380D1300DE4CF2 /* LoginViewController.storyboard in Resources */,
+				086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */,
+				086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */,
+				086FB32721380D1300DE4CF2 /* AccountViewController.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E42121E1C200073AB6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -552,6 +649,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		086FB31621380D1300DE4CF2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				086FB31721380D1300DE4CF2 /* LoginViewController.m in Sources */,
+				086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */,
+				086FB31921380D1300DE4CF2 /* main.m in Sources */,
+				086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */,
+				086FB31B21380D1300DE4CF2 /* AccountViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E22121E1C200073AB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -595,6 +704,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		086FB31421380D1300DE4CF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6F0EB53020FC7F58009C02CF /* RTSIdentity */;
+			targetProxy = 086FB31521380D1300DE4CF2 /* PBXContainerItemProxy */;
+		};
 		6F0C98F02121E26400073AB6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6F0C98E52121E1C200073AB6 /* RTSIdentity-resources */;
@@ -628,6 +742,94 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		086FB32F21380D1300DE4CF2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 2;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		086FB33021380D1300DE4CF2 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 2;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-static";
+		};
+		086FB33121380D1300DE4CF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 2;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		086FB33221380D1300DE4CF2 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 2;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Demo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-static";
+		};
 		6F0C98DA2121E14000073AB6 /* Debug-static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -727,7 +929,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -738,7 +942,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-static";
@@ -855,7 +1059,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -866,7 +1072,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-static";
@@ -1132,7 +1338,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1143,7 +1351,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1152,7 +1360,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1163,7 +1373,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.rts.RTSIdentity-demo1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1209,6 +1419,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		086FB32E21380D1300DE4CF2 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				086FB32F21380D1300DE4CF2 /* Debug */,
+				086FB33021380D1300DE4CF2 /* Debug-static */,
+				086FB33121380D1300DE4CF2 /* Release */,
+				086FB33221380D1300DE4CF2 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "RTSIdentity-resources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1242,7 +1463,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo" */ = {
+		6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "RTSIdentity-demo1" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F8A93EC20FDCA0900AA6434 /* Debug */,
