@@ -76,6 +76,41 @@ Import the module where needed:
 import RTSIdentity
 ```
 
+### Identity instantation and access
+
+At its core, the RTS Identity library reduces to a single identity service class, `RTSIdentityService`, which you instantiate for a service URL, for example:
+
+```objective-c
+RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch" accessGroup:@"VMGRRW6SG7.ch.rts.identity"]];
+```
+
+NB: To use keychain `accessGroup`, add it also `keychain-access-groups` in the application entitlements.
+
+A set of identity values are provided. You can have several identity services in an application, though most applications should require only one. To make it easier to access the main identity service of an application, the `RTSIdentityService ` class provides class methods to set it as shared instance:
+
+```objective-c
+RTSIdentityService *identityService = ...;
+[RTSIdentityService setCurrentIdentityService:identityService];
+```
+
+and to retrieve it from anywhere, for example when creating a request:
+
+```objective-c
+RTSIdentityService *identityService = [RTSIdentityService currentIdentityService];
+```
+
+### Login
+
+To authentifiate, use `RTSIdentityLoginView`.
+
+### Manage account
+
+To display and update the user profile, use `RTSIdentityAccountView`.
+
+### Logout
+
+To logout, use `-logout`.
+
 ## License
 
 See the [LICENSE](../LICENSE) file for more information.
