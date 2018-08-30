@@ -117,12 +117,7 @@
 
 - (void)userChanged:(NSNotification *)notification
 {
-    if([notification.name isEqualToString:RTSIdentityServiceUserLoggedInNotification]) {
-        [self refresh];
-    }
-    else {
-        [self reloadData];
-    }
+    [self reloadData];
 }
 
 @end

@@ -29,6 +29,8 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
+@property (nonatomic) NSURLSessionTask *profileSessionTask;
+
 @end
 
 @implementation RTSIdentityService
@@ -194,6 +196,16 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
                                                             object:self
                                                           userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
+    
+    self.profileSessionTask = [self accountWithCompletionBlock:^(RTSAccount * _Nullable account, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *emailAddress = self.emailAddress;
+            [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserMetadatasUpdateNotification
+                                                                object:self
+                                                              userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+        });
+    }];
+    [self.profileSessionTask resume];
 }
 
 @end
