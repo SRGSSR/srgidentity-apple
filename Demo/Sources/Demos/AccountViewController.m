@@ -25,10 +25,6 @@
     AccountViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.title = title;
     
-    viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close"
-                                                                                       style:UIBarButtonItemStylePlain
-                                                                                      target:self
-                                                                                      action:@selector(dismiss:)];
     return viewController;
 }
 
@@ -53,6 +49,11 @@
 
 - (void)viewDidLoad {
     self.identityAccountView.service = [RTSIdentityService currentIdentityService];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(dismiss:)];
 }
 
 #pragma mark Actions

@@ -25,10 +25,6 @@
     LoginViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.title = title;
     
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                       style:UIBarButtonItemStylePlain
-                                                                                      target:self
-                                                                                      action:@selector(dismiss:)];
     return viewController;
 }
 
@@ -56,6 +52,11 @@
     self.identityLoginView.completionBlock = ^(NSError * _Nullable error) {
         [self dismiss:self.identityLoginView];
     };
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(dismiss:)];
 }
 
 #pragma mark Actions
