@@ -44,7 +44,7 @@ static void commonInit(RTSIdentityAccountView *self);
     if (service) {
         NSURL *URL = [NSURL URLWithString:@"user/profile" relativeToURL:self.service.serviceURL];
         NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
-        [request addValue:[NSString stringWithFormat:@"identity.provider.sid=%@", self.service.token] forHTTPHeaderField:@"Cookie"];
+        [request addValue:[NSString stringWithFormat:@"identity.provider.sid=%@", self.service.sessionToken] forHTTPHeaderField:@"Cookie"];
         [self.webView loadRequest:[NSURLRequest requestWithURL:URL]];
     }
     else {

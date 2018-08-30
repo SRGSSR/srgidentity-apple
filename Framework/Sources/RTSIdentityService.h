@@ -75,7 +75,7 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
 /**
  *  The logged in token, if any.
  */
-@property (nonatomic, readonly, copy, nullable) NSString *token;
+@property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 @end
 

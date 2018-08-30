@@ -18,7 +18,7 @@ NSString * const RTSIdentityServiceUserMetadatasUpdateNotification = @"RTSIdenti
 NSString * const RTSIdentityServiceEmailAddressKey = @"RTSIdentityServiceEmailAddressKey";
 
 NSString * const ServiceIdentifierEmailStoreKey = @"email";
-NSString * const ServiceIdentifierAccessTokenStoreKey = @"accessToken";
+NSString * const ServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 NSString * const ServiceIdentifierUserIdStoreKey = @"userId";
 NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
@@ -85,9 +85,9 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     return [self.keyChainStore stringForKey:ServiceIdentifierUserIdStoreKey];
 }
 
-- (NSString *)token
+- (NSString *)sessionToken
 {
-    return [self.keyChainStore stringForKey:ServiceIdentifierAccessTokenStoreKey];
+    return [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
 }
 
 - (NSString *)serviceIdentifier
@@ -102,9 +102,9 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
-    NSString *accessToken = [self.keyChainStore stringForKey:ServiceIdentifierAccessTokenStoreKey];
-    if (accessToken) {
-        [request setValue:[NSString stringWithFormat:@"sessionToken %@", accessToken] forHTTPHeaderField:@"Authorization"];
+    NSString *sessionToken = [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
+    if (sessionToken) {
+        [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
     
     // TODO: Proper error codes and domain. Factor out common requewst logic if possible / meaningful
@@ -179,9 +179,9 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 #pragma mark Private
 
-- (void)loggedWithAccessToken:(NSString *)accessToken
+- (void)loggedWithSessionToken:(NSString *)sessionToken
 {
-    [self.keyChainStore setString:accessToken forKey:ServiceIdentifierAccessTokenStoreKey];
+    [self.keyChainStore setString:sessionToken forKey:ServiceIdentifierSessionTokenStoreKey];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *emailAddress = self.emailAddress;

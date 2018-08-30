@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface RTSIdentityService (Private)
 
-- (void)loggedWithAccessToken:(NSString *)accessToken;
+- (void)loggedWithSessionToken:(NSString *)sessionToken;
 
 @end
 

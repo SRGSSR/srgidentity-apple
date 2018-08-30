@@ -50,7 +50,7 @@ static void commonInit(RTSIdentityLoginView *self);
             (self.completionBlock) ? self.completionBlock([NSError errorWithDomain:@"authentification" code:1012 userInfo:nil]) : nil;
             return;
         }
-        [self.service loggedWithAccessToken:queryItem.value];
+        [self.service loggedWithSessionToken:queryItem.value];
         
         (self.completionBlock) ? self.completionBlock(nil) : nil;
     }

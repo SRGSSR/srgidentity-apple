@@ -71,7 +71,7 @@
 {
     [self.sessionTask cancel];
     
-    if ([RTSIdentityService currentIdentityService].token) {
+    if ([RTSIdentityService currentIdentityService].sessionToken) {
         self.displayNameLabel.text = @"Refreshing…";
         self.sessionTask = [[RTSIdentityService currentIdentityService] accountWithCompletionBlock:^(RTSAccount * _Nullable account, NSError * _Nullable error) {
             if (! error) {
@@ -89,7 +89,7 @@
 }
 
 - (void)reloadData {
-    BOOL isLogged = ([RTSIdentityService currentIdentityService].token != nil);
+    BOOL isLogged = ([RTSIdentityService currentIdentityService].sessionToken != nil);
     
     self.displayNameLabel.text = isLogged ? [RTSIdentityService currentIdentityService].displayName : @"Not logged.";
     self.loginButton.enabled = !isLogged;
