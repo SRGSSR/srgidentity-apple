@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"]];
+    RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"] accessGroup:@"VMGRRW6SG7.ch.rts.identity"];
     [RTSIdentityService setCurrentIdentityService:identityService];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];

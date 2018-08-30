@@ -39,7 +39,7 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
  *
  *  @param serviceURL             The URL of the identifier service.
  */
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Get account properties.

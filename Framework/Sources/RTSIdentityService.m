@@ -51,12 +51,12 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL
+- (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
         
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:nil];
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
     }
     return self;
 }
