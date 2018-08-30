@@ -70,6 +70,16 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 #pragma mark Getters and setters
 
+- (BOOL)isLogged
+{
+    return (self.sessionToken != nil);
+}
+
+- (NSString *)sessionToken
+{
+    return [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
+}
+
 - (NSString *)emailAddress
 {
     return [self.keyChainStore stringForKey:ServiceIdentifierEmailStoreKey];
@@ -83,11 +93,6 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 - (NSString *)userId
 {
     return [self.keyChainStore stringForKey:ServiceIdentifierUserIdStoreKey];
-}
-
-- (NSString *)sessionToken
-{
-    return [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
 }
 
 - (NSString *)serviceIdentifier

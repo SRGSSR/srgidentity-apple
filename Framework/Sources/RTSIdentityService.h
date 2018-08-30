@@ -58,6 +58,16 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
 @property (nonatomic, readonly) NSURL *serviceURL;
 
 /**
+ *  The login status.
+ */
+@property (readonly) BOOL isLogged;
+
+/**
+ *  The logged in token, if any.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
+
+/**
  *  The logged in email address, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
@@ -71,11 +81,6 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
  *  The logged in user id, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *userId;
-
-/**
- *  The logged in token, if any.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 @end
 
