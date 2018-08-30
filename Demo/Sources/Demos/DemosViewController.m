@@ -50,6 +50,10 @@
                                              selector:@selector(userChanged:)
                                                  name:RTSIdentityServiceUserMetadatasUpdateNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -115,9 +119,16 @@
     [[RTSIdentityService currentIdentityService] logout];
 }
 
+#pragma mark Notifications
+
 - (void)userChanged:(NSNotification *)notification
 {
     [self reloadData];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    [self refresh];
 }
 
 @end
