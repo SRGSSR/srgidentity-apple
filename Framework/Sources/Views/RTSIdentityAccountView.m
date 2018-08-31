@@ -62,6 +62,8 @@ static void commonInit(RTSIdentityAccountView *self)
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.navigationDelegate = self;
     
+    webView.customUserAgent = @"Mozilla/5.0 (iPhoneXi; CPU iPhone OS 11_4_0 like Mac OS Xi) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/11.4 Mobile/14G60 Safari/602.1";
+    
     // Scroll view content insets are adjusted automatically, but only for the scroll view at index 0. This
     // is the main content web view, we therefore put it at index 0
     [self insertSubview:webView atIndex:0];
