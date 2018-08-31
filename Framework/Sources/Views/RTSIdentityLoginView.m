@@ -43,15 +43,10 @@ static void commonInit(RTSIdentityLoginView *self);
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:webView.URL resolvingAgainstBaseURL:NO];
-    if ([URLComponents.host isEqualToString:@"identity"]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
-        NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-        if (! queryItem || ! queryItem.value) {
-            (self.completionBlock) ? self.completionBlock([NSError errorWithDomain:@"authentification" code:1012 userInfo:nil]) : nil;
-            return;
-        }
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    if (queryItem) {
         [self.service loggedWithSessionToken:queryItem.value];
-        
         (self.completionBlock) ? self.completionBlock(nil) : nil;
     }
 }
