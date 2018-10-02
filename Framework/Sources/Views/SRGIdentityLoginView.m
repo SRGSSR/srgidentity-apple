@@ -57,7 +57,8 @@ static void commonInit(SRGIdentityLoginView *self);
     _service = service;
     
     if (service) {
-        NSURL *URL = [NSURL URLWithString:@"responsive/login?redirect=https://identity" relativeToURL:self.service.serviceURL];
+        NSString *loginURLString = [NSString stringWithFormat:@"responsive/login?withcode=true&redirect=%@", self.service.serviceURL.absoluteString];
+        NSURL *URL = [NSURL URLWithString:loginURLString relativeToURL:self.service.serviceURL];
         if (self.service.emailAddress) {
             NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:self.service.emailAddress];
             
