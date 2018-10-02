@@ -4,7 +4,7 @@
 
 ## About
 
-The RTS Identity framework contains the Peach authentification logic.
+The SRG Identity framework contains the Peach authentification logic.
 
 ## Compatibility
 
@@ -15,7 +15,7 @@ The library is suitable for applications running on iOS 9 and above. The project
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-git "https://bitbucket.org/rtsmb/rtsidentity-ios.git"
+github "SRGSSR/srgidentity-ios"
 ```
 
 Until Carthage 0.30, only dynamic frameworks could be integrated. Starting with Carthage 0.30, though, frameworks can be integrated statically as well, which avoids slow application startups usually associated with the use of too many dynamic frameworks.
@@ -29,7 +29,7 @@ The library requires the following frameworks to be added to any target requirin
 * `libextobjc`: An utility framework.
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `Mantle`: The framework used to parse the data.
-* `RTSIdentity`: The identity library framework.
+* `SRGIdentity`: The identity library framework.
 * `UICKeyChainStore`: The framework used to store credentials in keychains.
 * `WebKit`: Apple web framework to display authentification.
 
@@ -59,13 +59,13 @@ When you want to use classes or functions provided by the library in your code, 
 Import the global header file using:
 
 ```objective-c
-#import <RTSIdentity/RTSIdentity.h>
+#import <SRGIdentity/SRGIdentity.h>
 ```
 
 or directly import the module itself:
 
 ```objective-c
-@import RTSIdentity;
+@import SRGIdentity;
 ```
 
 ### Usage from Swift source files
@@ -73,39 +73,39 @@ or directly import the module itself:
 Import the module where needed:
 
 ```swift
-import RTSIdentity
+import SRGIdentity
 ```
 
 ### Identity instantation and access
 
-At its core, the RTS Identity library reduces to a single identity service class, `RTSIdentityService`, which you instantiate for a service URL, for example:
+At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a service URL, for example:
 
 ```objective-c
-RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch" accessGroup:@"VMGRRW6SG7.ch.rts.identity"]];
+SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch" accessGroup:@"VMGRRW6SG7.ch.srgssr.identity"]];
 ```
 
 NB: To use keychain `accessGroup`, add it also `keychain-access-groups` in the application entitlements.
 
-A set of identity values are provided. You can have several identity services in an application, though most applications should require only one. To make it easier to access the main identity service of an application, the `RTSIdentityService ` class provides class methods to set it as shared instance:
+A set of identity values are provided. You can have several identity services in an application, though most applications should require only one. To make it easier to access the main identity service of an application, the `SRGIdentityService ` class provides class methods to set it as shared instance:
 
 ```objective-c
-RTSIdentityService *identityService = ...;
-[RTSIdentityService setCurrentIdentityService:identityService];
+SRGIdentityService *identityService = ...;
+[SRGIdentityService setCurrentIdentityService:identityService];
 ```
 
 and to retrieve it from anywhere, for example when creating a request:
 
 ```objective-c
-RTSIdentityService *identityService = [RTSIdentityService currentIdentityService];
+SRGIdentityService *identityService = [SRGIdentityService currentIdentityService];
 ```
 
 ### Login
 
-To authentifiate, use `RTSIdentityLoginView`.
+To authentifiate, use `SRGIdentityLoginView`.
 
 ### Manage account
 
-To display and update the user profile, use `RTSIdentityAccountView`.
+To display and update the user profile, use `SRGIdentityAccountView`.
 
 ### Logout
 
