@@ -1,10 +1,10 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSIdentityService.h"
+#import "SRGIdentityService.h"
 
 #import <UIKit/UIKit.h>
 
@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^CompletionBlock)(NSError * _Nullable error);
 
-@interface RTSIdentityAccountView : UIView
+@interface SRGIdentityAccountView : UIView
 
 /**
  *  Identity service to authentify the user.
  */
-@property (nonatomic, nullable) RTSIdentityService *service;
+@property (nonatomic, nullable) SRGIdentityService *service;
 
 @end
 

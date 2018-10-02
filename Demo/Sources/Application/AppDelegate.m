@@ -1,5 +1,5 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
@@ -8,7 +8,7 @@
 
 #import "DemosViewController.h"
 
-#import <RTSIdentity/RTSIdentity.h>
+#import <SRGIdentity/SRGIdentity.h>
 
 @implementation AppDelegate
 
@@ -16,8 +16,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    RTSIdentityService *identityService = [[RTSIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"] accessGroup:@"VMGRRW6SG7.ch.rts.identity"];
-    [RTSIdentityService setCurrentIdentityService:identityService];
+    SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"] accessGroup:@"VMGRRW6SG7.ch.srgssr.identity"];
+    [SRGIdentityService setCurrentIdentityService:identityService];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];

@@ -1,5 +1,5 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
@@ -10,7 +10,7 @@
 #import "LoginViewController.h"
 
 #import <AVKit/AVKit.h>
-#import <RTSIdentity/RTSIdentity.h>
+#import <SRGIdentity/SRGIdentity.h>
 
 @interface DemosViewController ()
 
@@ -40,15 +40,15 @@
     [self reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:RTSIdentityServiceUserLoggedInNotification
+                                                 name:SRGIdentityServiceUserLoggedInNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:RTSIdentityServiceUserLoggedOutNotification
+                                                 name:SRGIdentityServiceUserLoggedOutNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:RTSIdentityServiceUserMetadatasUpdateNotification
+                                                 name:SRGIdentityServiceUserMetadatasUpdateNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
@@ -66,7 +66,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"RTSIdentity %@ (demo %ld)", RTSIdentityMarketingVersion(), [[NSBundle mainBundle].infoDictionary[@"DemoNumber"] integerValue]];
+    return [NSString stringWithFormat:@"SRGIdentity %@ (demo %ld)", SRGIdentityMarketingVersion(), [[NSBundle mainBundle].infoDictionary[@"DemoNumber"] integerValue]];
 }
 
 #pragma mark Datas
@@ -75,13 +75,13 @@
 {
     [self.sessionTask cancel];
     
-    if ([RTSIdentityService currentIdentityService].isLogged) {
+    if ([SRGIdentityService currentIdentityService].isLogged) {
         self.displayNameLabel.text = @"Refreshing…";
-        self.sessionTask = [[RTSIdentityService currentIdentityService] accountWithCompletionBlock:^(RTSAccount * _Nullable account, NSError * _Nullable error) {
+        self.sessionTask = [[SRGIdentityService currentIdentityService] accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             [self reloadData];
             if ([error.domain isEqualToString:@"http"] && error.code == 401) {
                 self.displayNameLabel.text = @"Session expired.";
-                [[RTSIdentityService currentIdentityService] logout];
+                [[SRGIdentityService currentIdentityService] logout];
             }
         }];
         [self.sessionTask resume];
@@ -92,9 +92,9 @@
 }
 
 - (void)reloadData {
-    BOOL isLogged = [RTSIdentityService currentIdentityService].isLogged;
+    BOOL isLogged = [SRGIdentityService currentIdentityService].isLogged;
     
-    self.displayNameLabel.text = isLogged ? [RTSIdentityService currentIdentityService].displayName : @"Not logged.";
+    self.displayNameLabel.text = isLogged ? [SRGIdentityService currentIdentityService].displayName : @"Not logged.";
     self.loginButton.enabled = !isLogged;
     self.accountButton.enabled = isLogged;
     self.logoutButton.enabled = isLogged;
@@ -115,7 +115,7 @@
 }
 
 - (IBAction)logout:(id)sender {
-    [[RTSIdentityService currentIdentityService] logout];
+    [[SRGIdentityService currentIdentityService] logout];
 }
 
 #pragma mark Notifications

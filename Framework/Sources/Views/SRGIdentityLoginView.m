@@ -1,24 +1,24 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSIdentityLoginView.h"
-#import "RTSIdentityService+Private.h"
+#import "SRGIdentityLoginView.h"
+#import "SRGIdentityService+Private.h"
 
 #import <libextobjc/libextobjc.h>
 #import <WebKit/WebKit.h>
 
-static void commonInit(RTSIdentityLoginView *self);
+static void commonInit(SRGIdentityLoginView *self);
 
-@interface RTSIdentityLoginView () <WKNavigationDelegate>
+@interface SRGIdentityLoginView () <WKNavigationDelegate>
 
 @property (weak, nonatomic) WKWebView *webView;
 
 @end
 
-@implementation RTSIdentityLoginView
+@implementation SRGIdentityLoginView
 
 #pragma mark Object lifecycle
 
@@ -53,7 +53,7 @@ static void commonInit(RTSIdentityLoginView *self);
 
 #pragma mark Getters and setters
 
-- (void)setService:(RTSIdentityService *)service {
+- (void)setService:(SRGIdentityService *)service {
     _service = service;
     
     if (service) {
@@ -74,7 +74,7 @@ static void commonInit(RTSIdentityLoginView *self);
 
 @end
 
-static void commonInit(RTSIdentityLoginView *self)
+static void commonInit(SRGIdentityLoginView *self)
 {
     self.backgroundColor = [UIColor blackColor];
         

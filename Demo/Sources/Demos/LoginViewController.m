@@ -1,5 +1,5 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
@@ -8,7 +8,7 @@
 
 @interface LoginViewController ()
 
-@property (weak, nonatomic) IBOutlet RTSIdentityLoginView *identityLoginView;
+@property (weak, nonatomic) IBOutlet SRGIdentityLoginView *identityLoginView;
 
 @end
 
@@ -48,7 +48,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    self.identityLoginView.service = [RTSIdentityService currentIdentityService];
+    self.identityLoginView.service = [SRGIdentityService currentIdentityService];
     self.identityLoginView.completionBlock = ^(NSError * _Nullable error) {
         [self dismiss:self.identityLoginView];
     };

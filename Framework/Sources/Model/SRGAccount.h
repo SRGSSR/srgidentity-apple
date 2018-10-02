@@ -1,5 +1,5 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
@@ -8,20 +8,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, RTSGender) {
-    RTSGenderEnumBegin = 0,
-    RTSGenderNone = RTSGenderEnumBegin,
-    RTSGenderFemale,
-    RTSGenderMale,
-    RTSGenderOther,
-    RTSGenderEnumEnd,
-    RTSGenderEnumSize = RTSGenderEnumEnd - RTSGenderEnumBegin
+typedef NS_ENUM(NSInteger, SRGGender) {
+    SRGGenderEnumBegin = 0,
+    SRGGenderNone = SRGGenderEnumBegin,
+    SRGGenderFemale,
+    SRGGenderMale,
+    SRGGenderOther,
+    SRGGenderEnumEnd,
+    SRGGenderEnumSize = SRGGenderEnumEnd - SRGGenderEnumBegin
 };
 
-OBJC_EXPORT NSString *RTSDescriptionForRTSGender(RTSGender RTSGender);
-OBJC_EXPORT RTSGender RTSGenderForDescription(NSString *description);
+OBJC_EXPORT NSString *SRGDescriptionForSRGGender(SRGGender SRGGender);
+OBJC_EXPORT SRGGender SRGGenderForDescription(NSString *description);
 
-@interface RTSAccount : MTLModel <MTLJSONSerializing>
+@interface SRGAccount : MTLModel <MTLJSONSerializing>
 
 @property (nonatomic, copy, nullable) NSString *emailAddress;
 @property (nonatomic, copy, nullable) NSString *password;
@@ -29,7 +29,7 @@ OBJC_EXPORT RTSGender RTSGenderForDescription(NSString *description);
 @property (nonatomic, copy, nullable) NSString *firstName;
 @property (nonatomic, copy, nullable) NSString *lastName;
 
-@property (nonatomic) RTSGender RTSGender;
+@property (nonatomic) SRGGender SRGGender;
 
 @property (nonatomic, nullable) NSDate *birthdate;
 @property (nonatomic, copy, nullable) NSString *languageCode;
@@ -40,7 +40,7 @@ OBJC_EXPORT RTSGender RTSGenderForDescription(NSString *description);
 /*
  *  Instance from an other account
  */
-- (instancetype)initWithAccount:(RTSAccount *)account;
+- (instancetype)initWithAccount:(SRGAccount *)account;
 
 @end
 

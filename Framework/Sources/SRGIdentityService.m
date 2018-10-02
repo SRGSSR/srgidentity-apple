@@ -1,28 +1,28 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSIdentityService.h"
-#import "RTSIdentityService+Private.h"
+#import "SRGIdentityService.h"
+#import "SRGIdentityService+Private.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
-static RTSIdentityService *s_currentIdentityService;
+static SRGIdentityService *s_currentIdentityService;
 
-NSString * const RTSIdentityServiceUserLoggedInNotification = @"RTSIdentityServiceUserLoggedInNotification";
-NSString * const RTSIdentityServiceUserLoggedOutNotification = @"RTSIdentityServiceUserLoggedOutNotification";
-NSString * const RTSIdentityServiceUserMetadatasUpdateNotification = @"RTSIdentityServiceUserMetadatasUpdateNotification";
+NSString * const SRGIdentityServiceUserLoggedInNotification = @"SRGIdentityServiceUserLoggedInNotification";
+NSString * const SRGIdentityServiceUserLoggedOutNotification = @"SRGIdentityServiceUserLoggedOutNotification";
+NSString * const SRGIdentityServiceUserMetadatasUpdateNotification = @"SRGIdentityServiceUserMetadatasUpdateNotification";
 
-NSString * const RTSIdentityServiceEmailAddressKey = @"RTSIdentityServiceEmailAddressKey";
+NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
 
 NSString * const ServiceIdentifierEmailStoreKey = @"email";
 NSString * const ServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 NSString * const ServiceIdentifierUserIdStoreKey = @"userId";
 NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
-@interface RTSIdentityService ()
+@interface SRGIdentityService ()
 
 @property (nonatomic) NSURL *serviceURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
@@ -33,18 +33,18 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 @end
 
-@implementation RTSIdentityService
+@implementation SRGIdentityService
 
 #pragma mark Class methods
 
-+ (RTSIdentityService *)currentIdentityService
++ (SRGIdentityService *)currentIdentityService
 {
     return s_currentIdentityService;
 }
 
-+ (RTSIdentityService *)setCurrentIdentityService:(RTSIdentityService *)currentIdentityService
++ (SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
 {
-    RTSIdentityService *previousidentityService= s_currentIdentityService;
+    SRGIdentityService *previousidentityService= s_currentIdentityService;
     s_currentIdentityService = currentIdentityService;
     return previousidentityService;
 }
@@ -107,7 +107,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 #pragma mark Services
 
-- (NSURLSessionTask *)accountWithCompletionBlock:(RTSAccountCompletionBlock)completionBlock
+- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
 {
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -119,12 +119,12 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     
     // TODO: Proper error codes and domain. Factor out common requewst logic if possible / meaningful
     return [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        RTSAccountCompletionBlock requestCompletionBlock = ^(RTSAccount * _Nullable account, NSError * _Nullable error) {
+        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserMetadatasUpdateNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
                                                                         object:self
-                                                                      userInfo:@{ RTSIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
+                                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
                 }
                 completionBlock(account, error);
             });
@@ -156,7 +156,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
             return;
         }
         NSDictionary *user = JSONObject[@"user"];
-        RTSAccount *account = [MTLJSONAdapter modelOfClass:[RTSAccount class] fromJSONDictionary:user error:&error];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:[SRGAccount class] fromJSONDictionary:user error:&error];
         if (! account) {
             requestCompletionBlock(nil, [NSError errorWithDomain:@"parsing" code:1012 userInfo:nil]);
             return;
@@ -182,9 +182,9 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     
     [self.keyChainStore setString:emailAddress forKey:ServiceIdentifierEmailStoreKey];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserLoggedOutNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedOutNotification
                                                         object:self
-                                                      userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
 }
 
 #pragma mark Private
@@ -195,17 +195,17 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *emailAddress = self.emailAddress;
-        [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserLoggedInNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedInNotification
                                                             object:self
-                                                          userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+                                                          userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
     
-    self.profileSessionTask = [self accountWithCompletionBlock:^(RTSAccount * _Nullable account, NSError * _Nullable error) {
+    self.profileSessionTask = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
-            [[NSNotificationCenter defaultCenter] postNotificationName:RTSIdentityServiceUserMetadatasUpdateNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
                                                                 object:self
-                                                              userInfo:@{ RTSIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+                                                              userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         });
     }];
     [self.profileSessionTask resume];

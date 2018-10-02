@@ -1,38 +1,38 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSAccount.h"
+#import "SRGAccount.h"
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_EXPORT NSString * const RTSIdentityServiceUserLoggedInNotification;
-OBJC_EXPORT NSString * const RTSIdentityServiceUserLoggedOutNotification;
-OBJC_EXPORT NSString * const RTSIdentityServiceUserMetadatasUpdateNotification;
+OBJC_EXPORT NSString * const SRGIdentityServiceUserLoggedInNotification;
+OBJC_EXPORT NSString * const SRGIdentityServiceUserLoggedOutNotification;
+OBJC_EXPORT NSString * const SRGIdentityServiceUserMetadatasUpdateNotification;
 
-OBJC_EXPORT NSString * const RTSIdentityServiceEmailAddressKey;
+OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
 
-typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSError * _Nullable error);
+typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSError * _Nullable error);
 
-@interface RTSIdentityService : NSObject
+@interface SRGIdentityService : NSObject
 
 /**
  *  The identity service currently set as shared instance, if any.
  *
  *  @see `-setCurrentIdentityService:`.
  */
-+ (nullable RTSIdentityService *)currentIdentityService;
++ (nullable SRGIdentityService *)currentIdentityService;
 
 /**
  *  Set an identity service as shared instance for convenient retrieval via `-currentIdentityService`.
  *
  *  @return The previously installed shared instance, if any.
  */
-+ (nullable RTSIdentityService *)setCurrentIdentityService:(RTSIdentityService *)currentIdentityService;
++ (nullable SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService;
 
 /**
  *  Instantiate a identity service.
@@ -44,7 +44,7 @@ typedef void (^RTSAccountCompletionBlock)(RTSAccount * _Nullable account, NSErro
 /**
  *  Get account properties.
  */
-- (NSURLSessionTask *)accountWithCompletionBlock:(RTSAccountCompletionBlock)completionBlock;
+- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
 
 /**
  *  Logout the current session, if any.

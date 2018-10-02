@@ -1,5 +1,5 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
@@ -8,7 +8,7 @@
 
 @interface AccountViewController ()
 
-@property (weak, nonatomic) IBOutlet RTSIdentityAccountView *identityAccountView;
+@property (weak, nonatomic) IBOutlet SRGIdentityAccountView *identityAccountView;
 
 @end
 
@@ -48,7 +48,7 @@
 #pragma mark View lifecycle
 
 - (void)viewDidLoad {
-    self.identityAccountView.service = [RTSIdentityService currentIdentityService];
+    self.identityAccountView.service = [SRGIdentityService currentIdentityService];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close"
                                                                               style:UIBarButtonItemStylePlain

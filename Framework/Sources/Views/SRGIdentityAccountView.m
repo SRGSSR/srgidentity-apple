@@ -1,22 +1,22 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSIdentityAccountView.h"
+#import "SRGIdentityAccountView.h"
 
 #import <WebKit/WebKit.h>
 
-static void commonInit(RTSIdentityAccountView *self);
+static void commonInit(SRGIdentityAccountView *self);
 
-@interface RTSIdentityAccountView () <WKNavigationDelegate>
+@interface SRGIdentityAccountView () <WKNavigationDelegate>
 
 @property (weak, nonatomic) WKWebView *webView;
 
 @end
 
-@implementation RTSIdentityAccountView
+@implementation SRGIdentityAccountView
 
 #pragma mark Object lifecycle
 
@@ -38,7 +38,7 @@ static void commonInit(RTSIdentityAccountView *self);
 
 #pragma mark Getters and setters
 
-- (void)setService:(RTSIdentityService *)service {
+- (void)setService:(SRGIdentityService *)service {
     _service = service;
     
     if (service) {
@@ -54,7 +54,7 @@ static void commonInit(RTSIdentityAccountView *self);
 
 @end
 
-static void commonInit(RTSIdentityAccountView *self)
+static void commonInit(SRGIdentityAccountView *self)
 {
     self.backgroundColor = [UIColor blackColor];
         

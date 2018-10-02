@@ -1,17 +1,17 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSIdentityService.h"
+#import "SRGIdentityService.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Interface for internal use.
  */
-@interface RTSIdentityService (Private)
+@interface SRGIdentityService (Private)
 
 - (void)loggedWithSessionToken:(NSString *)sessionToken;
 

@@ -1,18 +1,18 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG SSR. All rights reserved.
 //
 //  License information is available from the LICENSE file.
 //
 
 #import <AVFoundation/AVFoundation.h>
-#import <RTSIdentity/RTSIdentity.h>
+#import <SRGIdentity/SRGIdentity.h>
 #import <XCTest/XCTest.h>
 
-@interface RTSIdentityTestCase : XCTestCase
+@interface SRGIdentityTestCase : XCTestCase
 
 @end
 
-@implementation RTSIdentityTestCase
+@implementation SRGIdentityTestCase
 
 #pragma mark Tests
 
