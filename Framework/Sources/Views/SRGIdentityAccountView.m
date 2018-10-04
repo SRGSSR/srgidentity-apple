@@ -69,22 +69,29 @@ static void commonInit(SRGIdentityAccountView *self);
 - (void)replaceWebviewWithService:(SRGIdentityService *)service
 {
     // Set Cookie for other requests than the first one.
+    NSString *cookieValue = service.sessionToken ?: @"";
     
-    NSString *domain = @"";
+    NSString *cookieDomain = @"";
     if (service.serviceURL.host) {
         NSArray<NSString *> *subHosts = [service.serviceURL.host componentsSeparatedByString:@"."];
         if (subHosts.count > 1) {
-            domain = [NSString stringWithFormat:@"domain=.%@.%@", subHosts[subHosts.count - 2], subHosts[subHosts.count - 1]];
+            cookieDomain = [NSString stringWithFormat:@".%@.%@", subHosts[subHosts.count - 2], subHosts[subHosts.count - 1]];
         }
     }
     
-    NSString *javaScript = nil;
-    if (service.sessionToken) {
-        javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;%@;path=/';", SRGServiceIdentifierCookieName, service.sessionToken, domain];
+    static NSDateFormatter *dateFormatter = nil;
+    if (!dateFormatter) {
+        NSLocale *en_US_POSIX = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:en_US_POSIX];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        [dateFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zzz"];
     }
-    else {
-        javaScript = [NSString stringWithFormat:@"document.cookie = '%@=;%@;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';", SRGServiceIdentifierCookieName, domain];
-    }
+    
+    NSDate *cookieExpiresDate = (service.sessionToken) ? [NSDate dateWithTimeIntervalSinceNow:3600] : [NSDate dateWithTimeIntervalSince1970:0];
+    NSString *cookieExpires = [dateFormatter stringFromDate:cookieExpiresDate];
+    
+    NSString *javaScript = javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;domain=%@;path=/;expires=%@';", SRGServiceIdentifierCookieName, cookieValue, cookieDomain, cookieExpires];
     
     // https://stackoverflow.com/questions/26573137/can-i-set-the-cookies-to-be-used-by-a-wkwebview
     WKUserContentController* userContentController = WKUserContentController.new;
