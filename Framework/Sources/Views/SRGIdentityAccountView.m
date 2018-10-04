@@ -6,6 +6,8 @@
 
 #import "SRGIdentityAccountView.h"
 
+#import "SRGIdentityService+private.h"
+
 #import <WebKit/WebKit.h>
 
 static void commonInit(SRGIdentityAccountView *self);
@@ -15,6 +17,12 @@ static void commonInit(SRGIdentityAccountView *self);
 @property (weak, nonatomic) WKWebView *webView;
 
 @end
+
+/*
+ *  To have the correct authentification we need two actions:
+ *  - Set Cookie in the header for the first request.
+ *  - Set Cookie in the storage via a javascript for other requests (AJAX, next page…).
+ */
 
 @implementation SRGIdentityAccountView
 
@@ -39,33 +47,68 @@ static void commonInit(SRGIdentityAccountView *self);
 #pragma mark Getters and setters
 
 - (void)setService:(SRGIdentityService *)service {
-    _service = service;
-    
-    if (service) {
-        NSURL *URL = [NSURL URLWithString:@"user/profile" relativeToURL:self.service.serviceURL];
-        NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
-        [request addValue:[NSString stringWithFormat:@"identity.provider.sid=%@", self.service.sessionToken] forHTTPHeaderField:@"Cookie"];
-        [self.webView loadRequest:request];
-    }
-    else {
+    if (! [_service isEqual:service]) {
         [self.webView stopLoading];
+        
+        _service = service;
+        
+        [self replaceWebviewWithService:service];
+        
+        if (service) {
+            NSURL *URL = [NSURL URLWithString:@"user/profile" relativeToURL:self.service.serviceURL];
+            NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:URL];
+            // Set Cookie header for the first request.
+            [request addValue:[NSString stringWithFormat:@"%@=%@", SRGServiceIdentifierCookieName, self.service.sessionToken ?: @""] forHTTPHeaderField:@"Cookie"];
+            [self.webView loadRequest:request];
+        }
     }
 }
 
+#pragma mark Helpers
+
+- (void)replaceWebviewWithService:(SRGIdentityService *)service
+{
+    // Set Cookie for other requests than the first one.
+    
+    NSString *domain = @"";
+    if (service.serviceURL.host) {
+        NSArray<NSString *> *subHosts = [service.serviceURL.host componentsSeparatedByString:@"."];
+        if (subHosts.count > 1) {
+            domain = [NSString stringWithFormat:@"domain=.%@.%@", subHosts[subHosts.count - 2], subHosts[subHosts.count - 1]];
+        }
+    }
+    
+    NSString *javaScript = nil;
+    if (service.sessionToken) {
+        javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;%@;path=/';", SRGServiceIdentifierCookieName, service.sessionToken, domain];
+    }
+    else {
+        javaScript = [NSString stringWithFormat:@"document.cookie = '%@=;%@;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';", SRGServiceIdentifierCookieName, domain];
+    }
+    
+    // https://stackoverflow.com/questions/26573137/can-i-set-the-cookies-to-be-used-by-a-wkwebview
+    WKUserContentController* userContentController = WKUserContentController.new;
+    WKUserScript * cookieScript = [[WKUserScript alloc] initWithSource:javaScript
+                                                         injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
+    [userContentController addUserScript:cookieScript];
+    WKWebViewConfiguration* webViewConfig = WKWebViewConfiguration.new;
+    webViewConfig.userContentController = userContentController;
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:webViewConfig];
+
+    webView.customUserAgent = @"Mozilla/5.0 (iPhoneXi; CPU iPhone OS 11_4_0 like Mac OS Xi) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/11.4 Mobile/14G60 Safari/602.1";
+    
+    [self.webView removeFromSuperview];
+    
+    // Scroll view content insets are adjusted automatically, but only for the scroll view at index 0. This
+    // is the main content web view, we therefore put it at index 0
+    [self insertSubview:webView atIndex:0];
+    self.webView = webView;
+}
 @end
 
 static void commonInit(SRGIdentityAccountView *self)
 {
     self.backgroundColor = [UIColor blackColor];
         
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds];
-    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    webView.navigationDelegate = self;
-    
-    webView.customUserAgent = @"Mozilla/5.0 (iPhoneXi; CPU iPhone OS 11_4_0 like Mac OS Xi) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/11.4 Mobile/14G60 Safari/602.1";
-    
-    // Scroll view content insets are adjusted automatically, but only for the scroll view at index 0. This
-    // is the main content web view, we therefore put it at index 0
-    [self insertSubview:webView atIndex:0];
-    self.webView = webView;
+    [self replaceWebviewWithService:nil];
 }

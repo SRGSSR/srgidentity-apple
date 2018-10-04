@@ -22,6 +22,8 @@ NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 NSString * const SRGServiceIdentifierUserIdStoreKey = @"userId";
 NSString * const SRGServiceIdentifierDisplayNameStoreKey = @"displayName";
 
+NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
+
 @interface SRGIdentityService ()
 
 @property (nonatomic) NSURL *serviceURL;
