@@ -17,10 +17,10 @@ NSString * const SRGIdentityServiceUserMetadatasUpdateNotification = @"SRGIdenti
 
 NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
 
-NSString * const ServiceIdentifierEmailStoreKey = @"email";
-NSString * const ServiceIdentifierSessionTokenStoreKey = @"sessionToken";
-NSString * const ServiceIdentifierUserIdStoreKey = @"userId";
-NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
+NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
+NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
+NSString * const SRGServiceIdentifierUserIdStoreKey = @"userId";
+NSString * const SRGServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 @interface SRGIdentityService ()
 
@@ -79,22 +79,22 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 - (NSString *)sessionToken
 {
-    return [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
 }
 
 - (NSString *)emailAddress
 {
-    return [self.keyChainStore stringForKey:ServiceIdentifierEmailStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey];
 }
 
 - (NSString *)displayName
 {
-    return [self.keyChainStore stringForKey:ServiceIdentifierDisplayNameStoreKey] ?: self.emailAddress;
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierDisplayNameStoreKey] ?: self.emailAddress;
 }
 
 - (NSString *)userId
 {
-    return [self.keyChainStore stringForKey:ServiceIdentifierUserIdStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierUserIdStoreKey];
 }
 
 - (NSString *)serviceIdentifier
@@ -112,7 +112,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
-    NSString *sessionToken = [self.keyChainStore stringForKey:ServiceIdentifierSessionTokenStoreKey];
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
     if (sessionToken) {
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
@@ -164,11 +164,11 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
         
         NSString *emailAddress = self.emailAddress;
         if (!self.emailAddress || ![account.emailAddress isEqualToString:emailAddress]) {
-            [self.keyChainStore setString:account.emailAddress forKey:ServiceIdentifierEmailStoreKey];
+            [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
         }
-        [self.keyChainStore setString:account.displayName forKey:ServiceIdentifierDisplayNameStoreKey];
+        [self.keyChainStore setString:account.displayName forKey:SRGServiceIdentifierDisplayNameStoreKey];
         NSString *uid = account.uid ? account.uid.stringValue : nil;
-        [self.keyChainStore setString:uid forKey:ServiceIdentifierUserIdStoreKey];
+        [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
         
         requestCompletionBlock(account, nil);
     }];
@@ -180,7 +180,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
     
     [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
     
-    [self.keyChainStore setString:emailAddress forKey:ServiceIdentifierEmailStoreKey];
+    [self.keyChainStore setString:emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedOutNotification
                                                         object:self
@@ -191,7 +191,7 @@ NSString * const ServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 - (void)loggedWithSessionToken:(NSString *)sessionToken
 {
-    [self.keyChainStore setString:sessionToken forKey:ServiceIdentifierSessionTokenStoreKey];
+    [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *emailAddress = self.emailAddress;
