@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *accountButton;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet UISwitch *testModeSwitch;
 
 @property (nonatomic) NSURLSessionTask *sessionTask;
 
@@ -95,9 +96,9 @@
     BOOL isLogged = [SRGIdentityService currentIdentityService].isLogged;
     
     self.displayNameLabel.text = isLogged ? [SRGIdentityService currentIdentityService].displayName : @"Not logged.";
-    self.loginButton.enabled = !isLogged;
-    self.accountButton.enabled = isLogged;
-    self.logoutButton.enabled = isLogged;
+    self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
+    self.accountButton.enabled = self.testModeSwitch.on || isLogged;;
+    self.logoutButton.enabled = self.testModeSwitch.on || isLogged;;
 }
 
 #pragma mark Actions
@@ -116,6 +117,10 @@
 
 - (IBAction)logout:(id)sender {
     [[SRGIdentityService currentIdentityService] logout];
+}
+
+- (IBAction)testModeToggle:(id)sender {
+    [self reloadData];
 }
 
 #pragma mark Notifications
