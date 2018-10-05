@@ -1,4 +1,4 @@
-<p align="center"><img src="README-images/logo.png"/></p>
+![SRG Media Player logo](README-images/logo.png)
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -9,6 +9,10 @@ The SRG Identity framework contains the Peach authentification logic.
 ## Compatibility
 
 The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
+
+## Contributing
+
+If you want to contribute to the project, have a look at our [contributing guide](CONTRIBUTING.md).
 
 ## Installation
 
