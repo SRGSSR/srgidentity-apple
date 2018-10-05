@@ -82,7 +82,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier];
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([serviceURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTP : UICKeyChainStoreProtocolTypeHTTPS;
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:serviceURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
@@ -120,14 +121,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (NSString *)emailAddress
 {
     return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey];
-}
-
-- (NSString *)serviceIdentifier
-{
-    NSArray *hostComponents = [self.serviceURL.host componentsSeparatedByString:@"."];
-    NSArray *reverseHostComponents = [[hostComponents reverseObjectEnumerator] allObjects];
-    NSString *domain = [reverseHostComponents componentsJoinedByString:@"."];
-    return [domain stringByAppendingString:@".identity"];
 }
 
 #pragma mark URLs
@@ -220,7 +213,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     SRGAccount *account = self.account;
     
-    [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
+    [self.keyChainStore removeAllItems];
     self.account = nil;
     
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
