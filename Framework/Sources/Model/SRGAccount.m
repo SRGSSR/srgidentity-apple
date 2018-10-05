@@ -21,7 +21,7 @@ static NSDictionary<NSNumber *, NSString *> *SRGGenderDescriptions(void)
     return s_SRGGenderDescriptions;
 }
 
-NSString *SRGDescriptionForSRGGender(SRGGender SRGGender)
+NSString *SRGDescriptionForGender(SRGGender SRGGender)
 {
     NSDictionary<NSNumber *, NSString *> *genderDescriptions = SRGGenderDescriptions();
     return genderDescriptions[@(SRGGender)];
