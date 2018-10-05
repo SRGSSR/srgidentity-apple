@@ -5,6 +5,9 @@
 //
 
 #import "SRGIdentityService.h"
+
+#import "NSBundle+SRGIdentity.h"
+#import "SRGIdentityError.h"
 #import "SRGIdentityService+Private.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
@@ -136,7 +139,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         NSDictionary *user = JSONDictionary[@"user"];
         SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
         if (! account) {
-            requestCompletionBlock(nil, [NSError errorWithDomain:@"parsing" code:1012 userInfo:nil]);
+            requestCompletionBlock(nil, [NSError errorWithDomain:SRGIdentityErrorDomain
+                                                            code:SRGIdentityErrorCodeInvalidData
+                                                        userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
             return;
         }
         
