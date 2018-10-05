@@ -69,7 +69,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return nil;
+    return [self initWithServiceURL:[NSURL new] accessGroup:nil];
 }
 
 #pragma mark Getters and setters
