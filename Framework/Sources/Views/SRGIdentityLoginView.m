@@ -14,7 +14,7 @@ static void commonInit(SRGIdentityLoginView *self);
 
 @interface SRGIdentityLoginView () <WKNavigationDelegate>
 
-@property (weak, nonatomic) WKWebView *webView;
+@property (nonatomic, weak) WKWebView *webView;
 
 @end
 

@@ -8,29 +8,17 @@
 
 #import <libextobjc/libextobjc.h>
 
-static NSDictionary<NSNumber *, NSString *> *SRGGenderDescriptions(void)
-{
-    static dispatch_once_t s_onceToken;
-    static NSDictionary<NSNumber *, NSString *> *s_SRGGenderDescriptions;
-    dispatch_once(&s_onceToken, ^{
-        s_SRGGenderDescriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified SRGGender"),
-                                  @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female SRGGender"),
-                                  @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male SRGGender"),
-                                  @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other SRGGender") };
-    });
-    return s_SRGGenderDescriptions;
-}
-
 NSString *SRGDescriptionForGender(SRGGender SRGGender)
 {
-    NSDictionary<NSNumber *, NSString *> *genderDescriptions = SRGGenderDescriptions();
-    return genderDescriptions[@(SRGGender)];
-}
-
-SRGGender SRGGenderForDescription(NSString *description)
-{
-    NSDictionary<NSNumber *, NSString *> *genderDescriptions = SRGGenderDescriptions();
-    return [genderDescriptions allKeysForObject:description].firstObject.integerValue;
+    static dispatch_once_t s_onceToken;
+    static NSDictionary<NSNumber *, NSString *> *s_descriptions;
+    dispatch_once(&s_onceToken, ^{
+        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified SRGGender"),
+                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female SRGGender"),
+                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male SRGGender"),
+                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other SRGGender") };
+    });
+    return s_descriptions[@(SRGGender)];
 }
 
 @interface SRGAccount ()
@@ -45,8 +33,7 @@ SRGGender SRGGenderForDescription(NSString *description)
 
 - (instancetype)initWithAccount:(SRGAccount *)account
 {
-    self = [super init];
-    if (self) {
+    if ([super init]) {
         [account.dictionaryValue enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             if (! [obj isKindOfClass:NSNull.class]) {
                 [self setValue:obj forKey:key];
