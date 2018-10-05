@@ -26,7 +26,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
  *
  *  @param serviceURL The URL of the identifier service.
  */
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceURL:(NSURL *)serviceURL NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Display the login window. If an email address is provided, it is used to fill out the form initially.

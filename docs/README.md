@@ -82,7 +82,7 @@ import SRGIdentity
 At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a service URL, for example:
 
 ```objective-c
-SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch" accessGroup:@"VMGRRW6SG7.ch.srgssr.identity"]];
+SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"]];
 ```
 
 NB: To use keychain `accessGroup`, add it also `keychain-access-groups` in the application entitlements.

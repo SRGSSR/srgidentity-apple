@@ -78,11 +78,11 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(NSString *)accessGroup
+- (instancetype)initWithServiceURL:(NSURL *)serviceURL
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
@@ -100,7 +100,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithServiceURL:[NSURL new] accessGroup:nil];
+    return [self initWithServiceURL:[NSURL new]];
 }
 
 #pragma clang diagnostic pop
