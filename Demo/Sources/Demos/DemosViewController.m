@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UISwitch *testModeSwitch;
 
-@property (nonatomic) NSURLSessionTask *sessionTask;
+@property (nonatomic) SRGNetworkRequest *accountRequest;
 
 @end
 
@@ -74,18 +74,18 @@
 
 - (void)refresh
 {
-    [self.sessionTask cancel];
+    [self.accountRequest cancel];
     
     if (SRGIdentityService.currentIdentityService.logged) {
         self.displayNameLabel.text = @"Refreshing…";
-        self.sessionTask = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+        self.accountRequest = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             [self reloadData];
             if ([error.domain isEqualToString:@"http"] && error.code == 401) {
                 self.displayNameLabel.text = @"Session expired.";
                 [SRGIdentityService.currentIdentityService logout];
             }
         }];
-        [self.sessionTask resume];
+        [self.accountRequest resume];
     }
     else {
         self.displayNameLabel.text = @"Not logged.";

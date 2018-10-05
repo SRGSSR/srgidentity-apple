@@ -7,6 +7,7 @@
 #import "SRGAccount.h"
 
 #import <Foundation/Foundation.h>
+#import <SRGNetwork/SRGNetwork.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +36,7 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSErro
 /**
  *  Get account properties.
  */
-- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
+- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
 
 /**
  *  Logout the current session, if any.

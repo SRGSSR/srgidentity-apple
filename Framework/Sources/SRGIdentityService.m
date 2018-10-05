@@ -31,7 +31,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
-@property (nonatomic) NSURLSessionTask *profileSessionTask;
+@property (nonatomic) SRGNetworkRequest *profileRequest;
 
 @end
 
@@ -106,7 +106,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark Services
 
-- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
+- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
 {
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -116,8 +116,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
     
-    // TODO: Proper error codes and domain. Factor out common requewst logic if possible / meaningful
-    return [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:[NSURLSession sharedSession] options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
@@ -129,32 +128,12 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
             });
         };
         
-        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-            return;
-        }
-        else if (error) {
+        if (error) {
             requestCompletionBlock(nil, error);
             return;
         }
         
-        if ([response isKindOfClass:NSHTTPURLResponse.class]) {
-            NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
-            NSInteger HTTPStatusCode = HTTPURLResponse.statusCode;
-            
-            // Properly handle HTTP error codes >= 400 as real errors
-            if (HTTPStatusCode >= 400) {
-                NSError *HTTPError = [NSError errorWithDomain:@"http" code:HTTPStatusCode userInfo:nil];
-                requestCompletionBlock(nil, HTTPError);
-                return;
-            }
-        }
-        
-        id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-        if (! [JSONObject isKindOfClass:NSDictionary.class]) {
-            requestCompletionBlock(nil, [NSError errorWithDomain:@"format" code:1012 userInfo:nil]);
-            return;
-        }
-        NSDictionary *user = JSONObject[@"user"];
+        NSDictionary *user = JSONDictionary[@"user"];
         SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
         if (! account) {
             requestCompletionBlock(nil, [NSError errorWithDomain:@"parsing" code:1012 userInfo:nil]);
@@ -199,7 +178,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                           userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
     
-    self.profileSessionTask = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
@@ -207,7 +186,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                               userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         });
     }];
-    [self.profileSessionTask resume];
+    [self.profileRequest resume];
 }
 
 @end

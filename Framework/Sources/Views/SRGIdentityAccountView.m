@@ -98,7 +98,7 @@ static void commonInit(SRGIdentityAccountView *self);
     WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:javaScript
                                                          injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
     [userContentController addUserScript:cookieScript];
-    WKWebViewConfiguration* webViewConfig = WKWebViewConfiguration.new;
+    WKWebViewConfiguration *webViewConfig = WKWebViewConfiguration.new;
     webViewConfig.userContentController = userContentController;
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:webViewConfig];
 
@@ -115,7 +115,7 @@ static void commonInit(SRGIdentityAccountView *self);
 
 static void commonInit(SRGIdentityAccountView *self)
 {
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = UIColor.blackColor;
         
     [self replaceWebviewWithService:nil];
 }
