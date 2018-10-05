@@ -22,17 +22,8 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSErro
 
 /**
  *  The identity service currently set as shared instance, if any.
- *
- *  @see `-setCurrentIdentityService:`.
  */
-+ (nullable SRGIdentityService *)currentIdentityService;
-
-/**
- *  Set an identity service as shared instance for convenient retrieval via `-currentIdentityService`.
- *
- *  @return The previously installed shared instance, if any.
- */
-+ (nullable SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService;
+@property (class, nonatomic, nullable) SRGIdentityService *currentIdentityService;
 
 /**
  *  Instantiate a identity service.

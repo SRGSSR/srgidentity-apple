@@ -44,11 +44,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return s_currentIdentityService;
 }
 
-+ (SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
++ (void)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
 {
-    SRGIdentityService *previousidentityService= s_currentIdentityService;
     s_currentIdentityService = currentIdentityService;
-    return previousidentityService;
 }
 
 #pragma mark Object lifecycle
@@ -140,7 +138,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
             return;
         }
         
-        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        if ([response isKindOfClass:NSHTTPURLResponse.class]) {
             NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
             NSInteger HTTPStatusCode = HTTPURLResponse.statusCode;
             
@@ -153,12 +151,12 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         }
         
         id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-        if (! [JSONObject isKindOfClass:[NSDictionary class]]) {
+        if (! [JSONObject isKindOfClass:NSDictionary.class]) {
             requestCompletionBlock(nil, [NSError errorWithDomain:@"format" code:1012 userInfo:nil]);
             return;
         }
         NSDictionary *user = JSONObject[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:[SRGAccount class] fromJSONDictionary:user error:&error];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
         if (! account) {
             requestCompletionBlock(nil, [NSError errorWithDomain:@"parsing" code:1012 userInfo:nil]);
             return;

@@ -94,8 +94,8 @@ static void commonInit(SRGIdentityAccountView *self);
     NSString *javaScript = javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;domain=%@;path=/;expires=%@';", SRGServiceIdentifierCookieName, cookieValue, cookieDomain, cookieExpires];
     
     // https://stackoverflow.com/questions/26573137/can-i-set-the-cookies-to-be-used-by-a-wkwebview
-    WKUserContentController* userContentController = WKUserContentController.new;
-    WKUserScript * cookieScript = [[WKUserScript alloc] initWithSource:javaScript
+    WKUserContentController *userContentController = WKUserContentController.new;
+    WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:javaScript
                                                          injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
     [userContentController addUserScript:cookieScript];
     WKWebViewConfiguration* webViewConfig = WKWebViewConfiguration.new;

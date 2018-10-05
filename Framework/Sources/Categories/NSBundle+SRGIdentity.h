@@ -11,14 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Convenience macro for localized strings associated with the framework.
  */
-#define SRGIdentityLocalizedString(key, comment) [[NSBundle srg_identityBundle] localizedStringForKey:(key) value:@"" table:nil]
+#define SRGIdentityLocalizedString(key, comment) [NSBundle.srg_identityBundle localizedStringForKey:(key) value:@"" table:nil]
 
 @interface NSBundle (SRGIdentity)
 
 /**
  *  The framework resource bundle.
  */
-+ (NSBundle *)srg_identityBundle;
+@property (class, nonatomic, readonly) NSBundle *srg_identityBundle;
 
 @end
 

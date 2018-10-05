@@ -76,13 +76,13 @@
 {
     [self.sessionTask cancel];
     
-    if ([SRGIdentityService currentIdentityService].isLogged) {
+    if (SRGIdentityService.currentIdentityService.isLogged) {
         self.displayNameLabel.text = @"Refreshing…";
-        self.sessionTask = [[SRGIdentityService currentIdentityService] accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+        self.sessionTask = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             [self reloadData];
             if ([error.domain isEqualToString:@"http"] && error.code == 401) {
                 self.displayNameLabel.text = @"Session expired.";
-                [[SRGIdentityService currentIdentityService] logout];
+                [SRGIdentityService.currentIdentityService logout];
             }
         }];
         [self.sessionTask resume];
@@ -93,9 +93,9 @@
 }
 
 - (void)reloadData {
-    BOOL isLogged = [SRGIdentityService currentIdentityService].isLogged;
+    BOOL isLogged = SRGIdentityService.currentIdentityService.isLogged;
     
-    self.displayNameLabel.text = isLogged ? [SRGIdentityService currentIdentityService].displayName : @"Not logged.";
+    self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : @"Not logged.";
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
     self.accountButton.enabled = self.testModeSwitch.on || isLogged;;
     self.logoutButton.enabled = self.testModeSwitch.on || isLogged;;
@@ -116,7 +116,7 @@
 }
 
 - (IBAction)logout:(id)sender {
-    [[SRGIdentityService currentIdentityService] logout];
+    [SRGIdentityService.currentIdentityService logout];
 }
 
 - (IBAction)testModeToggle:(id)sender {

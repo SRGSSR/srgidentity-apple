@@ -21,7 +21,7 @@
 
 - (instancetype)initWithTitle:(NSString *)title
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass([self class]) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     LoginViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.title = title;
     
@@ -47,8 +47,9 @@
 
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
-    self.identityLoginView.service = [SRGIdentityService currentIdentityService];
+- (void)viewDidLoad
+{
+    self.identityLoginView.service = SRGIdentityService.currentIdentityService;
     self.identityLoginView.completionBlock = ^(NSError * _Nullable error) {
         [self dismiss:self.identityLoginView];
     };
