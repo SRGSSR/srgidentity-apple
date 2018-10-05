@@ -9,13 +9,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, SRGGender) {
-    SRGGenderEnumBegin = 0,
-    SRGGenderNone = SRGGenderEnumBegin,
+    SRGGenderNone = 0,
     SRGGenderFemale,
     SRGGenderMale,
-    SRGGenderOther,
-    SRGGenderEnumEnd,
-    SRGGenderEnumSize = SRGGenderEnumEnd - SRGGenderEnumBegin
+    SRGGenderOther
 };
 
 OBJC_EXPORT NSString *SRGDescriptionForSRGGender(SRGGender SRGGender);
