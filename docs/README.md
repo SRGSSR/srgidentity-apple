@@ -1,4 +1,4 @@
-<p align="center"><img src="README-images/logo.png"/></p>
+![SRG Media Player logo](README-images/logo.png)
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
@@ -8,17 +8,19 @@ The SRG Identity framework contains the Peach authentification logic.
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 9).
+The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
+
+## Contributing
+
+If you want to contribute to the project, have a look at our [contributing guide](CONTRIBUTING.md).
 
 ## Installation
 
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/srgidentity-ios"
+github "SRGSSR/srgidentity-iOS"
 ```
-
-Until Carthage 0.30, only dynamic frameworks could be integrated. Starting with Carthage 0.30, though, frameworks can be integrated statically as well, which avoids slow application startups usually associated with the use of too many dynamic frameworks.
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
@@ -30,8 +32,7 @@ The library requires the following frameworks to be added to any target requirin
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `Mantle`: The framework used to parse the data.
 * `SRGIdentity`: The identity library framework.
-* `UICKeyChainStore`: The framework used to store credentials in keychains.
-* `WebKit`: Apple web framework to display authentification.
+* `UICKeyChainStore`: The framework used to manage the keychain.
 
 ### Dynamic framework integration
 

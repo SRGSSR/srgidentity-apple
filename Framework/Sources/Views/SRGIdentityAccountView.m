@@ -46,7 +46,8 @@ static void commonInit(SRGIdentityAccountView *self);
 
 #pragma mark Getters and setters
 
-- (void)setService:(SRGIdentityService *)service {
+- (void)setService:(SRGIdentityService *)service
+{
     if (! [_service isEqual:service]) {
         [self.webView stopLoading];
         
@@ -79,26 +80,26 @@ static void commonInit(SRGIdentityAccountView *self);
         }
     }
     
-    static NSDateFormatter *dateFormatter = nil;
-    if (!dateFormatter) {
+    static NSDateFormatter *s_dateFormatter = nil;
+    if (!s_dateFormatter) {
         NSLocale *en_US_POSIX = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setLocale:en_US_POSIX];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-        [dateFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zzz"];
+        s_dateFormatter = [[NSDateFormatter alloc] init];
+        [s_dateFormatter setLocale:en_US_POSIX];
+        [s_dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        [s_dateFormatter setDateFormat:@"EEE, d MMM yyyy HH:mm:ss zzz"];
     }
     
-    NSDate *cookieExpiresDate = (service.sessionToken) ? [NSDate dateWithTimeIntervalSinceNow:3600] : [NSDate dateWithTimeIntervalSince1970:0];
-    NSString *cookieExpires = [dateFormatter stringFromDate:cookieExpiresDate];
+    NSDate *cookieExpirationDate = (service.sessionToken) ? [NSDate dateWithTimeIntervalSinceNow:3600] : [NSDate dateWithTimeIntervalSince1970:0];
+    NSString *cookieExpirationDateString = [s_dateFormatter stringFromDate:cookieExpirationDate];
     
-    NSString *javaScript = javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;domain=%@;path=/;expires=%@';", SRGServiceIdentifierCookieName, cookieValue, cookieDomain, cookieExpires];
+    NSString *javaScript = javaScript = [NSString stringWithFormat:@"document.cookie = '%@=%@;domain=%@;path=/;expires=%@';", SRGServiceIdentifierCookieName, cookieValue, cookieDomain, cookieExpirationDateString];
     
     // https://stackoverflow.com/questions/26573137/can-i-set-the-cookies-to-be-used-by-a-wkwebview
-    WKUserContentController* userContentController = WKUserContentController.new;
-    WKUserScript * cookieScript = [[WKUserScript alloc] initWithSource:javaScript
+    WKUserContentController *userContentController = WKUserContentController.new;
+    WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:javaScript
                                                          injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:NO];
     [userContentController addUserScript:cookieScript];
-    WKWebViewConfiguration* webViewConfig = WKWebViewConfiguration.new;
+    WKWebViewConfiguration *webViewConfig = WKWebViewConfiguration.new;
     webViewConfig.userContentController = userContentController;
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:webViewConfig];
 
@@ -111,11 +112,12 @@ static void commonInit(SRGIdentityAccountView *self);
     [self insertSubview:webView atIndex:0];
     self.webView = webView;
 }
+
 @end
 
 static void commonInit(SRGIdentityAccountView *self)
 {
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = UIColor.blackColor;
         
     [self replaceWebviewWithService:nil];
 }

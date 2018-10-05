@@ -7,6 +7,7 @@
 #import "SRGAccount.h"
 
 #import <Foundation/Foundation.h>
+#import <SRGNetwork/SRGNetwork.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,35 +17,26 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserMetadatasUpdateNotification;
 
 OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
 
-typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSError * _Nullable error);
+typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
 
 @interface SRGIdentityService : NSObject
 
 /**
  *  The identity service currently set as shared instance, if any.
- *
- *  @see `-setCurrentIdentityService:`.
  */
-+ (nullable SRGIdentityService *)currentIdentityService;
-
-/**
- *  Set an identity service as shared instance for convenient retrieval via `-currentIdentityService`.
- *
- *  @return The previously installed shared instance, if any.
- */
-+ (nullable SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService;
+@property (class, nonatomic, nullable) SRGIdentityService *currentIdentityService;
 
 /**
  *  Instantiate a identity service.
  *
- *  @param serviceURL             The URL of the identifier service.
+ *  @param serviceURL The URL of the identifier service.
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Get account properties.
  */
-- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
+- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
 
 /**
  *  Logout the current session, if any.
@@ -60,7 +52,7 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSErro
 /**
  *  The login status.
  */
-@property (readonly) BOOL isLogged;
+@property (nonatomic, readonly, getter=isLogged) BOOL logged;
 
 /**
  *  The logged in token, if any.

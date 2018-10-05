@@ -5,6 +5,9 @@
 //
 
 #import "SRGIdentityService.h"
+
+#import "NSBundle+SRGIdentity.h"
+#import "SRGIdentityError.h"
 #import "SRGIdentityService+Private.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
@@ -31,7 +34,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
-@property (nonatomic) NSURLSessionTask *profileSessionTask;
+@property (nonatomic) SRGNetworkRequest *profileRequest;
 
 @end
 
@@ -44,11 +47,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return s_currentIdentityService;
 }
 
-+ (SRGIdentityService *)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
++ (void)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
 {
-    SRGIdentityService *previousidentityService= s_currentIdentityService;
     s_currentIdentityService = currentIdentityService;
-    return previousidentityService;
 }
 
 #pragma mark Object lifecycle
@@ -57,7 +58,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
-        
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
     }
     return self;
@@ -69,7 +69,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return nil;
+    return [self initWithServiceURL:[NSURL new] accessGroup:nil];
 }
 
 #pragma mark Getters and setters
@@ -101,15 +101,15 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 - (NSString *)serviceIdentifier
 {
-    NSArray *hostSplited = [self.serviceURL.host componentsSeparatedByString:@"."];
-    NSArray *reverseHostSplited = [[hostSplited reverseObjectEnumerator] allObjects];
-    NSString *domain = [reverseHostSplited componentsJoinedByString:@"."];
-    return  [domain stringByAppendingString:@".identity"];
+    NSArray *hostComponents = [self.serviceURL.host componentsSeparatedByString:@"."];
+    NSArray *reverseHostComponents = [[hostComponents reverseObjectEnumerator] allObjects];
+    NSString *domain = [reverseHostComponents componentsJoinedByString:@"."];
+    return [domain stringByAppendingString:@".identity"];
 }
 
 #pragma mark Services
 
-- (NSURLSessionTask *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
+- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
 {
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -119,48 +119,31 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
     
-    // TODO: Proper error codes and domain. Factor out common requewst logic if possible / meaningful
-    return [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSHTTPURLResponse *HTTPResponse = [response isKindOfClass:NSHTTPURLResponse.class] ? (NSHTTPURLResponse *)response : nil;
+        
+        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
                                                                         object:self
                                                                       userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
                 }
-                completionBlock(account, error);
+                completionBlock(account, HTTPResponse, error);
             });
         };
         
-        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-            return;
-        }
-        else if (error) {
-            requestCompletionBlock(nil, error);
+        if (error) {
+            requestCompletionBlock(nil, HTTPResponse, error);
             return;
         }
         
-        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-            NSHTTPURLResponse *HTTPURLResponse = (NSHTTPURLResponse *)response;
-            NSInteger HTTPStatusCode = HTTPURLResponse.statusCode;
-            
-            // Properly handle HTTP error codes >= 400 as real errors
-            if (HTTPStatusCode >= 400) {
-                NSError *HTTPError = [NSError errorWithDomain:@"http" code:HTTPStatusCode userInfo:nil];
-                requestCompletionBlock(nil, HTTPError);
-                return;
-            }
-        }
-        
-        id JSONObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-        if (! [JSONObject isKindOfClass:[NSDictionary class]]) {
-            requestCompletionBlock(nil, [NSError errorWithDomain:@"format" code:1012 userInfo:nil]);
-            return;
-        }
-        NSDictionary *user = JSONObject[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:[SRGAccount class] fromJSONDictionary:user error:&error];
+        NSDictionary *user = JSONDictionary[@"user"];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
         if (! account) {
-            requestCompletionBlock(nil, [NSError errorWithDomain:@"parsing" code:1012 userInfo:nil]);
+            requestCompletionBlock(nil, HTTPResponse, [NSError errorWithDomain:SRGIdentityErrorDomain
+                                                                          code:SRGIdentityErrorCodeInvalidData
+                                                                      userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
             return;
         }
         
@@ -172,7 +155,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         NSString *uid = account.uid ? account.uid.stringValue : nil;
         [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
         
-        requestCompletionBlock(account, nil);
+        requestCompletionBlock(account, HTTPResponse, nil);
     }];
 }
 
@@ -202,7 +185,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                           userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
     
-    self.profileSessionTask = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
@@ -210,7 +193,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                               userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         });
     }];
-    [self.profileSessionTask resume];
+    [self.profileRequest resume];
 }
 
 @end

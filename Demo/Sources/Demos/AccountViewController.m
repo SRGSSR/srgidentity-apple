@@ -21,7 +21,7 @@
 
 - (instancetype)initWithTitle:(NSString *)title
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass([self class]) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     AccountViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.title = title;
     
@@ -47,10 +47,11 @@
 
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
-    self.identityAccountView.service = [SRGIdentityService currentIdentityService];
+- (void)viewDidLoad
+{
+    self.identityAccountView.service = SRGIdentityService.currentIdentityService;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(dismiss:)];

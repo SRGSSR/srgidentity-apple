@@ -9,17 +9,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, SRGGender) {
-    SRGGenderEnumBegin = 0,
-    SRGGenderNone = SRGGenderEnumBegin,
+    SRGGenderNone = 0,
     SRGGenderFemale,
     SRGGenderMale,
-    SRGGenderOther,
-    SRGGenderEnumEnd,
-    SRGGenderEnumSize = SRGGenderEnumEnd - SRGGenderEnumBegin
+    SRGGenderOther
 };
 
-OBJC_EXPORT NSString *SRGDescriptionForSRGGender(SRGGender SRGGender);
-OBJC_EXPORT SRGGender SRGGenderForDescription(NSString *description);
+OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
 
 @interface SRGAccount : MTLModel <MTLJSONSerializing>
 

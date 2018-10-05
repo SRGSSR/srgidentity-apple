@@ -14,7 +14,7 @@ static void commonInit(SRGIdentityLoginView *self);
 
 @interface SRGIdentityLoginView () <WKNavigationDelegate>
 
-@property (weak, nonatomic) WKWebView *webView;
+@property (nonatomic, weak) WKWebView *webView;
 
 @end
 
@@ -77,7 +77,7 @@ static void commonInit(SRGIdentityLoginView *self);
 
 static void commonInit(SRGIdentityLoginView *self)
 {
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = UIColor.blackColor;
         
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

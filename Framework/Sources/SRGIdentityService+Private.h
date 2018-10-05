@@ -8,7 +8,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 OBJC_EXPORT NSString * const SRGServiceIdentifierCookieName;
 
 /**

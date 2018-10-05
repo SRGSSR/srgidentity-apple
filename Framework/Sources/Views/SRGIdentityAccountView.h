@@ -10,8 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^CompletionBlock)(NSError * _Nullable error);
-
 @interface SRGIdentityAccountView : UIView
 
 /**
