@@ -28,7 +28,7 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSErro
 /**
  *  Instantiate a identity service.
  *
- *  @param serviceURL             The URL of the identifier service.
+ *  @param serviceURL The URL of the identifier service.
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
@@ -51,7 +51,7 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSErro
 /**
  *  The login status.
  */
-@property (readonly) BOOL isLogged;
+@property (nonatomic, readonly, getter=isLogged) BOOL logged;
 
 /**
  *  The logged in token, if any.

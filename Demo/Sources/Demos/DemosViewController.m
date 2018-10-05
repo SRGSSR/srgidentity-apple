@@ -76,7 +76,7 @@
 {
     [self.sessionTask cancel];
     
-    if (SRGIdentityService.currentIdentityService.isLogged) {
+    if (SRGIdentityService.currentIdentityService.logged) {
         self.displayNameLabel.text = @"Refreshing…";
         self.sessionTask = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
             [self reloadData];
@@ -93,7 +93,7 @@
 }
 
 - (void)reloadData {
-    BOOL isLogged = SRGIdentityService.currentIdentityService.isLogged;
+    BOOL isLogged = SRGIdentityService.currentIdentityService.logged;
     
     self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : @"Not logged.";
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;

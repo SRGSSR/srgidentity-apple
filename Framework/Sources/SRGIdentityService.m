@@ -55,7 +55,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
-        
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
     }
     return self;
@@ -99,10 +98,10 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 - (NSString *)serviceIdentifier
 {
-    NSArray *hostSplited = [self.serviceURL.host componentsSeparatedByString:@"."];
-    NSArray *reverseHostSplited = [[hostSplited reverseObjectEnumerator] allObjects];
-    NSString *domain = [reverseHostSplited componentsJoinedByString:@"."];
-    return  [domain stringByAppendingString:@".identity"];
+    NSArray *hostComponents = [self.serviceURL.host componentsSeparatedByString:@"."];
+    NSArray *reverseHostComponents = [[hostComponents reverseObjectEnumerator] allObjects];
+    NSString *domain = [reverseHostComponents componentsJoinedByString:@"."];
+    return [domain stringByAppendingString:@".identity"];
 }
 
 #pragma mark Services
