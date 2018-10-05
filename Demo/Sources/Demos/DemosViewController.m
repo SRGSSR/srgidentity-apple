@@ -67,7 +67,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"SRGIdentity %@ (demo %@)", SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
+    return [NSString stringWithFormat:NSLocalizedString(@"SRGIdentity %@ (demo %@)", nil), SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
 }
 
 #pragma mark Datas
@@ -77,25 +77,27 @@
     [self.accountRequest cancel];
     
     if (SRGIdentityService.currentIdentityService.logged) {
-        self.displayNameLabel.text = @"Refreshing…";
+        self.displayNameLabel.text = NSLocalizedString(@"Refreshing…", nil);
         self.accountRequest = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             [self reloadData];
-            if ([error.domain isEqualToString:@"http"] && error.code == 401) {
-                self.displayNameLabel.text = @"Session expired.";
+            
+            if (HTTPResponse.statusCode == 401) {
+                self.displayNameLabel.text = NSLocalizedString(@"Session expired.", nil);
                 [SRGIdentityService.currentIdentityService logout];
             }
         }];
         [self.accountRequest resume];
     }
     else {
-        self.displayNameLabel.text = @"Not logged.";
+        self.displayNameLabel.text = NSLocalizedString(@"Not logged.", nil);
     }
 }
 
-- (void)reloadData {
+- (void)reloadData
+{
     BOOL isLogged = SRGIdentityService.currentIdentityService.logged;
     
-    self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : @"Not logged.";
+    self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : NSLocalizedString(@"Not logged.", nil);
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
     self.accountButton.enabled = self.testModeSwitch.on || isLogged;;
     self.logoutButton.enabled = self.testModeSwitch.on || isLogged;;
@@ -103,23 +105,27 @@
 
 #pragma mark Actions
 
-- (IBAction)login:(id)sender {
-    LoginViewController *viewController = [[LoginViewController alloc] initWithTitle:@"Login"];
+- (IBAction)login:(id)sender
+{
+    LoginViewController *viewController = [[LoginViewController alloc] initWithTitle:NSLocalizedString(@"Login", nil)];
     UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navigationViewController animated:YES completion:nil];
 }
 
-- (IBAction)account:(id)sender {
-    AccountViewController *viewController = [[AccountViewController alloc] initWithTitle:@"Account"];
+- (IBAction)account:(id)sender
+{
+    AccountViewController *viewController = [[AccountViewController alloc] initWithTitle:NSLocalizedString(@"Account", nil)];
     UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navigationViewController animated:YES completion:nil];
 }
 
-- (IBAction)logout:(id)sender {
+- (IBAction)logout:(id)sender
+{
     [SRGIdentityService.currentIdentityService logout];
 }
 
-- (IBAction)testModeToggle:(id)sender {
+- (IBAction)testModeToggle:(id)sender
+{
     [self reloadData];
 }
 
