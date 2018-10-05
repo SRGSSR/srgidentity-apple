@@ -119,29 +119,31 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
     
-    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:[NSURLSession sharedSession] options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSHTTPURLResponse *HTTPResponse = [response isKindOfClass:NSHTTPURLResponse.class] ? (NSHTTPURLResponse *)response : nil;
+        
+        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
                                                                         object:self
                                                                       userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
                 }
-                completionBlock(account, error);
+                completionBlock(account, HTTPResponse, error);
             });
         };
         
         if (error) {
-            requestCompletionBlock(nil, error);
+            requestCompletionBlock(nil, HTTPResponse, error);
             return;
         }
         
         NSDictionary *user = JSONDictionary[@"user"];
         SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
         if (! account) {
-            requestCompletionBlock(nil, [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                            code:SRGIdentityErrorCodeInvalidData
-                                                        userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
+            requestCompletionBlock(nil, HTTPResponse, [NSError errorWithDomain:SRGIdentityErrorDomain
+                                                                          code:SRGIdentityErrorCodeInvalidData
+                                                                      userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
             return;
         }
         
@@ -153,7 +155,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         NSString *uid = account.uid ? account.uid.stringValue : nil;
         [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
         
-        requestCompletionBlock(account, nil);
+        requestCompletionBlock(account, HTTPResponse, nil);
     }];
 }
 
@@ -183,7 +185,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                           userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
     
-    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification

@@ -67,7 +67,7 @@
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:@"SRGIdentity %@ (demo %ld)", SRGIdentityMarketingVersion(), [[NSBundle mainBundle].infoDictionary[@"DemoNumber"] integerValue]];
+    return [NSString stringWithFormat:@"SRGIdentity %@ (demo %@)", SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
 }
 
 #pragma mark Datas
@@ -78,7 +78,7 @@
     
     if (SRGIdentityService.currentIdentityService.logged) {
         self.displayNameLabel.text = @"Refreshing…";
-        self.accountRequest = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSError * _Nullable error) {
+        self.accountRequest = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             [self reloadData];
             if ([error.domain isEqualToString:@"http"] && error.code == 401) {
                 self.displayNameLabel.text = @"Session expired.";

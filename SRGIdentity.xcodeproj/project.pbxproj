@@ -339,6 +339,7 @@
 			children = (
 				0829FA792136853C00FE0A28 /* Categories */,
 				0829FA742136853C00FE0A28 /* Model */,
+				0829FA822136869400FE0A28 /* Views */,
 				0829FA772136853C00FE0A28 /* SRGIdentity.h */,
 				0829FA782136853C00FE0A28 /* SRGIdentity.m */,
 				6F9FFAB12167993600F781A0 /* SRGIdentityError.h */,
@@ -346,7 +347,6 @@
 				080D0BD6213566C900AA519A /* SRGIdentityService.h */,
 				080D0BD5213566C900AA519A /* SRGIdentityService.m */,
 				086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */,
-				0829FA822136869400FE0A28 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

@@ -17,7 +17,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserMetadatasUpdateNotification;
 
 OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
 
-typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSError * _Nullable error);
+typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
 
 @interface SRGIdentityService : NSObject
 
