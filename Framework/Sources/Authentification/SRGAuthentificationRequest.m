@@ -7,6 +7,8 @@
 
 #import "SRGAuthentificationRequest.h"
 
+#import "SRGIdentityLogger.h"
+
 #import <libextobjc/libextobjc.h>
 
 @interface SRGAuthentificationRequest ()
@@ -44,14 +46,22 @@
 
 - (NSString *)redirectScheme
 {
-    NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
-    if (bundleURLTypes.count > 0) {
-        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
-        return bundleURLSchemes.firstObject;
-    }
-    else {
-        return nil;
-    }
+    static NSString *s_redirectScheme;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+        if (bundleURLTypes.count > 0) {
+            NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
+            s_redirectScheme = bundleURLSchemes.firstObject;
+        }
+        
+        if (! s_redirectScheme) {
+            SRGIdentityLogError(@"authentification", @"No URL scheme declared in your application Info.plist file under the "
+                                "'CFBundleURLTypes' key. The application must at least contains one item with one scheme "
+                                "to allow a correct authentification workflow. Take care to have an unique URL scheme.");
+        }
+    });
+    return s_redirectScheme;
 }
 
 - (NSURL *)redirectURL
