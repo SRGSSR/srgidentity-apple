@@ -29,6 +29,11 @@
 		0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */; };
 		0829FA87213686DE00FE0A28 /* SRGIdentityLoginView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0829FA85213686DE00FE0A28 /* SRGIdentityLoginView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0829FA88213686DE00FE0A28 /* SRGIdentityLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA86213686DE00FE0A28 /* SRGIdentityLoginView.m */; };
+		086BB6CD2168D6610079483E /* SRGAuthentificationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB6CB2168D6610079483E /* SRGAuthentificationController.h */; };
+		086BB6CE2168D6610079483E /* SRGAuthentificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BB6CC2168D6610079483E /* SRGAuthentificationController.m */; };
+		086BB7072168F4510079483E /* SRGAuthentificationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB7052168F4510079483E /* SRGAuthentificationDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		086BB71121690EB00079483E /* SRGAuthentificationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB70F21690EB00079483E /* SRGAuthentificationRequest.h */; };
+		086BB71221690EB00079483E /* SRGAuthentificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BB71021690EB00079483E /* SRGAuthentificationRequest.m */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		086FB2CC21368B5400DE4CF2 /* SRGIdentityLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0829FA83213686BA00FE0A28 /* SRGIdentityLoginView.xib */; };
 		086FB2D221368E4200DE4CF2 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */; };
@@ -173,6 +178,11 @@
 		0829FA83213686BA00FE0A28 /* SRGIdentityLoginView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SRGIdentityLoginView.xib; sourceTree = "<group>"; };
 		0829FA85213686DE00FE0A28 /* SRGIdentityLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLoginView.h; sourceTree = "<group>"; };
 		0829FA86213686DE00FE0A28 /* SRGIdentityLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityLoginView.m; sourceTree = "<group>"; };
+		086BB6CB2168D6610079483E /* SRGAuthentificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAuthentificationController.h; sourceTree = "<group>"; };
+		086BB6CC2168D6610079483E /* SRGAuthentificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAuthentificationController.m; sourceTree = "<group>"; };
+		086BB7052168F4510079483E /* SRGAuthentificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAuthentificationDelegate.h; sourceTree = "<group>"; };
+		086BB70F21690EB00079483E /* SRGAuthentificationRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGAuthentificationRequest.h; sourceTree = "<group>"; };
+		086BB71021690EB00079483E /* SRGAuthentificationRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGAuthentificationRequest.m; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginViewController.storyboard; sourceTree = "<group>"; };
 		086FB2D021368E4200DE4CF2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -301,6 +311,18 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		086BB6CA2168D6610079483E /* Authentification */ = {
+			isa = PBXGroup;
+			children = (
+				086BB7052168F4510079483E /* SRGAuthentificationDelegate.h */,
+				086BB6CB2168D6610079483E /* SRGAuthentificationController.h */,
+				086BB6CC2168D6610079483E /* SRGAuthentificationController.m */,
+				086BB70F21690EB00079483E /* SRGAuthentificationRequest.h */,
+				086BB71021690EB00079483E /* SRGAuthentificationRequest.m */,
+			);
+			path = Authentification;
+			sourceTree = "<group>";
+		};
 		6F0EB52720FC7F58009C02CF = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +359,7 @@
 		6F0EB53D20FC7FA9009C02CF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				086BB6CA2168D6610079483E /* Authentification */,
 				0829FA792136853C00FE0A28 /* Categories */,
 				0829FA742136853C00FE0A28 /* Model */,
 				0829FA822136869400FE0A28 /* Views */,
@@ -453,7 +476,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F9FFAB32167993600F781A0 /* SRGIdentityError.h in Headers */,
+				086BB71121690EB00079483E /* SRGAuthentificationRequest.h in Headers */,
+				086BB7072168F4510079483E /* SRGAuthentificationDelegate.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
+				086BB6CD2168D6610079483E /* SRGAuthentificationController.h in Headers */,
 				086FB2DD2136D8D600DE4CF2 /* SRGIdentityAccountView.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
 				086FB2D62136A6B400DE4CF2 /* SRGIdentityService+Private.h in Headers */,
@@ -698,8 +724,10 @@
 			files = (
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
+				086BB71221690EB00079483E /* SRGAuthentificationRequest.m in Sources */,
 				6F9FFAB42167993600F781A0 /* SRGIdentityError.m in Sources */,
 				086FB2DB2136D8D600DE4CF2 /* SRGIdentityAccountView.m in Sources */,
+				086BB6CE2168D6610079483E /* SRGAuthentificationController.m in Sources */,
 				0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */,
 				0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */,
 				0829FA88213686DE00FE0A28 /* SRGIdentityLoginView.m in Sources */,

@@ -7,6 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AccountViewController.h"
+#import "AppDelegate.h"
 #import "LoginViewController.h"
 
 #import <AVKit/AVKit.h>
@@ -107,9 +108,7 @@
 
 - (IBAction)login:(id)sender
 {
-    LoginViewController *viewController = [[LoginViewController alloc] initWithTitle:NSLocalizedString(@"Login", nil)];
-    UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    [self presentViewController:navigationViewController animated:YES completion:nil];
+    [SRGIdentityService.currentIdentityService presentAuthentificationViewControllerFromViewController:self completionBlock:nil];
 }
 
 - (IBAction)account:(id)sender

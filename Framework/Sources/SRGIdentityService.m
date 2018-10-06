@@ -9,7 +9,9 @@
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityError.h"
 #import "SRGIdentityService+Private.h"
+#import "SRGAuthentificationController.h"
 
+#import <libextobjc/libextobjc.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
 static SRGIdentityService *s_currentIdentityService;
@@ -35,6 +37,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGNetworkRequest *profileRequest;
+
+@property (nonatomic) SRGAuthentificationController *authentificationController;
+@property (nonatomic) SRGAuthentificationCompletionBlock authentificationCompletionBlock;
 
 @end
 
@@ -159,6 +164,15 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     }];
 }
 
+- (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                                completionBlock:(SRGAuthentificationCompletionBlock)completionBlock
+{
+    self.authentificationCompletionBlock = completionBlock;
+    SRGAuthentificationRequest *request = [[SRGAuthentificationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
+    self.authentificationController = [[SRGAuthentificationController alloc] initWithPresentingViewController:presentingViewController];
+    return [self.authentificationController presentControllerWithRequest:request delegate:self];
+}
+
 - (void)logout
 {
     NSString *emailAddress = self.emailAddress;
@@ -194,6 +208,63 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         });
     }];
     [self.profileRequest resume];
+}
+
+#pragma SRGAuthentificationDelegate delegate
+
+- (void)cancelAuthentification
+{
+    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
+        NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
+                                             code:SRGAuthentificationCanceled
+                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Authentification canceled.", @"Error message returned when the user or the app canceled the authentification process.") }];
+        [self didFinishWithError:error];
+    }];
+}
+
+- (BOOL)resumeAuthentificationWithURL:(NSURL *)URL
+{
+    // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
+    if (![self.authentificationController.request shouldHandleReponseURL:URL]) {
+        return NO;
+    }
+    
+    NSError *error = nil;
+    
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    if (queryItem) {
+        [self loggedWithSessionToken:queryItem.value];
+    }
+    else {
+        error = [NSError errorWithDomain:SRGIdentityErrorDomain
+                                    code:SRGIdentityErrorCodeInvalidData
+                                userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentification data is invalid.", @"Error message returned when an authentification server response data is incorrect.") }];
+    }
+    
+    [self.authentificationCompletionBlock dismissExternalUserAgentAnimated:YES completion:^{
+        [self didFinishWithError:error];
+    }];
+    
+    return YES;
+}
+
+- (void)failAuthentificationWithError:(NSError *)error
+{
+    [self didFinishWithError:error];
+}
+
+- (void)didFinishWithError:(nullable NSError *)error
+{
+    SRGAuthentificationCompletionBlock authentificationCompletionBlock = self.authentificationCompletionBlock;
+    
+    self.authentificationCompletionBlock = nil;
+    self.authentificationController = nil;
+    
+    if (authentificationCompletionBlock) {
+        authentificationCompletionBlock(error);
+    }
 }
 
 @end

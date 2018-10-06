@@ -5,9 +5,10 @@
 //
 
 #import "SRGAccount.h"
+#import "SRGAuthentificationDelegate.h"
 
-#import <Foundation/Foundation.h>
 #import <SRGNetwork/SRGNetwork.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,8 +19,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserMetadatasUpdateNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
 
 typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
+typedef void (^SRGAuthentificationCompletionBlock)(NSError * _Nullable error);
 
-@interface SRGIdentityService : NSObject
+@interface SRGIdentityService : NSObject <SRGAuthentificationDelegate>
 
 /**
  *  The identity service currently set as shared instance, if any.
@@ -37,6 +39,10 @@ typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTP
  *  Get account properties.
  */
 - (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
+
+
+- (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                                completionBlock:(nullable SRGAuthentificationCompletionBlock)completionBlock;
 
 /**
  *  Logout the current session, if any.
