@@ -44,8 +44,14 @@
 
 - (NSString *)redirectScheme
 {
-    //TODO: Get URL scheme from application plist
-    return @"srgidentity";
+    NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+    if (bundleURLTypes.count > 0) {
+        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
+        return bundleURLSchemes.firstObject;
+    }
+    else {
+        return nil;
+    }
 }
 
 - (NSURL *)redirectURL
