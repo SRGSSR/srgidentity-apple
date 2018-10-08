@@ -41,7 +41,7 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
                        @keypath(SRGAccount.new, password) : @"password",
                        @keypath(SRGAccount.new, firstName) : @"firstname",
                        @keypath(SRGAccount.new, lastName) : @"lastname",
-                       @keypath(SRGAccount.new, SRGGender) : @"SRGGender",
+                       @keypath(SRGAccount.new, gender) : @"gender",
                        @keypath(SRGAccount.new, birthdate) : @"date_of_birth",
                        @keypath(SRGAccount.new, languageCode) : @"language",
                        @keypath(SRGAccount.new, uid) : @"id",
@@ -52,7 +52,7 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 #pragma mark Transformers
 
-+ (NSValueTransformer *)SRGGenderJSONTransformer
++ (NSValueTransformer *)genderJSONTransformer
 {
     static NSValueTransformer *s_transformer;
     static dispatch_once_t s_onceToken;

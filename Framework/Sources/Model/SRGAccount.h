@@ -25,7 +25,7 @@ OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
 @property (nonatomic, copy, nullable) NSString *firstName;
 @property (nonatomic, copy, nullable) NSString *lastName;
 
-@property (nonatomic) SRGGender SRGGender;
+@property (nonatomic) SRGGender gender;
 
 @property (nonatomic, nullable) NSDate *birthdate;
 @property (nonatomic, copy, nullable) NSString *languageCode;
