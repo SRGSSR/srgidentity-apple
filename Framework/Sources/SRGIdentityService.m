@@ -170,8 +170,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     [self.authenticationController dismissExternalUserAgentAnimated:YES completion:^{
         NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                             code:SRGAuthenticationCanceled
-                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
+                                             code:SRGAuthenticationCancelled
+                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
         [self didFinishWithError:error];
     }];
 }

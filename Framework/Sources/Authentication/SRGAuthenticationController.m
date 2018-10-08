@@ -71,8 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                  }
                                                                                                  else {
                                                                                                      NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                                                                                                code:SRGAuthenticationCanceled
-                                                                                                                                            userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
+                                                                                                                                                code:SRGAuthenticationCancelled
+                                                                                                                                            userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
                                                                                                      [self.delegate failAuthenticationWithError:safariError];
                                                                                                  }
                                                                                              }];
@@ -94,8 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                         }
                                                                                         else {
                                                                                             NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                                                                                       code:SRGAuthenticationCanceled
-                                                                                                                                   userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
+                                                                                                                                       code:SRGAuthenticationCancelled
+                                                                                                                                   userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
                                                                                             [self.delegate failAuthenticationWithError:safariError];
                                                                                         }
                                                                                     }];
@@ -186,8 +186,8 @@ NS_ASSUME_NONNULL_BEGIN
     id<SRGAuthenticationDelegate> delegate = self.delegate;
     [self cleanUp];
     NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                         code:SRGAuthenticationCanceled
-                                     userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
+                                         code:SRGAuthenticationCancelled
+                                     userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
     [delegate failAuthenticationWithError:error];
 }
 

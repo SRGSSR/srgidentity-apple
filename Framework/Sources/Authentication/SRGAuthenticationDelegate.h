@@ -13,7 +13,7 @@
  *  Cancels the code flow session, invoking the request's callback with a cancelled error.
  *
  *  @discussion It has no effect if called more than once, or after a resumeAuthenticationWithURL: message was received.
- *  Will cause an error with code `SRGAuthenticationCanceled`.
+ *  Will cause an error with code `SRGAuthenticationCancelled`.
  */
 - (void)cancelAuthentication;
 
