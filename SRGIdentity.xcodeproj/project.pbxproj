@@ -54,6 +54,11 @@
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
 		6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */; };
+		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
+		6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
+		6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F6ED103216BA9F600D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
+		6F6ED104216BA9F600D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
@@ -112,6 +117,7 @@
 				086FB32921380D1300DE4CF2 /* SRGIdentity.framework in Embed Frameworks */,
 				086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */,
 				086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */,
+				6F6ED104216BA9F600D7E786 /* FXReachability.framework in Embed Frameworks */,
 				086FB32C21380D1300DE4CF2 /* UICKeyChainStore.framework in Embed Frameworks */,
 				6F9FFAB02167925F00F781A0 /* SRGNetwork.framework in Embed Frameworks */,
 				086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */,
@@ -129,6 +135,7 @@
 				6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */,
 				080D0BEB21359E4800AA519A /* MAKVONotificationCenter.framework in Embed Frameworks */,
 				080D0BE921359E4800AA519A /* libextobjc.framework in Embed Frameworks */,
+				6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */,
 				080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */,
 				6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */,
 				080D0BE721359E4800AA519A /* Mantle.framework in Embed Frameworks */,
@@ -174,6 +181,7 @@
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
+		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
 		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -202,6 +210,7 @@
 				086FB31D21380D1300DE4CF2 /* SRGIdentity.framework in Frameworks */,
 				086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */,
 				086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */,
+				6F6ED103216BA9F600D7E786 /* FXReachability.framework in Frameworks */,
 				086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */,
 				6F9FFAAF2167925F00F781A0 /* SRGNetwork.framework in Frameworks */,
 				086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */,
@@ -220,6 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */,
 				6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */,
 				086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */,
 				080D0BE52135776000AA519A /* Mantle.framework in Frameworks */,
@@ -237,6 +247,7 @@
 				6F8A940320FDD01B00AA6434 /* SRGIdentity.framework in Frameworks */,
 				080D0BEA21359E4800AA519A /* MAKVONotificationCenter.framework in Frameworks */,
 				080D0BE821359E4800AA519A /* libextobjc.framework in Frameworks */,
+				6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */,
 				080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */,
 				6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */,
 				080D0BE621359E4800AA519A /* Mantle.framework in Frameworks */,
@@ -382,6 +393,7 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
 				080D0BE021356CB500AA519A /* libextobjc.framework */,
 				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
 				080D0BE42135776000AA519A /* Mantle.framework */,
