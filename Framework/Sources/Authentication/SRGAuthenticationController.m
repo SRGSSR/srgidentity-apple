@@ -28,8 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, nullable, weak) SFSafariViewController *safariViewController;
 
-@property(nonatomic, nullable) SFAuthenticationSession *authenticationSession __IOS_AVAILABLE(11.0);
-@property(nonatomic, nullable) ASWebAuthenticationSession *webAuthenticationSession __IOS_AVAILABLE(12.0);
+@property(nonatomic, nullable) id authenticationSession /* ASWebAuthenticationSession or SFAuthenticationSession */;
 
 @end
 
@@ -56,49 +55,33 @@ NS_ASSUME_NONNULL_BEGIN
     
     BOOL openedSafari = NO;
     
+    void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        self.authenticationSession = nil;
+        
+        if (callbackURL) {
+            [self.delegate resumeAuthenticationWithURL:callbackURL];
+        }
+        else {
+            NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
+                                                       code:SRGAuthenticationCancelled
+                                                   userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
+            [self.delegate failAuthenticationWithError:safariError];
+        }
+    };
+    
     // iOS 12 and later, use ASWebAuthenticationSession
     if (@available(iOS 12.0, *)) {
-        @weakify(self)
-        ASWebAuthenticationSession *webAuthenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:request.URL
-                                                                                             callbackURLScheme:request.redirectURL.scheme
-                                                                                             completionHandler:^(NSURL * _Nullable callbackURL,
-                                                                                                                 NSError * _Nullable error) {
-                                                                                                 @strongify(self)
-                                                                                                 
-                                                                                                 self.webAuthenticationSession = nil;
-                                                                                                 if (callbackURL) {
-                                                                                                     [self.delegate resumeAuthenticationWithURL:callbackURL];
-                                                                                                 }
-                                                                                                 else {
-                                                                                                     NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                                                                                                code:SRGAuthenticationCancelled
-                                                                                                                                            userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
-                                                                                                     [self.delegate failAuthenticationWithError:safariError];
-                                                                                                 }
-                                                                                             }];
-        self.webAuthenticationSession = webAuthenticationSession;
-        openedSafari = [webAuthenticationSession start];
+        ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:request.URL
+                                                                                          callbackURLScheme:request.redirectURL.scheme
+                                                                                          completionHandler:completionHandler];
+        self.authenticationSession = authenticationSession;
+        openedSafari = [authenticationSession start];
     }
     // iOS 11, use SFAuthenticationSession
     else if (@available(iOS 11.0, *)) {
-        @weakify(self)
         SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:request.URL
                                                                                     callbackURLScheme:request.redirectURL.scheme
-                                                                                    completionHandler:^(NSURL * _Nullable callbackURL,
-                                                                                                        NSError * _Nullable error) {
-                                                                                        @strongify(self)
-                                                                                        
-                                                                                        self.authenticationSession = nil;
-                                                                                        if (callbackURL) {
-                                                                                            [self.delegate resumeAuthenticationWithURL:callbackURL];
-                                                                                        }
-                                                                                        else {
-                                                                                            NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                                                                                       code:SRGAuthenticationCancelled
-                                                                                                                                   userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
-                                                                                            [self.delegate failAuthenticationWithError:safariError];
-                                                                                        }
-                                                                                    }];
+                                                                                    completionHandler:completionHandler];
         self.authenticationSession = authenticationSession;
         openedSafari = [authenticationSession start];
     }
@@ -132,28 +115,19 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    SFSafariViewController *safariViewController = self.safariViewController;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpartial-availability"
-    SFAuthenticationSession *authenticationSession = self.authenticationSession;
-    ASWebAuthenticationSession *webAuthenticationSession = self.webAuthenticationSession;
-#pragma clang diagnostic pop
-    
     [self cleanUp];
     
-    if (@available(iOS 12.0, *)) {
-        [webAuthenticationSession cancel];
-        if (completion) completion();
-    }
-    else if (@available(iOS 11.0, *)) {
-        [authenticationSession cancel];
-        if (completion) completion();
+    if (self.authenticationSession) {
+        [self.authenticationSession cancel];
+        completion ? completion() : nil;
     }
     else {
-        if (safariViewController) {
-            [safariViewController dismissViewControllerAnimated:YES completion:completion];
+        if (self.safariViewController) {
+            [self.safariViewController dismissViewControllerAnimated:YES completion:completion];
         }
-        else if (completion) completion();
+        else if (completion) {
+            completion();
+        }
     }
 }
 
