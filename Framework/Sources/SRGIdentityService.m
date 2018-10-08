@@ -7,7 +7,6 @@
 #import "SRGIdentityService.h"
 
 #import "NSBundle+SRGIdentity.h"
-#import "SRGIdentityError.h"
 #import "SRGIdentityLogger.h"
 #import "UIWindow+SRGIdentity.h"
 

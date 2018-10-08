@@ -67,8 +67,6 @@
 		6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F9FFAAF2167925F00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAB02167925F00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6F9FFAB32167993600F781A0 /* SRGIdentityError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9FFAB12167993600F781A0 /* SRGIdentityError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F9FFAB42167993600F781A0 /* SRGIdentityError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9FFAB22167993600F781A0 /* SRGIdentityError.m */; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */; };
 /* End PBXBuildFile section */
@@ -186,8 +184,6 @@
 		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
 		6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DemosViewController.storyboard; sourceTree = "<group>"; };
 		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
-		6F9FFAB12167993600F781A0 /* SRGIdentityError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityError.h; sourceTree = "<group>"; };
-		6F9FFAB22167993600F781A0 /* SRGIdentityError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityError.m; sourceTree = "<group>"; };
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -318,8 +314,6 @@
 				0829FA742136853C00FE0A28 /* Model */,
 				0829FA772136853C00FE0A28 /* SRGIdentity.h */,
 				0829FA782136853C00FE0A28 /* SRGIdentity.m */,
-				6F9FFAB12167993600F781A0 /* SRGIdentityError.h */,
-				6F9FFAB22167993600F781A0 /* SRGIdentityError.m */,
 				086BB713216967220079483E /* SRGIdentityLogger.h */,
 				080D0BD6213566C900AA519A /* SRGIdentityService.h */,
 				080D0BD5213566C900AA519A /* SRGIdentityService.m */,
@@ -432,7 +426,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F9FFAB32167993600F781A0 /* SRGIdentityError.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
 				6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */,
@@ -670,7 +663,6 @@
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
 				6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */,
-				6F9FFAB42167993600F781A0 /* SRGIdentityError.m in Sources */,
 				0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */,
 				0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */,
 			);

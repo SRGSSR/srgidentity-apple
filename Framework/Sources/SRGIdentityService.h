@@ -28,6 +28,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
+/**
+ *  Display the login window. If an email address is provided, it is used to fill out the form initially.
+ */
 - (BOOL)loginWithEmailAddress:(nullable NSString *)emailAddress;
 
 /**
@@ -60,7 +63,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
-// TODO: For URL scheme processing in the Safari iOS 9 workflow. Hide
+// TODO: For URL scheme processing in the Safari iOS 9 workflow. Hide if possible (swizzling).
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL;
 
 @end
