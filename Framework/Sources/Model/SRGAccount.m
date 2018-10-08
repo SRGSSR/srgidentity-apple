@@ -13,10 +13,10 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static dispatch_once_t s_onceToken;
     static NSDictionary<NSNumber *, NSString *> *s_descriptions;
     dispatch_once(&s_onceToken, ^{
-        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified SRGGender"),
-                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female SRGGender"),
-                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male SRGGender"),
-                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other SRGGender") };
+        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified gender"),
+                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female"),
+                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male"),
+                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other gender") };
     });
     return s_descriptions[@(SRGGender)];
 }
