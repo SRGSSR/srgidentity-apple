@@ -12,10 +12,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
 
-OBJC_EXPORT NSString * const SRGIdentityServiceUserLoginDidFailNotification;
-
 OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
-OBJC_EXPORT NSString * const SRGIdentityServiceErrorKey;
 
 @interface SRGIdentityService : NSObject
 

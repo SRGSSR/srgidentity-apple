@@ -23,7 +23,6 @@ static SRGIdentityService *s_currentIdentityService;
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
-NSString * const SRGIdentityServiceUserLoginDidFailNotification = @"SRGIdentityServiceUserLoginDidFailNotification";
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServiceErrorKey = @"SRGIdentityServiceError";
@@ -154,7 +153,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return URLComponents.URL;
 }
 
-- (BOOL)shouldHandleReponseURL:(NSURL *)URL
+- (BOOL)shouldHandleCallbackURL:(NSURL *)URL
 {
     // TODO: Criterium?
     NSURL *standardizedURL = URL.standardizedURL;
@@ -175,7 +174,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark Login / logout
 
-// TODO: Prevent concurrent login attempts, or cancel previous one. Also prevent or govern interactions with logout
+// TODO: Prevent concurrent login attempts, or cancel previous one. Also prevent or govern interactions with logout.
+//       Define behavior when user already logged in.
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
@@ -233,23 +233,25 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL
 {
-    if (! [self shouldHandleReponseURL:callbackURL]) {
+    if (! [self shouldHandleCallbackURL:callbackURL]) {
         return NO;
     }
     
     NSString *token = [self tokenFromURL:callbackURL];
     if (! token) {
-        NSError *tokenError = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                  code:SRGIdentityErrorCodeInvalidData
-                                              userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentication data is invalid.", @"Error message returned when an authentication server response data is incorrect.") }];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoginDidFailNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceErrorKey : tokenError }];
         return YES;
     }
     
     [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey];
     [self updateAccount];
+    
+    if (self.authenticationSession) {
+        self.authenticationSession = nil;
+    }
+    else {
+        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+        [presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
     
     return YES;
 }

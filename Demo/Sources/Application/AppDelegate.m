@@ -28,6 +28,11 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
-    return [SRGIdentityService.currentIdentityService handleCallbackURL:url];
+    if ([SRGIdentityService.currentIdentityService handleCallbackURL:url]) {
+        return YES;
+    }
+    
+    return NO;
 }
+
 @end
