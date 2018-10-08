@@ -5,10 +5,6 @@
 //
 
 #import "SRGAccount.h"
-#import "SRGAuthenticationDelegate.h"
-
-#import <SRGNetwork/SRGNetwork.h>
-#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,11 +12,12 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
 
+OBJC_EXPORT NSString * const SRGIdentityServiceUserLoginDidFailNotification;
+
 OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
+OBJC_EXPORT NSString * const SRGIdentityServiceErrorKey;
 
-typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
-
-@interface SRGIdentityService : NSObject <SRGAuthenticationDelegate>
+@interface SRGIdentityService : NSObject
 
 /**
  *  The identity service currently set as shared instance, if any.
@@ -34,8 +31,7 @@ typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
-- (BOOL)presentAuthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                              completionBlock:(nullable SRGAuthenticationCompletionBlock)completionBlock;
+- (BOOL)loginWithEmailAddress:(nullable NSString *)emailAddress;
 
 /**
  *  Logout the current user, if any.
@@ -66,6 +62,9 @@ typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
  *  The logged in token, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
+
+// TODO: For URL scheme processing in the Safari iOS 9 workflow. Hide
+- (BOOL)handleCallbackURL:(NSURL *)callbackURL withIdentifier:(NSString *)identifier;
 
 @end
 
