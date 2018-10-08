@@ -25,7 +25,6 @@ NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServ
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
-NSString * const SRGIdentityServiceErrorKey = @"SRGIdentityServiceError";
 
 static NSString * SRGServiceIdentifierEmailStoreKey;
 static NSString * SRGServiceIdentifierSessionTokenStoreKey;
@@ -259,6 +258,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                        object:self
+                                                      userInfo:nil];
     [self updateAccount];
     
     if (self.authenticationSession) {
