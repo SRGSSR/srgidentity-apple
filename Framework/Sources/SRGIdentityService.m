@@ -243,7 +243,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                 userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentification data is invalid.", @"Error message returned when an authentification server response data is incorrect.") }];
     }
     
-    [self.authentificationCompletionBlock dismissExternalUserAgentAnimated:YES completion:^{
+    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
         [self didFinishWithError:error];
     }];
     
