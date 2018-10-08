@@ -286,12 +286,14 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
             return;
         }
         
-        self.account = account;
         [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceAccountKey : account }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.account = account;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceAccountKey : account }];
+        });
     }] resume];
 }
 
