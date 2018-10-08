@@ -160,9 +160,10 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     NSURL *standardizedURL = URL.standardizedURL;
     NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
-    return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
-        && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
-        && [standardizedURL.path isEqual:standardizedRedirectURL.path];
+    return ((standardizedURL.scheme == standardizedRedirectURL.scheme) || [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme])
+        && ((standardizedURL.host == standardizedRedirectURL.host) || [standardizedURL.host isEqualToString:standardizedRedirectURL.host])
+        && ((standardizedURL.port == standardizedRedirectURL.port) || [standardizedURL.port isEqual:standardizedRedirectURL.port])
+        && ((standardizedURL.path == standardizedRedirectURL.path) || [standardizedURL.path isEqual:standardizedRedirectURL.path]);
 }
 
 - (NSString *)tokenFromURL:(NSURL *)URL
