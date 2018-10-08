@@ -215,18 +215,34 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)logout
 {
-    SRGAccount *account = self.account;
+    if (! self.sessionToken) {
+        return;
+    }
     
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey];
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey];
-    self.account = nil;
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.serviceURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"DELETE";
     
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[SRGIdentityServiceAccountKey] = account;
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                        object:self
-                                                      userInfo:[userInfo copy]];
+    [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        // Remove local login informations in any cases.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SRGAccount *account = self.account;
+            
+            [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey];
+            [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey];
+            self.account = nil;
+            
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+            userInfo[SRGIdentityServiceAccountKey] = account;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:[userInfo copy]];
+        });
+    }] resume];
 }
 
 #pragma mark Callback URL handling
