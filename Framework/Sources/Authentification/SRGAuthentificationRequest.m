@@ -68,7 +68,7 @@
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
     NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
-    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"client" value:self.uuid]];
+    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.uuid]];
     URLComponents.scheme = self.redirectScheme;
     return URLComponents.URL;
 }
@@ -90,21 +90,21 @@
 
 - (BOOL)shouldHandleReponseURL:(NSURL *)URL
 {
-    BOOL sameUuid = NO;
+    NSString *redirectUid = nil;
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"client"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"authUid"];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     if (queryItem) {
-        sameUuid = [self.uuid isEqualToString:queryItem.value];
+        redirectUid = queryItem.value;
     }
     
     NSURL *standardizedURL = [URL standardizedURL];
     NSURL *standardizedRedirectURL = [self.redirectURL standardizedURL];
     
-    return sameUuid &&
-    [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme] &&
-    [standardizedURL.host isEqualToString:standardizedRedirectURL.host] &&
-    [standardizedURL.path isEqual:standardizedRedirectURL.path];
+    return ((self.uuid == redirectUid) || [self.uuid isEqualToString:redirectUid]) &&
+    ((standardizedURL.scheme == standardizedRedirectURL.scheme) || [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]) &&
+    ((standardizedURL.host == standardizedRedirectURL.host) || [standardizedURL.host isEqualToString:standardizedRedirectURL.host]) &&
+    ((standardizedURL.scheme == standardizedRedirectURL.path) || [standardizedURL.path isEqual:standardizedRedirectURL.path]);
 }
 
 @end
