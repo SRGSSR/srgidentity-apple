@@ -38,12 +38,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
-@property (nonatomic) SRGNetworkRequest *profileRequest;
-
 @property (nonatomic) SRGAccount *account;
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
-@property (nonatomic, copy) NSString *identifier;
 
 @end
 
@@ -70,7 +67,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
         URLScheme = bundleURLSchemes.firstObject;
         if (! URLScheme) {
-            SRGIdentityLogError(@"authentication", @"No URL scheme declared in your application Info.plist file under the "
+            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
                                 "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
                                 "to allow a correct authentication workflow.");
         }
