@@ -157,7 +157,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 - (BOOL)shouldHandleCallbackURL:(NSURL *)URL
 {
-    // TODO: Criterium?
     NSURL *standardizedURL = URL.standardizedURL;
     NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
