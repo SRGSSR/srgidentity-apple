@@ -28,7 +28,8 @@
     {
         self.serviceURL = serviceURL;
         self.emailAddress = emailAddress;
-        self.uuid = [[NSUUID UUID] UUIDString];
+        // TODO: Uncomment when it's fix on peach idp server.
+//        self.uuid = [[NSUUID UUID] UUIDString];
     }
     return self;
 }
@@ -67,8 +68,9 @@
 - (NSURL *)redirectURL
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
-    NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
-    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.uuid]];
+    // TODO: Uncomment when it's fix on peach idp server.
+//    NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
+//    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.uuid]];
     URLComponents.scheme = self.redirectScheme;
     return URLComponents.URL;
 }
