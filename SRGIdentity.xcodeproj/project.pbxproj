@@ -39,7 +39,6 @@
 		086BB71221690EB00079483E /* SRGAuthentificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BB71021690EB00079483E /* SRGAuthentificationRequest.m */; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
-		086FB2D62136A6B400DE4CF2 /* SRGIdentityService+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */; };
 		086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
 		086FB31921380D1300DE4CF2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
 		086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
@@ -177,7 +176,6 @@
 		086BB71021690EB00079483E /* SRGAuthentificationRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGAuthentificationRequest.m; sourceTree = "<group>"; };
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SRGIdentityService+Private.h"; sourceTree = "<group>"; };
 		086FB33321380D1300DE4CF2 /* SRGIdentity-demo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
@@ -343,7 +341,6 @@
 				086BB713216967220079483E /* SRGIdentityLogger.h */,
 				080D0BD6213566C900AA519A /* SRGIdentityService.h */,
 				080D0BD5213566C900AA519A /* SRGIdentityService.m */,
-				086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -450,7 +447,6 @@
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				086BB6CD2168D6610079483E /* SRGAuthentificationController.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
-				086FB2D62136A6B400DE4CF2 /* SRGIdentityService+Private.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,

@@ -9,7 +9,6 @@
 #import "NSBundle+SRGIdentity.h"
 #import "SRGAuthentificationController.h"
 #import "SRGIdentityError.h"
-#import "SRGIdentityService+Private.h"
 
 #import <libextobjc/libextobjc.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
