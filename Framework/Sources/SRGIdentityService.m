@@ -45,7 +45,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic) SRGAccount *account;
 
-@property (nonatomic, weak) id authenticationSession /* ASWebAuthenticationSession or SFAuthenticationSession */;
+@property (nonatomic) id authenticationSession /* Must be strong to avoid cancellation. ASWebAuthenticationSession or SFAuthenticationSession */;
 @property (nonatomic, copy) NSString *identifier;
 
 @end
