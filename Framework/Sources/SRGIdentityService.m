@@ -25,8 +25,6 @@ NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 
 NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
 NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
-NSString * const SRGServiceIdentifierUserIdStoreKey = @"userId";
-NSString * const SRGServiceIdentifierDisplayNameStoreKey = @"displayName";
 
 NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
@@ -98,16 +96,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey];
 }
 
-- (NSString *)displayName
-{
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierDisplayNameStoreKey] ?: self.emailAddress;
-}
-
-- (NSString *)userId
-{
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierUserIdStoreKey];
-}
-
 - (NSString *)serviceIdentifier
 {
     NSArray *hostComponents = [self.serviceURL.host componentsSeparatedByString:@"."];
@@ -139,13 +127,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
             return;
         }
         
-        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
-        [self.keyChainStore setString:account.displayName forKey:SRGServiceIdentifierDisplayNameStoreKey];
-        
-        NSString *uid = account.uid ? account.uid.stringValue : nil;
-        [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
-        
         self.account = account;
+        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                             object:self

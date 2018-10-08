@@ -48,6 +48,16 @@ typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
 @property (nonatomic, readonly) NSURL *serviceURL;
 
 /**
+ *  The logged in email address, if any.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
+
+/**
+ *  Detailed account information, if available.
+ */
+@property (nonatomic, readonly, nullable) SRGAccount *account;
+
+/**
  *  The login status.
  */
 @property (nonatomic, readonly, getter=isLogged) BOOL logged;
@@ -57,20 +67,11 @@ typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
-/**
- *  The logged in email address, if any.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
+@end
 
-/**
- *  The logged in display name, if any.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *displayName;
+@interface SRGIdentityService (Unavailable)
 
-/**
- *  The logged in user id, if any.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *userId;
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

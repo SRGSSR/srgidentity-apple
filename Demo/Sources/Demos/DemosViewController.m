@@ -69,7 +69,7 @@
 {
     BOOL isLogged = SRGIdentityService.currentIdentityService.logged;
     
-    self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : NSLocalizedString(@"Not logged.", nil);
+    self.displayNameLabel.text = SRGIdentityService.currentIdentityService.account.displayName ?: SRGIdentityService.currentIdentityService.emailAddress ?: NSLocalizedString(@"Not logged.", nil);
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
     self.logoutButton.enabled = self.testModeSwitch.on || isLogged;
 }
