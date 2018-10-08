@@ -30,8 +30,6 @@ NSString * const SRGIdentityServiceErrorKey = @"SRGIdentityServiceError";
 NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
 NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 
-NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
-
 @interface SRGIdentityService ()
 
 @property (nonatomic) NSURL *serviceURL;
