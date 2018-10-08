@@ -26,4 +26,19 @@
     return YES;
 }
 
+/**
+ *  Handles inbound URLs. Checks if the URL matches the redirect URI for a pending SRGIdentity authentification request.
+ */
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
+{
+    // Sends the URL to the current authentification flow (if any) which will process it if it relates to an
+    // authentification response.
+    if ([SRGIdentityService.currentIdentityService resumeAuthentificationWithURL:url]) {
+        return YES;
+    }
+    
+    // Your additional URL handling (if any) goes here.
+    
+    return NO;
+}
 @end

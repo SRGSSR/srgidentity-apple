@@ -15,7 +15,17 @@ typedef NS_ENUM(NSInteger, SRGIdentityError) {
     /**
      *  The data which was received is invalid.
      */
-    SRGIdentityErrorCodeInvalidData
+    SRGIdentityErrorCodeInvalidData,
+    
+    /**
+     *  The authentification process was canceled.
+     */
+    SRGAuthentificationCanceled,
+    
+    /**
+     *  The authentification process didn't start.
+     */
+    SRGAuthentificationStartFailed
 };
 
 /**
