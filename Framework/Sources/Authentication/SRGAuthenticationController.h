@@ -6,8 +6,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SRGAuthentificationRequest.h"
-#import "SRGAuthentificationDelegate.h"
+#import "SRGAuthenticationRequest.h"
+#import "SRGAuthenticationDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  An iOS specific external user-agent that uses the best possible user-agent available regarding the iOS version.
  *  Inspired by https://github.com/openid/AppAuth-iOS
  */
-@interface SRGAuthentificationController : NSObject
+@interface SRGAuthenticationController : NSObject
 
 /**
  *  Unavailable. Please use `initWithPresentingViewController:`
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The request, if any.
  */
-@property(nonatomic, nullable, readonly) SRGAuthentificationRequest *request;
+@property(nonatomic, nullable, readonly) SRGAuthenticationRequest *request;
 
 /**
  *  Presents the request in an external user-agent.
@@ -42,11 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return YES If the request UI was successfully presented to the user.
  *
- *  @Discussion The instance may call `resumeAuthentificationWithURL:` or `failAuthentificationWithError:` on delegate
+ *  @Discussion The instance may call `resumeauthenticationWithURL:` or `failauthenticationWithError:` on delegate
  *  to either resume or fail the request.
  */
-- (BOOL)presentControllerWithRequest:(SRGAuthentificationRequest *)request
-                            delegate:(id <SRGAuthentificationDelegate>)delegate;
+- (BOOL)presentControllerWithRequest:(SRGAuthenticationRequest *)request
+                            delegate:(id <SRGAuthenticationDelegate>)delegate;
 
 /**
  *  Dimisses the external user-agent and calls completion when the dismiss operation ends.

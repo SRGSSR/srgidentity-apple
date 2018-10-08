@@ -9,23 +9,21 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  SRG Identity error constants. More information is available from the `userInfo` associated with these errors.
+ *  SRG Identity error constants.
  */
 typedef NS_ENUM(NSInteger, SRGIdentityError) {
     /**
      *  The data which was received is invalid.
      */
     SRGIdentityErrorCodeInvalidData,
-
     /**
-     *  The authentification process was canceled.
+     *  The authentication process was canceled.
      */
-    SRGAuthentificationCanceled,
-    
+    SRGAuthenticationCanceled,
     /**
-     *  The authentification process didn't start.
+     *  The authentication process failed to start.
      */
-    SRGAuthentificationStartFailed
+    SRGAuthenticationStartFailed
 };
 
 /**

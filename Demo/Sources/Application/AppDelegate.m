@@ -27,13 +27,13 @@
 }
 
 /**
- *  Handles inbound URLs. Checks if the URL matches the redirect URI for a pending SRGIdentity authentification request.
+ *  Handles inbound URLs. Checks if the URL matches the redirect URI for a pending SRGIdentity authentication request.
  */
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
-    // Sends the URL to the current authentification flow (if any) which will process it if it relates to an
-    // authentification response.
-    if ([SRGIdentityService.currentIdentityService resumeAuthentificationWithURL:url]) {
+    // Sends the URL to the current authentication flow (if any) which will process it if it relates to an
+    // authentication response.
+    if ([SRGIdentityService.currentIdentityService resumeauthenticationWithURL:url]) {
         return YES;
     }
     

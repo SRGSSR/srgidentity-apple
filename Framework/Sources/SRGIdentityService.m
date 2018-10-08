@@ -7,7 +7,7 @@
 #import "SRGIdentityService.h"
 
 #import "NSBundle+SRGIdentity.h"
-#import "SRGAuthentificationController.h"
+#import "SRGAuthenticationController.h"
 #import "SRGIdentityError.h"
 
 #import <libextobjc/libextobjc.h>
@@ -41,8 +41,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic) SRGAccount *account;
 
-@property (nonatomic) SRGAuthentificationController *authentificationController;
-@property (nonatomic) SRGAuthentificationCompletionBlock authentificationCompletionBlock;
+@property (nonatomic) SRGAuthenticationController *authenticationController;
+@property (nonatomic) SRGAuthenticationCompletionBlock authenticationCompletionBlock;
 
 @end
 
@@ -153,13 +153,13 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     }] resume];
 }
 
-- (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                                completionBlock:(SRGAuthentificationCompletionBlock)completionBlock
+- (BOOL)presentauthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                                completionBlock:(SRGAuthenticationCompletionBlock)completionBlock
 {
-    self.authentificationCompletionBlock = completionBlock;
-    SRGAuthentificationRequest *request = [[SRGAuthentificationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
-    self.authentificationController = [[SRGAuthentificationController alloc] initWithPresentingViewController:presentingViewController];
-    return [self.authentificationController presentControllerWithRequest:request delegate:self];
+    self.authenticationCompletionBlock = completionBlock;
+    SRGAuthenticationRequest *request = [[SRGAuthenticationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
+    self.authenticationController = [[SRGAuthenticationController alloc] initWithPresentingViewController:presentingViewController];
+    return [self.authenticationController presentControllerWithRequest:request delegate:self];
 }
 
 - (void)logout
@@ -185,22 +185,22 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     [self updateAccount];
 }
 
-#pragma SRGAuthentificationDelegate delegate
+#pragma SRGAuthenticationDelegate delegate
 
-- (void)cancelAuthentification
+- (void)cancelauthentication
 {
-    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
+    [self.authenticationController dismissExternalUserAgentAnimated:YES completion:^{
         NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                             code:SRGAuthentificationCanceled
-                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Authentification canceled.", @"Error message returned when the user or the app canceled the authentification process.") }];
+                                             code:SRGAuthenticationCanceled
+                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
         [self didFinishWithError:error];
     }];
 }
 
-- (BOOL)resumeAuthentificationWithURL:(NSURL *)URL
+- (BOOL)resumeauthenticationWithURL:(NSURL *)URL
 {
     // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
-    if (![self.authentificationController.request shouldHandleReponseURL:URL]) {
+    if (![self.authenticationController.request shouldHandleReponseURL:URL]) {
         return NO;
     }
     
@@ -215,30 +215,30 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     else {
         error = [NSError errorWithDomain:SRGIdentityErrorDomain
                                     code:SRGIdentityErrorCodeInvalidData
-                                userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentification data is invalid.", @"Error message returned when an authentification server response data is incorrect.") }];
+                                userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentication data is invalid.", @"Error message returned when an authentication server response data is incorrect.") }];
     }
     
-    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
+    [self.authenticationController dismissExternalUserAgentAnimated:YES completion:^{
         [self didFinishWithError:error];
     }];
     
     return YES;
 }
 
-- (void)failAuthentificationWithError:(NSError *)error
+- (void)failauthenticationWithError:(NSError *)error
 {
     [self didFinishWithError:error];
 }
 
 - (void)didFinishWithError:(nullable NSError *)error
 {
-    SRGAuthentificationCompletionBlock authentificationCompletionBlock = self.authentificationCompletionBlock;
+    SRGAuthenticationCompletionBlock authenticationCompletionBlock = self.authenticationCompletionBlock;
     
-    self.authentificationCompletionBlock = nil;
-    self.authentificationController = nil;
+    self.authenticationCompletionBlock = nil;
+    self.authenticationController = nil;
     
-    if (authentificationCompletionBlock) {
-        authentificationCompletionBlock(error);
+    if (authenticationCompletionBlock) {
+        authenticationCompletionBlock(error);
     }
 }
 

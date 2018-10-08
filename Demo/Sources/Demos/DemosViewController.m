@@ -78,7 +78,7 @@
 
 - (IBAction)login:(id)sender
 {
-    [SRGIdentityService.currentIdentityService presentAuthentificationViewControllerFromViewController:self completionBlock:nil];
+    [SRGIdentityService.currentIdentityService presentauthenticationViewControllerFromViewController:self completionBlock:nil];
 }
 
 - (IBAction)logout:(id)sender

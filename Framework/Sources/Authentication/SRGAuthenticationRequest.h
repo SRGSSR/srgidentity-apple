@@ -8,10 +8,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGAuthentificationRequest : NSObject
+@interface SRGAuthenticationRequest : NSObject
 
 /**
- *  The complete authentification request URL.
+ *  The complete authentication request URL.
  *
  *  @discussion The URL to be opened in an external UI (i.e. browser or SFSafariViewController)
  */

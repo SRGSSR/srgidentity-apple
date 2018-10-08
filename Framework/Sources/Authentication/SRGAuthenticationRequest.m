@@ -5,20 +5,20 @@
 //
 
 
-#import "SRGAuthentificationRequest.h"
+#import "SRGAuthenticationRequest.h"
 
 #import "SRGIdentityLogger.h"
 
 #import <libextobjc/libextobjc.h>
 
-@interface SRGAuthentificationRequest ()
+@interface SRGAuthenticationRequest ()
 
 @property(nonatomic) NSURL *serviceURL;
 @property(nonatomic) NSString *emailAddress;
 @property(nonatomic) NSString *uuid;
 @end
 
-@implementation SRGAuthentificationRequest
+@implementation SRGAuthenticationRequest
 
 #pragma mark Object lifecycle
 
@@ -57,9 +57,9 @@
         }
         
         if (! s_redirectScheme) {
-            SRGIdentityLogError(@"authentification", @"No URL scheme declared in your application Info.plist file under the "
+            SRGIdentityLogError(@"authentication", @"No URL scheme declared in your application Info.plist file under the "
                                 "'CFBundleURLTypes' key. The application must at least contains one item with one scheme "
-                                "to allow a correct authentification workflow. Take care to have an unique URL scheme.");
+                                "to allow a correct authentication workflow. Take care to have an unique URL scheme.");
         }
     });
     return s_redirectScheme;

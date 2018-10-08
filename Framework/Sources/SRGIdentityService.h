@@ -5,7 +5,7 @@
 //
 
 #import "SRGAccount.h"
-#import "SRGAuthentificationDelegate.h"
+#import "SRGAuthenticationDelegate.h"
 
 #import <SRGNetwork/SRGNetwork.h>
 #import <UIKit/UIKit.h>
@@ -18,9 +18,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
 
 OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 
-typedef void (^SRGAuthentificationCompletionBlock)(NSError * _Nullable error);
+typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
 
-@interface SRGIdentityService : NSObject <SRGAuthentificationDelegate>
+@interface SRGIdentityService : NSObject <SRGAuthenticationDelegate>
 
 /**
  *  The identity service currently set as shared instance, if any.
@@ -34,8 +34,8 @@ typedef void (^SRGAuthentificationCompletionBlock)(NSError * _Nullable error);
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
-- (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                                completionBlock:(nullable SRGAuthentificationCompletionBlock)completionBlock;
+- (BOOL)presentauthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                                completionBlock:(nullable SRGAuthenticationCompletionBlock)completionBlock;
 
 /**
  *  Logout the current user, if any.
