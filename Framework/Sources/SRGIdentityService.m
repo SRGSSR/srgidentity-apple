@@ -11,6 +11,7 @@
 #import "UIWindow+SRGIdentity.h"
 
 #import <AuthenticationServices/AuthenticationServices.h>
+#import <FXReachability/FXReachability.h>
 #import <libextobjc/libextobjc.h>
 #import <SafariServices/SafariServices.h>
 #import <SRGNetwork/SRGNetwork.h>
@@ -82,6 +83,11 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     if (self = [super init]) {
         self.serviceURL = serviceURL;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(reachabilityDidChange:)
+                                                   name:FXReachabilityStatusDidChangeNotification
+                                                 object:nil];
         
         [self updateAccount];
     }
@@ -284,6 +290,15 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                               userInfo:@{ SRGIdentityServiceAccountKey : account }];
         });
     }] resume];
+}
+
+#pragma mark Notifications
+
+- (void)reachabilityDidChange:(NSNotification *)notification
+{
+    if ([FXReachability sharedInstance].reachable) {
+        [self updateAccount];
+    }
 }
 
 @end
