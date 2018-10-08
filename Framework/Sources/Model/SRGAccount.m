@@ -31,18 +31,6 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 @implementation SRGAccount
 
-- (instancetype)initWithAccount:(SRGAccount *)account
-{
-    if ([super init]) {
-        [account.dictionaryValue enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            if (! [obj isKindOfClass:NSNull.class]) {
-                [self setValue:obj forKey:key];
-            }
-        }];
-    }
-    return self;
-}
-
 #pragma mark MTLJSONSerializing protocol
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey

@@ -33,11 +33,6 @@ OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
 @property (nonatomic, copy, readonly, nullable) NSNumber *uid;
 @property (nonatomic, copy, readonly, nullable) NSString *displayName;
 
-/*
- *  Instance from an other account
- */
-- (instancetype)initWithAccount:(SRGAccount *)account;
-
 @end
 
 NS_ASSUME_NONNULL_END
