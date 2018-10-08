@@ -15,7 +15,7 @@
 
 @property (nonatomic) NSURL *serviceURL;
 @property (nonatomic, copy) NSString *emailAddress;
-@property (nonatomic, copy) NSString *uuid;
+@property (nonatomic, copy) NSString *UUID;
 @end
 
 @implementation SRGAuthenticationRequest
@@ -28,7 +28,7 @@
         self.serviceURL = serviceURL;
         self.emailAddress = emailAddress;
         // TODO: Uncomment when it's fix on peach idp server.
-//        self.uuid = NSUUID.UUID.UUIDString;
+//        self.UUID = NSUUID.UUID.UUIDString;
     }
     return self;
 }
@@ -71,7 +71,7 @@
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
     // TODO: Uncomment when it's fix on peach idp server.
 //    NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
-//    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.uuid]];
+//    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.UUID]];
     URLComponents.scheme = self.redirectScheme;
     return URLComponents.URL;
 }
@@ -93,18 +93,18 @@
 
 - (BOOL)shouldHandleReponseURL:(NSURL *)URL
 {
-    NSString *redirectUid = nil;
+    NSString *redirectUUID= nil;
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"authUid"];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     if (queryItem) {
-        redirectUid = queryItem.value;
+        redirectUUID = queryItem.value;
     }
     
     NSURL *standardizedURL = [URL standardizedURL];
     NSURL *standardizedRedirectURL = [self.redirectURL standardizedURL];
     
-    return ((self.uuid == redirectUid) || [self.uuid isEqualToString:redirectUid]) &&
+    return ((self.UUID == redirectUUID) || [self.UUID isEqualToString:redirectUUID]) &&
     ((standardizedURL.scheme == standardizedRedirectURL.scheme) || [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]) &&
     ((standardizedURL.host == standardizedRedirectURL.host) || [standardizedURL.host isEqualToString:standardizedRedirectURL.host]) &&
     ((standardizedURL.scheme == standardizedRedirectURL.path) || [standardizedURL.path isEqual:standardizedRedirectURL.path]);

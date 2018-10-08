@@ -26,11 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSURL *redirectURL;
 
 /**
- *  The request UUID.
- */
-@property (nonatomic, readonly) NSString *uuid;
-
-/**
  *  Unavailable. Please use `initWithPresentingViewController:`
  */
 - (instancetype)init NS_UNAVAILABLE;

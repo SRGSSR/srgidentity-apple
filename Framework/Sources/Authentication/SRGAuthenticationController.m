@@ -35,15 +35,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SRGAuthenticationController
 
-- (instancetype)initWithPresentingViewController:(UIViewController *)presentingViewController {
-    if ([super init]) {
+- (instancetype)initWithPresentingViewController:(UIViewController *)presentingViewController
+{
+    if (self = [super init]) {
         self.presentingViewController = presentingViewController;
     }
     return self;
 }
 
 - (BOOL)presentControllerWithRequest:(SRGAuthenticationRequest *)request
-                            delegate:(id <SRGAuthenticationDelegate>)delegate {
+                            delegate:(id <SRGAuthenticationDelegate>)delegate
+{
     if (self.inProgress) {
         // TODO: Handle errors as authorization is already in progress.
         return NO;
@@ -123,7 +125,8 @@ NS_ASSUME_NONNULL_BEGIN
     return openedSafari;
 }
 
-- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion {
+- (void)dismissExternalUserAgentAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
     if (! self.inProgress) {
         // Ignore this call if there is no authorization flow in progress.
         return;
@@ -154,7 +157,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void)cleanUp {
+- (void)cleanUp
+{
     // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
     // them while not in an authentication flow.
     self.safariViewController = nil;
@@ -167,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.inProgress = NO;
 }
 
-#pragma mark - SFSafariViewControllerDelegate
+#pragma mark SFSafariViewControllerDelegate protocol
 
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
