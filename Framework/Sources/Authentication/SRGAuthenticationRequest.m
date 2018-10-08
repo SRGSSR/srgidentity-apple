@@ -13,9 +13,9 @@
 
 @interface SRGAuthenticationRequest ()
 
-@property(nonatomic) NSURL *serviceURL;
-@property(nonatomic) NSString *emailAddress;
-@property(nonatomic) NSString *uuid;
+@property (nonatomic) NSURL *serviceURL;
+@property (nonatomic, copy) NSString *emailAddress;
+@property (nonatomic, copy) NSString *uuid;
 @end
 
 @implementation SRGAuthenticationRequest
@@ -24,12 +24,11 @@
 
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL emailAddress:(NSString *)emailAddress
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.serviceURL = serviceURL;
         self.emailAddress = emailAddress;
         // TODO: Uncomment when it's fix on peach idp server.
-//        self.uuid = [[NSUUID UUID] UUIDString];
+//        self.uuid = NSUUID.UUID.UUIDString;
     }
     return self;
 }
@@ -42,6 +41,8 @@
     [self doesNotRecognizeSelector:_cmd];
     return [self initWithServiceURL:[NSURL new] emailAddress:nil];
 }
+
+#pragma clang diagnostic pop
 
 #pragma mark Getters
 

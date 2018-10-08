@@ -79,6 +79,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return [self initWithServiceURL:[NSURL new] accessGroup:nil];
 }
 
+#pragma clang diagnostic pop
+
 #pragma mark Getters and setters
 
 - (BOOL)isLogged
@@ -104,7 +106,33 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return [domain stringByAppendingString:@".identity"];
 }
 
-#pragma mark Services
+#pragma mark Login / logout
+
+- (BOOL)presentAuthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                              completionBlock:(SRGAuthenticationCompletionBlock)completionBlock
+{
+    self.authenticationCompletionBlock = completionBlock;
+    SRGAuthenticationRequest *request = [[SRGAuthenticationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
+    self.authenticationController = [[SRGAuthenticationController alloc] initWithPresentingViewController:presentingViewController];
+    return [self.authenticationController presentControllerWithRequest:request delegate:self];
+}
+
+- (void)logout
+{
+    SRGAccount *account = self.account;
+    
+    [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
+    self.account = nil;
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGIdentityServiceAccountKey] = account;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                        object:self
+                                                      userInfo:[userInfo copy]];
+}
+
+#pragma mark Account information
 
 - (void)updateAccount
 {
@@ -134,30 +162,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceAccountKey : account }];
     }] resume];
-}
-
-- (BOOL)presentauthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                                completionBlock:(SRGAuthenticationCompletionBlock)completionBlock
-{
-    self.authenticationCompletionBlock = completionBlock;
-    SRGAuthenticationRequest *request = [[SRGAuthenticationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
-    self.authenticationController = [[SRGAuthenticationController alloc] initWithPresentingViewController:presentingViewController];
-    return [self.authenticationController presentControllerWithRequest:request delegate:self];
-}
-
-- (void)logout
-{
-    SRGAccount *account = self.account;
-    
-    [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
-    self.account = nil;
-    
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[SRGIdentityServiceAccountKey] = account;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                        object:self
-                                                      userInfo:[userInfo copy]];
 }
 
 #pragma mark Private

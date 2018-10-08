@@ -34,8 +34,8 @@ typedef void (^SRGAuthenticationCompletionBlock)(NSError * _Nullable error);
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
-- (BOOL)presentauthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                                completionBlock:(nullable SRGAuthenticationCompletionBlock)completionBlock;
+- (BOOL)presentAuthenticationViewControllerFromViewController:(UIViewController *)presentingViewController
+                                              completionBlock:(nullable SRGAuthenticationCompletionBlock)completionBlock;
 
 /**
  *  Logout the current user, if any.
