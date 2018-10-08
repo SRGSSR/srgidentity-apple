@@ -6,9 +6,7 @@
 
 #import "DemosViewController.h"
 
-#import "AccountViewController.h"
 #import "AppDelegate.h"
-#import "LoginViewController.h"
 
 #import <AVKit/AVKit.h>
 #import <SRGIdentity/SRGIdentity.h>
@@ -109,13 +107,6 @@
 - (IBAction)login:(id)sender
 {
     [SRGIdentityService.currentIdentityService presentAuthentificationViewControllerFromViewController:self completionBlock:nil];
-}
-
-- (IBAction)account:(id)sender
-{
-    AccountViewController *viewController = [[AccountViewController alloc] initWithTitle:NSLocalizedString(@"Account", nil)];
-    UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    [self presentViewController:navigationViewController animated:YES completion:nil];
 }
 
 - (IBAction)logout:(id)sender

@@ -27,8 +27,6 @@
 		0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA782136853C00FE0A28 /* SRGIdentity.m */; };
 		0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 0829FA7A2136853C00FE0A28 /* NSBundle+SRGIdentity.h */; };
 		0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */; };
-		0829FA87213686DE00FE0A28 /* SRGIdentityLoginView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0829FA85213686DE00FE0A28 /* SRGIdentityLoginView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0829FA88213686DE00FE0A28 /* SRGIdentityLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA86213686DE00FE0A28 /* SRGIdentityLoginView.m */; };
 		084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		084CD70021696C3400905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		084CD70121696C3400905A38 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -41,30 +39,18 @@
 		086BB71221690EB00079483E /* SRGAuthentificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 086BB71021690EB00079483E /* SRGAuthentificationRequest.m */; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
-		086FB2CC21368B5400DE4CF2 /* SRGIdentityLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0829FA83213686BA00FE0A28 /* SRGIdentityLoginView.xib */; };
-		086FB2D221368E4200DE4CF2 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */; };
-		086FB2D321368E4200DE4CF2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2D021368E4200DE4CF2 /* LoginViewController.m */; };
 		086FB2D62136A6B400DE4CF2 /* SRGIdentityService+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */; };
-		086FB2DB2136D8D600DE4CF2 /* SRGIdentityAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2D82136D8D500DE4CF2 /* SRGIdentityAccountView.m */; };
-		086FB2DD2136D8D600DE4CF2 /* SRGIdentityAccountView.h in Headers */ = {isa = PBXBuildFile; fileRef = 086FB2DA2136D8D600DE4CF2 /* SRGIdentityAccountView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		086FB2DE2136D8EE00DE4CF2 /* SRGIdentityAccountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2D92136D8D500DE4CF2 /* SRGIdentityAccountView.xib */; };
-		086FB2E22136DA5000DE4CF2 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */; };
-		086FB2E32136DA5000DE4CF2 /* AccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */; };
-		086FB31721380D1300DE4CF2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2D021368E4200DE4CF2 /* LoginViewController.m */; };
 		086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
 		086FB31921380D1300DE4CF2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
 		086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
-		086FB31B21380D1300DE4CF2 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */; };
 		086FB31D21380D1300DE4CF2 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
 		086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
 		086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
 		086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; };
 		086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
-		086FB32421380D1300DE4CF2 /* LoginViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */; };
 		086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
 		086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
-		086FB32721380D1300DE4CF2 /* AccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */; };
 		086FB32921380D1300DE4CF2 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -183,9 +169,6 @@
 		0829FA782136853C00FE0A28 /* SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentity.m; sourceTree = "<group>"; };
 		0829FA7A2136853C00FE0A28 /* NSBundle+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+SRGIdentity.h"; sourceTree = "<group>"; };
 		0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+SRGIdentity.m"; sourceTree = "<group>"; };
-		0829FA83213686BA00FE0A28 /* SRGIdentityLoginView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SRGIdentityLoginView.xib; sourceTree = "<group>"; };
-		0829FA85213686DE00FE0A28 /* SRGIdentityLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLoginView.h; sourceTree = "<group>"; };
-		0829FA86213686DE00FE0A28 /* SRGIdentityLoginView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityLoginView.m; sourceTree = "<group>"; };
 		084CD6FE21696C0A00905A38 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		086BB6CB2168D6610079483E /* SRGAuthentificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAuthentificationController.h; sourceTree = "<group>"; };
 		086BB6CC2168D6610079483E /* SRGAuthentificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAuthentificationController.m; sourceTree = "<group>"; };
@@ -194,16 +177,7 @@
 		086BB71021690EB00079483E /* SRGAuthentificationRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGAuthentificationRequest.m; sourceTree = "<group>"; };
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginViewController.storyboard; sourceTree = "<group>"; };
-		086FB2D021368E4200DE4CF2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		086FB2D121368E4200DE4CF2 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SRGIdentityService+Private.h"; sourceTree = "<group>"; };
-		086FB2D82136D8D500DE4CF2 /* SRGIdentityAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityAccountView.m; sourceTree = "<group>"; };
-		086FB2D92136D8D500DE4CF2 /* SRGIdentityAccountView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SRGIdentityAccountView.xib; sourceTree = "<group>"; };
-		086FB2DA2136D8D600DE4CF2 /* SRGIdentityAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityAccountView.h; sourceTree = "<group>"; };
-		086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
-		086FB2E02136DA4F00DE4CF2 /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
-		086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AccountViewController.storyboard; sourceTree = "<group>"; };
 		086FB33321380D1300DE4CF2 /* SRGIdentity-demo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
@@ -311,19 +285,6 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
-		0829FA822136869400FE0A28 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				086FB2DA2136D8D600DE4CF2 /* SRGIdentityAccountView.h */,
-				086FB2D82136D8D500DE4CF2 /* SRGIdentityAccountView.m */,
-				086FB2D92136D8D500DE4CF2 /* SRGIdentityAccountView.xib */,
-				0829FA85213686DE00FE0A28 /* SRGIdentityLoginView.h */,
-				0829FA86213686DE00FE0A28 /* SRGIdentityLoginView.m */,
-				0829FA83213686BA00FE0A28 /* SRGIdentityLoginView.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		086BB6CA2168D6610079483E /* Authentification */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,7 +344,6 @@
 				080D0BD6213566C900AA519A /* SRGIdentityService.h */,
 				080D0BD5213566C900AA519A /* SRGIdentityService.m */,
 				086FB2D42136A6B400DE4CF2 /* SRGIdentityService+Private.h */,
-				0829FA822136869400FE0A28 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -430,15 +390,9 @@
 		6F8A93F720FDCAA800AA6434 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				086FB2E02136DA4F00DE4CF2 /* AccountViewController.h */,
-				086FB2DF2136DA4F00DE4CF2 /* AccountViewController.m */,
-				086FB2E12136DA4F00DE4CF2 /* AccountViewController.storyboard */,
 				6F8A93F820FDCAA800AA6434 /* DemosViewController.h */,
 				6F8A93F920FDCAA800AA6434 /* DemosViewController.m */,
 				6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */,
-				086FB2D121368E4200DE4CF2 /* LoginViewController.h */,
-				086FB2D021368E4200DE4CF2 /* LoginViewController.m */,
-				086FB2CF21368E4200DE4CF2 /* LoginViewController.storyboard */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -495,12 +449,10 @@
 				086BB7072168F4510079483E /* SRGAuthentificationDelegate.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				086BB6CD2168D6610079483E /* SRGAuthentificationController.h in Headers */,
-				086FB2DD2136D8D600DE4CF2 /* SRGIdentityAccountView.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
 				086FB2D62136A6B400DE4CF2 /* SRGIdentityService+Private.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
-				0829FA87213686DE00FE0A28 /* SRGIdentityLoginView.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,10 +620,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */,
-				086FB32421380D1300DE4CF2 /* LoginViewController.storyboard in Resources */,
 				086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */,
 				086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */,
-				086FB32721380D1300DE4CF2 /* AccountViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,8 +629,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				086FB2CC21368B5400DE4CF2 /* SRGIdentityLoginView.xib in Resources */,
-				086FB2DE2136D8EE00DE4CF2 /* SRGIdentityAccountView.xib in Resources */,
 				6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -698,10 +646,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */,
-				086FB2D221368E4200DE4CF2 /* LoginViewController.storyboard in Resources */,
 				6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */,
 				6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */,
-				086FB2E32136DA5000DE4CF2 /* AccountViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -719,11 +665,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				086FB31721380D1300DE4CF2 /* LoginViewController.m in Sources */,
 				086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */,
 				086FB31921380D1300DE4CF2 /* main.m in Sources */,
 				086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */,
-				086FB31B21380D1300DE4CF2 /* AccountViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,11 +686,9 @@
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
 				086BB71221690EB00079483E /* SRGAuthentificationRequest.m in Sources */,
 				6F9FFAB42167993600F781A0 /* SRGIdentityError.m in Sources */,
-				086FB2DB2136D8D600DE4CF2 /* SRGIdentityAccountView.m in Sources */,
 				086BB6CE2168D6610079483E /* SRGAuthentificationController.m in Sources */,
 				0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */,
 				0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */,
-				0829FA88213686DE00FE0A28 /* SRGIdentityLoginView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,11 +696,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				086FB2D321368E4200DE4CF2 /* LoginViewController.m in Sources */,
 				6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */,
 				6F8A93FD20FDCAA800AA6434 /* main.m in Sources */,
 				6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */,
-				086FB2E22136DA5000DE4CF2 /* AccountViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

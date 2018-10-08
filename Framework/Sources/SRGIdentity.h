@@ -11,9 +11,6 @@ FOUNDATION_EXPORT NSString *SRGIdentityMarketingVersion(void);
 
 // Public headers.
 #import "SRGAccount.h"
-#import "SRGIdentityAccountView.h"
+#import "SRGAuthentificationDelegate.h"
 #import "SRGIdentityError.h"
 #import "SRGIdentityService.h"
-#import "SRGIdentityLoginView.h"
-
-#import "SRGAuthentificationDelegate.h"
