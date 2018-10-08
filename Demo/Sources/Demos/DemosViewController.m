@@ -48,7 +48,7 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceDidUpdateMetadataNotification
+                                                 name:SRGIdentityServiceDidUpdateAccountNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)

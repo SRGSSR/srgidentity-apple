@@ -7,9 +7,9 @@
 #import "SRGIdentityService.h"
 
 #import "NSBundle+SRGIdentity.h"
+#import "SRGAuthentificationController.h"
 #import "SRGIdentityError.h"
 #import "SRGIdentityService+Private.h"
-#import "SRGAuthentificationController.h"
 
 #import <libextobjc/libextobjc.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
@@ -18,7 +18,7 @@ static SRGIdentityService *s_currentIdentityService;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
-NSString * const SRGIdentityServiceDidUpdateMetadataNotification = @"SRGIdentityServiceDidUpdateMetadataNotification";
+NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
 NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
 
@@ -130,7 +130,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateMetadataNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                                         object:self
                                                                       userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
                 }
@@ -202,7 +202,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateMetadataNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                                 object:self
                                                               userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         });
