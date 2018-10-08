@@ -9,6 +9,7 @@
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityError.h"
 #import "SRGIdentityLogger.h"
+#import "UIWindow+SRGIdentity.h"
 
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <libextobjc/libextobjc.h>
@@ -206,8 +207,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     // iOS 9 and 10, use `SFSafariViewController`
     else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
-        // TODO: Use top root view controller
-        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
         [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
     }
     

@@ -52,6 +52,8 @@
 		086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
+		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
+		6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
@@ -172,6 +174,8 @@
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
+		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -310,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				0829FA792136853C00FE0A28 /* Categories */,
+				6F6ED0FA216B9C3E00D7E786 /* Helpers */,
 				0829FA742136853C00FE0A28 /* Model */,
 				0829FA772136853C00FE0A28 /* SRGIdentity.h */,
 				0829FA782136853C00FE0A28 /* SRGIdentity.m */,
@@ -320,6 +325,15 @@
 				080D0BD5213566C900AA519A /* SRGIdentityService.m */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		6F6ED0FA216B9C3E00D7E786 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */,
+				6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		6F8A93EE20FDCAA800AA6434 /* Demo */ = {
@@ -421,6 +435,7 @@
 				6F9FFAB32167993600F781A0 /* SRGIdentityError.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
+				6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,
@@ -654,6 +669,7 @@
 			files = (
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
+				6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */,
 				6F9FFAB42167993600F781A0 /* SRGIdentityError.m in Sources */,
 				0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */,
 				0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */,

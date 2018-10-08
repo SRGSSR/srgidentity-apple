@@ -26,9 +26,6 @@
     return YES;
 }
 
-/**
- *  Handles inbound URLs. Checks if the URL matches the redirect URI for a pending SRGIdentity authentication request.
- */
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
     return [SRGIdentityService.currentIdentityService handleCallbackURL:url];
