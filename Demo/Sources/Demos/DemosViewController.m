@@ -48,10 +48,6 @@
                                              selector:@selector(userChanged:)
                                                  name:SRGIdentityServiceDidUpdateAccountNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
     
     [self reloadData];
 }
