@@ -34,7 +34,7 @@ NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 
 NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
-@interface SRGIdentityService () <SFSafariViewControllerDelegate>
+@interface SRGIdentityService ()
 
 @property (nonatomic) NSURL *serviceURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
@@ -189,15 +189,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress identifier:identifier];
     
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        NSAssert(NSThread.isMainThread, @"Main thread expected");
-        
-        if (error) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoginDidFailNotification
-                                                                object:self
-                                                              userInfo:@{ SRGIdentityServiceErrorKey : error }];
-            return;
-        }
-        
         [self handleCallbackURL:callbackURL withIdentifier:identifier];
     };
     
@@ -224,7 +215,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     // iOS 9 and 10, use `SFSafariViewController`
     else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL entersReaderIfAvailable:NO];
-        safariViewController.delegate = self;
         // TODO: Use top root view controller
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
         [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
@@ -303,21 +293,6 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceAccountKey : account }];
     }] resume];
-}
-
-#pragma mark SFSafariViewControllerDelegate protocol
-
-- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
-{
-    // TODO:
-#if 0
-    id<SRGAuthenticationDelegate> delegate = self.delegate;
-    [self cleanUp];
-    NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                         code:SRGAuthenticationCancelled
-                                     userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication cancelled.", @"Error message returned when the user or the app cancelled the authentication process.") }];
-    [delegate failAuthenticationWithError:error];
-#endif
 }
 
 @end
