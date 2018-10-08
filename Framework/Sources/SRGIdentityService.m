@@ -164,17 +164,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     }] resume];
 }
 
-#pragma mark Private
+#pragma SRGAuthenticationDelegate protocol
 
-- (void)loggedWithSessionToken:(NSString *)sessionToken
-{
-    [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey];
-    [self updateAccount];
-}
-
-#pragma SRGAuthenticationDelegate delegate
-
-- (void)cancelauthentication
+- (void)cancelAuthentication
 {
     [self.authenticationController dismissExternalUserAgentAnimated:YES completion:^{
         NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
@@ -184,7 +176,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     }];
 }
 
-- (BOOL)resumeauthenticationWithURL:(NSURL *)URL
+- (BOOL)resumeAuthenticationWithURL:(NSURL *)URL
 {
     // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
     if (![self.authenticationController.request shouldHandleReponseURL:URL]) {
@@ -197,7 +189,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     if (queryItem) {
-        [self loggedWithSessionToken:queryItem.value];
+        [self.keyChainStore setString:queryItem.value forKey:SRGServiceIdentifierSessionTokenStoreKey];
+        [self updateAccount];
     }
     else {
         error = [NSError errorWithDomain:SRGIdentityErrorDomain
@@ -212,7 +205,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return YES;
 }
 
-- (void)failauthenticationWithError:(NSError *)error
+- (void)failAuthenticationWithError:(NSError *)error
 {
     [self didFinishWithError:error];
 }

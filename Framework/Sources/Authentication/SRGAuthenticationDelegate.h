@@ -12,10 +12,10 @@
 /**
  *  Cancels the code flow session, invoking the request's callback with a cancelled error.
  *
- *  @discussion It has no effect if called more than once, or after a resumeauthenticationWithURL: message was received.
+ *  @discussion It has no effect if called more than once, or after a resumeAuthenticationWithURL: message was received.
  *  Will cause an error with code `SRGAuthenticationCanceled`.
  */
-- (void)cancelauthentication;
+- (void)cancelAuthentication;
 
 /**
  *  Clients should call this method with the result of the authentication if it becomes available.
@@ -24,9 +24,9 @@
  *
  *  @return YES if the passed URL matches the expected redirect URL and was consumed, NO otherwise.
  *
- *  @discussion Has no effect if called more than once, or after a `cancelauthentication` message was received.
+ *  @discussion Has no effect if called more than once, or after a `cancelAuthentication` message was received.
  */
-- (BOOL)resumeauthenticationWithURL:(NSURL *)URL;
+- (BOOL)resumeAuthenticationWithURL:(NSURL *)URL;
 
 /**
  *  Clients should call this method when the authentication flow failed with a non-token error.
@@ -35,6 +35,6 @@
  *
  *  @discussion Has no effect if called more than once, or after a @c cancel message was received.
  */
-- (void)failauthenticationWithError:(NSError *)error;
+- (void)failAuthenticationWithError:(NSError *)error;
 
 @end

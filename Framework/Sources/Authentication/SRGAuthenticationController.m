@@ -65,13 +65,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                                  
                                                                                                  self.webAuthenticationSession = nil;
                                                                                                  if (callbackURL) {
-                                                                                                     [self.delegate resumeauthenticationWithURL:callbackURL];
+                                                                                                     [self.delegate resumeAuthenticationWithURL:callbackURL];
                                                                                                  }
                                                                                                  else {
                                                                                                      NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
                                                                                                                                                 code:SRGAuthenticationCanceled
                                                                                                                                             userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
-                                                                                                     [self.delegate failauthenticationWithError:safariError];
+                                                                                                     [self.delegate failAuthenticationWithError:safariError];
                                                                                                  }
                                                                                              }];
         self.webAuthenticationSession = webAuthenticationSession;
@@ -88,13 +88,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                         
                                                                                         self.authenticationSession = nil;
                                                                                         if (callbackURL) {
-                                                                                            [self.delegate resumeauthenticationWithURL:callbackURL];
+                                                                                            [self.delegate resumeAuthenticationWithURL:callbackURL];
                                                                                         }
                                                                                         else {
                                                                                             NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
                                                                                                                                        code:SRGAuthenticationCanceled
                                                                                                                                    userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
-                                                                                            [self.delegate failauthenticationWithError:safariError];
+                                                                                            [self.delegate failAuthenticationWithError:safariError];
                                                                                         }
                                                                                     }];
         self.authenticationSession = authenticationSession;
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSError *safariError = [NSError errorWithDomain:SRGIdentityErrorDomain
                                                    code:SRGAuthenticationStartFailed
                                                userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Unable to open Safari", @"Error message returned when the authentication process can't start.") }];
-        [delegate failauthenticationWithError:safariError];
+        [delegate failAuthenticationWithError:safariError];
     }
     else {
         self.request = request;
@@ -184,7 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
                                          code:SRGAuthenticationCanceled
                                      userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"authentication canceled.", @"Error message returned when the user or the app canceled the authentication process.") }];
-    [delegate failauthenticationWithError:error];
+    [delegate failAuthenticationWithError:error];
 }
 
 @end

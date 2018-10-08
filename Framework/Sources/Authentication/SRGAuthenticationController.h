@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return YES If the request UI was successfully presented to the user.
  *
- *  @Discussion The instance may call `resumeauthenticationWithURL:` or `failauthenticationWithError:` on delegate
+ *  @Discussion The instance may call `resumeAuthenticationWithURL:` or `failAuthenticationWithError:` on delegate
  *  to either resume or fail the request.
  */
 - (BOOL)presentControllerWithRequest:(SRGAuthenticationRequest *)request
