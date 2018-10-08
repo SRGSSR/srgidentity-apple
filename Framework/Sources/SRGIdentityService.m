@@ -16,9 +16,9 @@
 
 static SRGIdentityService *s_currentIdentityService;
 
-NSString * const SRGIdentityServiceUserLoggedInNotification = @"SRGIdentityServiceUserLoggedInNotification";
-NSString * const SRGIdentityServiceUserLoggedOutNotification = @"SRGIdentityServiceUserLoggedOutNotification";
-NSString * const SRGIdentityServiceUserMetadatasUpdateNotification = @"SRGIdentityServiceUserMetadatasUpdateNotification";
+NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
+NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
+NSString * const SRGIdentityServiceDidUpdateMetadataNotification = @"SRGIdentityServiceDidUpdateMetadataNotification";
 
 NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
 
@@ -130,7 +130,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (account) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateMetadataNotification
                                                                         object:self
                                                                       userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
                 }
@@ -181,7 +181,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     
     [self.keyChainStore setString:emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedOutNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
                                                       userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
 }
@@ -194,7 +194,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *emailAddress = self.emailAddress;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedInNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
     });
@@ -202,7 +202,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *emailAddress = self.emailAddress;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateMetadataNotification
                                                                 object:self
                                                               userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
         });

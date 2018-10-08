@@ -12,9 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-OBJC_EXPORT NSString * const SRGIdentityServiceUserLoggedInNotification;
-OBJC_EXPORT NSString * const SRGIdentityServiceUserLoggedOutNotification;
-OBJC_EXPORT NSString * const SRGIdentityServiceUserMetadatasUpdateNotification;
+OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
+OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
+
+// TODO: Why broadcasting updates via notifications? Getting the account is driven by -accountWithCompletionBlock:,
+//       not secretly in the background.
+OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateMetadataNotification;
 
 OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
 

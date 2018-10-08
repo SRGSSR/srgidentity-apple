@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGIdentityAccountView : UIView
 
 /**
- *  Identity service to authentify the user.
+ *  Identity service to authenticate the user.
  */
 @property (nonatomic, nullable) SRGIdentityService *service;
 

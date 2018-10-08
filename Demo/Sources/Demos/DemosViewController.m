@@ -42,15 +42,15 @@
     [self reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceUserLoggedInNotification
+                                                 name:SRGIdentityServiceUserDidLoginNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceUserLoggedOutNotification
+                                                 name:SRGIdentityServiceUserDidLogoutNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceUserMetadatasUpdateNotification
+                                                 name:SRGIdentityServiceDidUpdateMetadataNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
