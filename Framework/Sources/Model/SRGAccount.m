@@ -25,7 +25,6 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 @property (nonatomic, copy) NSNumber *uid;
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, getter=isValidated) BOOL validated;
 
 @end
 
@@ -49,16 +48,6 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
                        @keypath(SRGAccount.new, displayName) : @"display_name" };
     });
     return s_mapping;
-}
-
-#pragma mark Overrides
-
-- (BOOL)validate:(NSError **)pError
-{
-    self.validated = YES;
-    BOOL result = [super validate:pError];
-    self.validated = NO;
-    return result;
 }
 
 #pragma mark Transformers
