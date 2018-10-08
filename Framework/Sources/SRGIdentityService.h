@@ -16,9 +16,8 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
 OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
 
-OBJC_EXPORT NSString * const SRGIdentityServiceEmailAddressKey;
+OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 
-typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
 typedef void (^SRGAuthentificationCompletionBlock)(NSError * _Nullable error);
 
 @interface SRGIdentityService : NSObject <SRGAuthentificationDelegate>
@@ -35,18 +34,11 @@ typedef void (^SRGAuthentificationCompletionBlock)(NSError * _Nullable error);
  */
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup NS_DESIGNATED_INITIALIZER;
 
-/**
- *  Get account properties.
- */
-- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock;
-
-
 - (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
                                                 completionBlock:(nullable SRGAuthentificationCompletionBlock)completionBlock;
 
 /**
- *  Logout the current session, if any.
- *
+ *  Logout the current user, if any.
  */
 - (void)logout;
 

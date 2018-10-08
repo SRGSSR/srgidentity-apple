@@ -14,13 +14,15 @@
 #import <libextobjc/libextobjc.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
+typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
+
 static SRGIdentityService *s_currentIdentityService;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
-NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
+NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 
 NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
 NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
@@ -37,6 +39,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGNetworkRequest *profileRequest;
+
+@property (nonatomic) SRGAccount *account;
 
 @property (nonatomic) SRGAuthentificationController *authentificationController;
 @property (nonatomic) SRGAuthentificationCompletionBlock authentificationCompletionBlock;
@@ -64,6 +68,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     if (self = [super init]) {
         self.serviceURL = serviceURL;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
+        [self updateAccount];
     }
     return self;
 }
@@ -114,7 +119,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark Services
 
-- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
+- (void)updateAccount
 {
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -124,44 +129,29 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
     
-    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSHTTPURLResponse *HTTPResponse = [response isKindOfClass:NSHTTPURLResponse.class] ? (NSHTTPURLResponse *)response : nil;
-        
-        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (account) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
-                }
-                completionBlock(account, HTTPResponse, error);
-            });
-        };
-        
+    [[[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
-            requestCompletionBlock(nil, HTTPResponse, error);
             return;
         }
         
         NSDictionary *user = JSONDictionary[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:NULL];
         if (! account) {
-            requestCompletionBlock(nil, HTTPResponse, [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                          code:SRGIdentityErrorCodeInvalidData
-                                                                      userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
             return;
         }
         
-        NSString *emailAddress = self.emailAddress;
-        if (!self.emailAddress || ![account.emailAddress isEqualToString:emailAddress]) {
-            [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
-        }
+        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
         [self.keyChainStore setString:account.displayName forKey:SRGServiceIdentifierDisplayNameStoreKey];
+        
         NSString *uid = account.uid ? account.uid.stringValue : nil;
         [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
         
-        requestCompletionBlock(account, HTTPResponse, nil);
-    }];
+        self.account = account;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceAccountKey : account }];
+    }] resume];
 }
 
 - (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
@@ -175,15 +165,17 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 - (void)logout
 {
-    NSString *emailAddress = self.emailAddress;
+    SRGAccount *account = self.account;
     
     [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
+    self.account = nil;
     
-    [self.keyChainStore setString:emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGIdentityServiceAccountKey] = account;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
-                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+                                                      userInfo:[userInfo copy]];
 }
 
 #pragma mark Private
@@ -191,23 +183,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (void)loggedWithSessionToken:(NSString *)sessionToken
 {
     [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *emailAddress = self.emailAddress;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
-    });
-    
-    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *emailAddress = self.emailAddress;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
-                                                                object:self
-                                                              userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
-        });
-    }];
-    [self.profileRequest resume];
+    [self updateAccount];
 }
 
 #pragma SRGAuthentificationDelegate delegate

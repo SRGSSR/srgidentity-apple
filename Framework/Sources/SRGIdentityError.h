@@ -9,14 +9,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Data provider error constants. More information is available from the `userInfo` associated with these errors.
+ *  SRG Identity error constants. More information is available from the `userInfo` associated with these errors.
  */
 typedef NS_ENUM(NSInteger, SRGIdentityError) {
     /**
      *  The data which was received is invalid.
      */
     SRGIdentityErrorCodeInvalidData,
-    
+
     /**
      *  The authentification process was canceled.
      */
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, SRGIdentityError) {
 };
 
 /**
- *  Common domain for data provider errors.
+ *  Common domain for SRG Identity errors.
  */
 OBJC_EXPORT NSString * const SRGIdentityErrorDomain;
 

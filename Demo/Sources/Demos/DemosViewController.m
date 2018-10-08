@@ -15,11 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
-@property (weak, nonatomic) IBOutlet UIButton *accountButton;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UISwitch *testModeSwitch;
-
-@property (nonatomic) SRGNetworkRequest *accountRequest;
 
 @end
 
@@ -37,7 +34,8 @@
 
 - (void)viewDidLoad
 {
-    [self reloadData];
+    [super viewDidLoad];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userChanged:)
                                                  name:SRGIdentityServiceUserDidLoginNotification
@@ -54,12 +52,8 @@
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self refresh];
+    
+    [self reloadData];
 }
 
 #pragma mark Getters and setters
@@ -69,28 +63,7 @@
     return [NSString stringWithFormat:NSLocalizedString(@"SRGIdentity %@ (demo %@)", nil), SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
 }
 
-#pragma mark Datas
-
-- (void)refresh
-{
-    [self.accountRequest cancel];
-    
-    if (SRGIdentityService.currentIdentityService.logged) {
-        self.displayNameLabel.text = NSLocalizedString(@"Refreshing…", nil);
-        self.accountRequest = [SRGIdentityService.currentIdentityService accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
-            [self reloadData];
-            
-            if (HTTPResponse.statusCode == 401) {
-                self.displayNameLabel.text = NSLocalizedString(@"Session expired.", nil);
-                [SRGIdentityService.currentIdentityService logout];
-            }
-        }];
-        [self.accountRequest resume];
-    }
-    else {
-        self.displayNameLabel.text = NSLocalizedString(@"Not logged.", nil);
-    }
-}
+#pragma mark Data
 
 - (void)reloadData
 {
@@ -98,8 +71,7 @@
     
     self.displayNameLabel.text = isLogged ? SRGIdentityService.currentIdentityService.displayName : NSLocalizedString(@"Not logged.", nil);
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
-    self.accountButton.enabled = self.testModeSwitch.on || isLogged;;
-    self.logoutButton.enabled = self.testModeSwitch.on || isLogged;;
+    self.logoutButton.enabled = self.testModeSwitch.on || isLogged;
 }
 
 #pragma mark Actions
@@ -124,11 +96,6 @@
 - (void)userChanged:(NSNotification *)notification
 {
     [self reloadData];
-}
-
-- (void)applicationDidBecomeActive:(NSNotification *)notification
-{
-    [self refresh];
 }
 
 @end
