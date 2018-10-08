@@ -17,8 +17,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIKit/UIKit.h>
 
-typedef void (^SRGAccountCompletionBlock)(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error);
-
 static SRGIdentityService *s_currentIdentityService;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
@@ -45,7 +43,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 @property (nonatomic) SRGAccount *account;
 
-@property (nonatomic) id authenticationSession /* Must be strong to avoid cancellation. ASWebAuthenticationSession or SFAuthenticationSession */;
+@property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 @property (nonatomic, copy) NSString *identifier;
 
 @end
@@ -74,8 +72,8 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
         URLScheme = bundleURLSchemes.firstObject;
         if (! URLScheme) {
             SRGIdentityLogError(@"authentication", @"No URL scheme declared in your application Info.plist file under the "
-                                "'CFBundleURLTypes' key. The application must at least contains one item with one scheme "
-                                "to allow a correct authentication workflow. Take care to have an unique URL scheme.");
+                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
+                                "to allow a correct authentication workflow.");
         }
     });
     return URLScheme;
@@ -88,6 +86,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     if (self = [super init]) {
         self.serviceURL = serviceURL;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
+        
         [self updateAccount];
     }
     return self;
@@ -142,6 +141,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 {
     NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.serviceURL];
     NSURL *redirectURL = [self loginRedirectURL];
+    
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
     NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
                                               [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
@@ -177,11 +177,11 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 // TODO: Prevent concurrent login attempts, or cancel previous one. Also prevent or govern interactions with logout
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
-    
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         [self handleCallbackURL:callbackURL];
     };
+    
+    NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
     
     // iOS 12 and later, use `ASWebAuthenticationSession`
     if (@available(iOS 12.0, *)) {
