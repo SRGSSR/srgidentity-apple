@@ -176,7 +176,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 //       Define behavior when user already logged in.
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
+    @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        @strongify(self)
         [self handleCallbackURL:callbackURL];
     };
     
