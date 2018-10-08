@@ -11,6 +11,8 @@
 #import <AVKit/AVKit.h>
 #import <SRGIdentity/SRGIdentity.h>
 
+NSString * const SettingLastloggedEmail = @"SettingLastloggedEmail";
+
 @interface DemosViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
@@ -68,13 +70,18 @@
     self.displayNameLabel.text = SRGIdentityService.currentIdentityService.account.displayName ?: SRGIdentityService.currentIdentityService.emailAddress ?: NSLocalizedString(@"Not logged.", nil);
     self.loginButton.enabled = self.testModeSwitch.on || !isLogged;
     self.logoutButton.enabled = self.testModeSwitch.on || isLogged;
+    
+    if (SRGIdentityService.currentIdentityService.emailAddress) {
+        [NSUserDefaults.standardUserDefaults setObject:SRGIdentityService.currentIdentityService.emailAddress forKey:SettingLastloggedEmail];
+        [NSUserDefaults.standardUserDefaults synchronize];
+    }
 }
 
 #pragma mark Actions
 
 - (IBAction)login:(id)sender
 {
-    [SRGIdentityService.currentIdentityService loginWithEmailAddress:nil];
+    [SRGIdentityService.currentIdentityService loginWithEmailAddress:[NSUserDefaults.standardUserDefaults stringForKey:SettingLastloggedEmail]];
 }
 
 - (IBAction)logout:(id)sender
