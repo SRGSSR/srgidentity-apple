@@ -27,8 +27,14 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServiceErrorKey = @"SRGIdentityServiceError";
 
-NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
-NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
+static NSString * SRGServiceIdentifierEmailStoreKey;
+static NSString * SRGServiceIdentifierSessionTokenStoreKey;
+
+__attribute__((constructor)) static void SRGIdentityServiceInit(void)
+{
+    SRGServiceIdentifierEmailStoreKey = [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".email"];
+    SRGServiceIdentifierSessionTokenStoreKey = [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
+}
 
 @interface SRGIdentityService ()
 
@@ -211,7 +217,8 @@ NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
 {
     SRGAccount *account = self.account;
     
-    [self.keyChainStore removeAllItems];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey];
     self.account = nil;
     
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
