@@ -27,11 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, getter=isInProgress) BOOL inProgress;
 
 @property(nonatomic, nullable, weak) SFSafariViewController *safariViewController;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpartial-availability"
-@property(nonatomic, nullable) SFAuthenticationSession *authenticationSession;
-@property(nonatomic, nullable) ASWebAuthenticationSession *webAuthenticationSession;
-#pragma clang diagnostic pop
+
+@property(nonatomic, nullable) SFAuthenticationSession *authenticationSession __IOS_AVAILABLE(11.0);
+@property(nonatomic, nullable) ASWebAuthenticationSession *webAuthenticationSession __IOS_AVAILABLE(12.0);
+
 @end
 
 @implementation SRGAuthentificationController
@@ -159,7 +158,11 @@ NS_ASSUME_NONNULL_BEGIN
     // The weak references to |_safariVC| and |_session| are set to nil to avoid accidentally using
     // them while not in an authentification flow.
     self.safariViewController = nil;
-    self.authenticationSession = nil;
+    
+    if (@available(iOS 11, *)) {
+        self.authenticationSession = nil;
+    }
+        
     self.delegate = nil;
     self.inProgress = NO;
 }
