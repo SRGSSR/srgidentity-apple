@@ -31,15 +31,6 @@
  */
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<NSString *, id> *)options
 {
-    // Sends the URL to the current authentication flow (if any) which will process it if it relates to an
-    // authentication response.
-    // TODO: Identifier
-    if ([SRGIdentityService.currentIdentityService handleCallbackURL:url withIdentifier:@"TODO"]) {
-        return YES;
-    }
-    
-    // Your additional URL handling (if any) goes here.
-    
-    return NO;
+    return [SRGIdentityService.currentIdentityService handleCallbackURL:url];
 }
 @end

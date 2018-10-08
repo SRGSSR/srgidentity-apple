@@ -64,7 +64,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceErrorKey;
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 // TODO: For URL scheme processing in the Safari iOS 9 workflow. Hide
-- (BOOL)handleCallbackURL:(NSURL *)callbackURL withIdentifier:(NSString *)identifier;
+- (BOOL)handleCallbackURL:(NSURL *)callbackURL;
 
 @end
 

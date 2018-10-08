@@ -131,19 +131,17 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark URLs
 
-- (NSURL *)loginRedirectURLWithIdentifier:(NSString *)identifier
+- (NSURL *)loginRedirectURL
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
-    NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
-    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"client" value:identifier]];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
     return URLComponents.URL;
 }
 
-- (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress identifier:(NSString *)identifier
+- (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
     NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.serviceURL];
-    NSURL *redirectURL = [self loginRedirectURLWithIdentifier:identifier];
+    NSURL *redirectURL = [self loginRedirectURL];
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
     NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
                                               [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
@@ -155,17 +153,11 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     return URLComponents.URL;
 }
 
-- (BOOL)shouldHandleReponseURL:(NSURL *)URL forRequestWithIdentifier:(NSString *)identifier
+- (BOOL)shouldHandleReponseURL:(NSURL *)URL
 {
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"client"];
-    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-    if (queryItem && ! [identifier isEqualToString:queryItem.value]) {
-        return NO;
-    }
-    
-    NSURL *standardizedURL = [URL standardizedURL];
-    NSURL *standardizedRedirectURL = [[self loginRedirectURLWithIdentifier:identifier] standardizedURL];
+    // TODO: Criterium?
+    NSURL *standardizedURL = URL.standardizedURL;
+    NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
     return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
         && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
@@ -185,11 +177,10 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 // TODO: Prevent concurrent login attempts, or cancel previous one. Also prevent or govern interactions with logout
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
-    NSString *identifier = NSUUID.UUID.UUIDString;
-    NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress identifier:identifier];
+    NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
     
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        [self handleCallbackURL:callbackURL withIdentifier:identifier];
+        [self handleCallbackURL:callbackURL];
     };
     
     // iOS 12 and later, use `ASWebAuthenticationSession`
@@ -214,7 +205,7 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     }
     // iOS 9 and 10, use `SFSafariViewController`
     else {
-        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL entersReaderIfAvailable:NO];
+        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         // TODO: Use top root view controller
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
         [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
@@ -240,9 +231,9 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 
 #pragma mark Callback URL handling
 
-- (BOOL)handleCallbackURL:(NSURL *)callbackURL withIdentifier:(NSString *)identifier
+- (BOOL)handleCallbackURL:(NSURL *)callbackURL
 {
-    if (! [self shouldHandleReponseURL:callbackURL forRequestWithIdentifier:identifier]) {
+    if (! [self shouldHandleReponseURL:callbackURL]) {
         return NO;
     }
     
