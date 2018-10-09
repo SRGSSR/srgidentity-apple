@@ -26,13 +26,14 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 
-static NSString * SRGServiceIdentifierEmailStoreKey;
-static NSString * SRGServiceIdentifierSessionTokenStoreKey;
-
-__attribute__((constructor)) static void SRGIdentityServiceInit(void)
+static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
-    SRGServiceIdentifierEmailStoreKey = [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".email"];
-    SRGServiceIdentifierSessionTokenStoreKey = [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
+    return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".email"];
+}
+
+static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
+{
+    return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
 @interface SRGIdentityService ()
@@ -118,12 +119,12 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSString *)sessionToken
 {
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
 - (NSString *)emailAddress
 {
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey()];
 }
 
 #pragma mark URLs
@@ -224,7 +225,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"DELETE";
     
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -232,8 +233,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         dispatch_async(dispatch_get_main_queue(), ^{
             SRGAccount *account = self.account;
             
-            [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey];
-            [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey];
+            [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+            [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
             self.account = nil;
             
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
@@ -259,7 +260,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     
-    [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey];
+    [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey()];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
                                                         object:self
@@ -284,7 +285,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     if (sessionToken) {
         [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     }
@@ -300,7 +301,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             return;
         }
         
-        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
+        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey()];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
