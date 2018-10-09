@@ -8,30 +8,77 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  Genders.
+ */
 typedef NS_ENUM(NSInteger, SRGGender) {
+    /**
+     *  Not specified.
+     */
     SRGGenderNone = 0,
+    /**
+     *  Female.
+     */
     SRGGenderFemale,
+    /**
+     *  Male.
+     */
     SRGGenderMale,
+    /**
+     *  Other.
+     */
     SRGGenderOther
 };
 
+/**
+ *  Return a description for the specified gender.
+ */
 OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
 
+/**
+ *  Account information.
+ */
 @interface SRGAccount : MTLModel <MTLJSONSerializing>
 
-@property (nonatomic, copy, nullable) NSString *emailAddress;
-@property (nonatomic, copy, nullable) NSString *password;
+/**
+ *  The unique account identifier.
+ */
+@property (nonatomic, readonly, copy, nullable) NSNumber *uid;
 
-@property (nonatomic, copy, nullable) NSString *firstName;
-@property (nonatomic, copy, nullable) NSString *lastName;
+/**
+ *  The account display name.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *displayName;
 
-@property (nonatomic) SRGGender gender;
+/**
+ *  The email address associated with the account.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
 
-@property (nonatomic, nullable) NSDate *birthdate;
-@property (nonatomic, copy, nullable) NSString *languageCode;
+/**
+ *  The user first name.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *firstName;
 
-@property (nonatomic, copy, readonly, nullable) NSNumber *uid;
-@property (nonatomic, copy, readonly, nullable) NSString *displayName;
+/**
+ *  The user last name.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *lastName;
+
+/**
+ *  The user gender.
+ */
+@property (nonatomic, readonly) SRGGender gender;
+
+/**
+ *  The user birthdate.
+ */
+@property (nonatomic, readonly, nullable) NSDate *birthdate;
+
+/**
+ *  `YES` iff the account has been verified.
+ */
+@property (nonatomic, readonly, getter=isVerified) BOOL verified;
 
 @end
 

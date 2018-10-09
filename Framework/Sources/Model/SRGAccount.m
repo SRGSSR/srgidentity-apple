@@ -25,6 +25,12 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 @property (nonatomic, copy) NSNumber *uid;
 @property (nonatomic, copy) NSString *displayName;
+@property (nonatomic, copy) NSString *emailAddress;
+@property (nonatomic, copy) NSString *firstName;
+@property (nonatomic, copy) NSString *lastName;
+@property (nonatomic) SRGGender gender;
+@property (nonatomic) NSDate *birthdate;
+@property (nonatomic, getter=isVerified) BOOL verified;
 
 @end
 
@@ -37,15 +43,14 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static NSDictionary *s_mapping;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
-        s_mapping = @{ @keypath(SRGAccount.new, emailAddress) : @"email",
-                       @keypath(SRGAccount.new, password) : @"password",
+        s_mapping = @{ @keypath(SRGAccount.new, uid) : @"id",
+                       @keypath(SRGAccount.new, displayName) : @"display_name",
+                       @keypath(SRGAccount.new, emailAddress) : @"email",
                        @keypath(SRGAccount.new, firstName) : @"firstname",
                        @keypath(SRGAccount.new, lastName) : @"lastname",
                        @keypath(SRGAccount.new, gender) : @"gender",
                        @keypath(SRGAccount.new, birthdate) : @"date_of_birth",
-                       @keypath(SRGAccount.new, languageCode) : @"language",
-                       @keypath(SRGAccount.new, uid) : @"id",
-                       @keypath(SRGAccount.new, displayName) : @"display_name" };
+                       @keypath(SRGAccount.new, verified) : @"email_verified" };
     });
     return s_mapping;
 }
