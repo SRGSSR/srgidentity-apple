@@ -229,17 +229,16 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // Remove local login informations in any cases.
+        // TODO: Shouldn't we ensure that there is no error before we delete the credentials?
+        // Remove local login informations in all cases.
+        [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+        [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+        
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        userInfo[SRGIdentityServiceAccountKey] = self.account;
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            SRGAccount *account = self.account;
-            
-            [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
-            [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
             self.account = nil;
-            
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-            userInfo[SRGIdentityServiceAccountKey] = account;
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                 object:self
                                                               userInfo:[userInfo copy]];
