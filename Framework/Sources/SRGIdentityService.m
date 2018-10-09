@@ -175,7 +175,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
-    if (s_loggingIn) {
+    if (s_loggingIn || self.loggedIn) {
         return NO;
     }
     
