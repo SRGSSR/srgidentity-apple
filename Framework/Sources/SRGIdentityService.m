@@ -291,13 +291,14 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (void)updateAccount
 {
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    if (! sessionToken) {
+        return;
+    }
+    
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-    if (sessionToken) {
-        [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-    }
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
