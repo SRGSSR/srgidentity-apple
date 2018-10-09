@@ -37,7 +37,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
-@interface SRGIdentityService ()
+@interface SRGIdentityService () <SFSafariViewControllerDelegate>
 
 @property (nonatomic) NSURL *serviceURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
@@ -213,10 +213,9 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     // iOS 9 and 10, use `SFSafariViewController`
     else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
+        safariViewController.delegate = self;
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController presentViewController:safariViewController animated:YES completion:^{
-            s_loggingIn = NO;
-        }];
+        [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
     }
     
     s_loggingIn = YES;
@@ -280,10 +279,19 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     }
     else {
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [presentingViewController dismissViewControllerAnimated:YES completion:^{
+            s_loggingIn = NO;
+        }];
     }
     
     return YES;
+}
+
+#pragma mark SFSafariViewControllerDelegate delegate
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
+{
+    s_loggingIn = NO;
 }
 
 #pragma mark Account information
