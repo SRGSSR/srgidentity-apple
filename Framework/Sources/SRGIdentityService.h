@@ -36,7 +36,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 /**
  *  Logout the current user, if any.
  */
-- (void)logout;
+- (BOOL)logout;
 
 /**
  *  The service URL.

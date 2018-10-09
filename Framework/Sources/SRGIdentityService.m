@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 
 static SRGIdentityService *s_currentIdentityService;
+static BOOL s_loggingIn;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
@@ -172,16 +173,19 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 #pragma mark Login / logout
 
-// TODO: Prevent concurrent login attempts, or cancel previous one. Also prevent or govern interactions with logout.
-//       Define behavior when user already logged in.
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
+    if (s_loggingIn) {
+        return NO;
+    }
+    
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
         }
+        s_loggingIn = NO;
     };
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
@@ -210,16 +214,19 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
+        [presentingViewController presentViewController:safariViewController animated:YES completion:^{
+            s_loggingIn = NO;
+        }];
     }
     
+    s_loggingIn = YES;
     return YES;
 }
 
-- (void)logout
+- (BOOL)logout
 {
-    if (! self.sessionToken) {
-        return;
+    if (s_loggingIn || ! self.sessionToken ) {
+        return NO;
     }
     
     NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.serviceURL];
@@ -245,6 +252,8 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
                                                               userInfo:[userInfo copy]];
         });
     }] resume];
+    
+    return YES;
 }
 
 #pragma mark Callback URL handling
