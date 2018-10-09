@@ -157,10 +157,9 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     NSURL *standardizedURL = URL.standardizedURL;
     NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
-    return ((standardizedURL.scheme == standardizedRedirectURL.scheme) || [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme])
-        && ((standardizedURL.host == standardizedRedirectURL.host) || [standardizedURL.host isEqualToString:standardizedRedirectURL.host])
-        && ((standardizedURL.port == standardizedRedirectURL.port) || [standardizedURL.port isEqual:standardizedRedirectURL.port])
-        && ((standardizedURL.path == standardizedRedirectURL.path) || [standardizedURL.path isEqual:standardizedRedirectURL.path]);
+    return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
+        && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
+        && [standardizedURL.path isEqual:standardizedRedirectURL.path];
 }
 
 - (NSString *)tokenFromURL:(NSURL *)URL
@@ -180,7 +179,9 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         @strongify(self)
-        [self handleCallbackURL:callbackURL];
+        if (callbackURL) {
+            [self handleCallbackURL:callbackURL];
+        }
     };
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
