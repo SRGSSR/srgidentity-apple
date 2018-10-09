@@ -86,7 +86,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 {
     if (self = [super init]) {
         self.serviceURL = serviceURL;
-        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([serviceURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTP : UICKeyChainStoreProtocolTypeHTTPS;
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([serviceURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:serviceURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
