@@ -237,8 +237,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // TODO: Shouldn't we ensure that there is no error before we delete the credentials?
-        // Remove local login informations in all cases.
+        // Ignore errors and cleanup local credentials in all cases.
         [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
         [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
         
