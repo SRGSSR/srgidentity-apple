@@ -49,14 +49,17 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 @property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
 
 /**
- *  Detailed account information, if available.
+ *  `YES` iff a user is logged.
  */
-@property (nonatomic, readonly, nullable) SRGAccount *account;
+@property (nonatomic, readonly, getter=isLoggedIn) BOOL loggedIn;
 
 /**
- *  The login status.
+ *  Detailed account information, if available.
+ *
+ *  @discussion This information might not be available yet even if a user is logged in. Always check the `loggedIn`
+ *              property to determine if a user is logged in.
  */
-@property (nonatomic, readonly, getter=isLogged) BOOL logged;
+@property (nonatomic, readonly, nullable) SRGAccount *account;
 
 /**
  *  The logged in token, if any.

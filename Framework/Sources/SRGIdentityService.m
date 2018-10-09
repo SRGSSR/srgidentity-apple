@@ -111,7 +111,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Getters and setters
 
-- (BOOL)isLogged
+- (BOOL)isLoggedIn
 {
     return (self.sessionToken != nil);
 }
