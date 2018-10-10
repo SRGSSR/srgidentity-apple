@@ -13,10 +13,10 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static dispatch_once_t s_onceToken;
     static NSDictionary<NSNumber *, NSString *> *s_descriptions;
     dispatch_once(&s_onceToken, ^{
-        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified SRGGender"),
-                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female SRGGender"),
-                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male SRGGender"),
-                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other SRGGender") };
+        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified gender"),
+                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female"),
+                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male"),
+                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other gender") };
     });
     return s_descriptions[@(SRGGender)];
 }
@@ -25,23 +25,16 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 @property (nonatomic, copy) NSNumber *uid;
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, getter=isValidated) BOOL validated;
+@property (nonatomic, copy) NSString *emailAddress;
+@property (nonatomic, copy) NSString *firstName;
+@property (nonatomic, copy) NSString *lastName;
+@property (nonatomic) SRGGender gender;
+@property (nonatomic) NSDate *birthdate;
+@property (nonatomic, getter=isVerified) BOOL verified;
 
 @end
 
 @implementation SRGAccount
-
-- (instancetype)initWithAccount:(SRGAccount *)account
-{
-    if ([super init]) {
-        [account.dictionaryValue enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            if (! [obj isKindOfClass:NSNull.class]) {
-                [self setValue:obj forKey:key];
-            }
-        }];
-    }
-    return self;
-}
 
 #pragma mark MTLJSONSerializing protocol
 
@@ -50,32 +43,21 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static NSDictionary *s_mapping;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
-        s_mapping = @{ @keypath(SRGAccount.new, emailAddress) : @"email",
-                       @keypath(SRGAccount.new, password) : @"password",
+        s_mapping = @{ @keypath(SRGAccount.new, uid) : @"id",
+                       @keypath(SRGAccount.new, displayName) : @"display_name",
+                       @keypath(SRGAccount.new, emailAddress) : @"email",
                        @keypath(SRGAccount.new, firstName) : @"firstname",
                        @keypath(SRGAccount.new, lastName) : @"lastname",
-                       @keypath(SRGAccount.new, SRGGender) : @"SRGGender",
+                       @keypath(SRGAccount.new, gender) : @"gender",
                        @keypath(SRGAccount.new, birthdate) : @"date_of_birth",
-                       @keypath(SRGAccount.new, languageCode) : @"language",
-                       @keypath(SRGAccount.new, uid) : @"id",
-                       @keypath(SRGAccount.new, displayName) : @"display_name" };
+                       @keypath(SRGAccount.new, verified) : @"email_verified" };
     });
     return s_mapping;
 }
 
-#pragma mark Overrides
-
-- (BOOL)validate:(NSError **)pError
-{
-    self.validated = YES;
-    BOOL result = [super validate:pError];
-    self.validated = NO;
-    return result;
-}
-
 #pragma mark Transformers
 
-+ (NSValueTransformer *)SRGGenderJSONTransformer
++ (NSValueTransformer *)genderJSONTransformer
 {
     static NSValueTransformer *s_transformer;
     static dispatch_once_t s_onceToken;

@@ -4,7 +4,7 @@
 
 ## About
 
-The SRG Identity framework contains the Peach authentification logic.
+The SRG Identity framework is a simple way to authenticate users within SRG SSR applications. [Peach](http://peach.ebu.io) identity provider is the only supported service at the moment.
 
 ## Compatibility
 
@@ -19,7 +19,7 @@ If you want to contribute to the project, have a look at our [contributing guide
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/srgidentity-iOS"
+github "SRGSSR/srgidentity-ios"
 ```
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
@@ -28,10 +28,13 @@ For more information about Carthage and its use, refer to the [official document
 
 The library requires the following frameworks to be added to any target requiring it:
 
+* `FXReachability`: A reachability framework.
 * `libextobjc`: An utility framework.
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `Mantle`: The framework used to parse the data.
 * `SRGIdentity`: The identity library framework.
+* `SRGLogger`: The framework used for internal logging.
+* `SRGNetwork`: A networking framework.
 * `UICKeyChainStore`: The framework used to manage the keychain.
 
 ### Dynamic framework integration
@@ -77,40 +80,13 @@ Import the module where needed:
 import SRGIdentity
 ```
 
-### Identity instantation and access
+### Working with the library
 
-At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a service URL, for example:
+To learn about how the library can be used, have a look at the [getting started guide](GETTING_STARTED.md).
 
-```objective-c
-SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch" accessGroup:@"VMGRRW6SG7.ch.srgssr.identity"]];
-```
+### Logging
 
-NB: To use keychain `accessGroup`, add it also `keychain-access-groups` in the application entitlements.
-
-A set of identity values are provided. You can have several identity services in an application, though most applications should require only one. To make it easier to access the main identity service of an application, the `SRGIdentityService ` class provides class methods to set it as shared instance:
-
-```objective-c
-SRGIdentityService *identityService = ...;
-[SRGIdentityService setCurrentIdentityService:identityService];
-```
-
-and to retrieve it from anywhere, for example when creating a request:
-
-```objective-c
-SRGIdentityService *identityService = [SRGIdentityService currentIdentityService];
-```
-
-### Login
-
-To authentifiate, use `SRGIdentityLoginView`.
-
-### Manage account
-
-To display and update the user profile, use `SRGIdentityAccountView`.
-
-### Logout
-
-To logout, use `-logout`.
+The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging, within the `ch.srgssr.mediaplayer` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
 
 ## License
 

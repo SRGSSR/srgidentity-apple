@@ -5,31 +5,30 @@
 //
 
 
-#import "SRGAuthentificationRequest.h"
+#import "SRGAuthenticationRequest.h"
 
 #import "SRGIdentityLogger.h"
 
 #import <libextobjc/libextobjc.h>
 
-@interface SRGAuthentificationRequest ()
+@interface SRGAuthenticationRequest ()
 
-@property(nonatomic) NSURL *serviceURL;
-@property(nonatomic) NSString *emailAddress;
-@property(nonatomic) NSString *uuid;
+@property (nonatomic) NSURL *serviceURL;
+@property (nonatomic, copy) NSString *emailAddress;
+@property (nonatomic, copy) NSString *UUID;
 @end
 
-@implementation SRGAuthentificationRequest
+@implementation SRGAuthenticationRequest
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithServiceURL:(NSURL *)serviceURL emailAddress:(NSString *)emailAddress
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.serviceURL = serviceURL;
         self.emailAddress = emailAddress;
         // TODO: Uncomment when it's fix on peach idp server.
-//        self.uuid = [[NSUUID UUID] UUIDString];
+//        self.UUID = NSUUID.UUID.UUIDString;
     }
     return self;
 }
@@ -42,6 +41,8 @@
     [self doesNotRecognizeSelector:_cmd];
     return [self initWithServiceURL:[NSURL new] emailAddress:nil];
 }
+
+#pragma clang diagnostic pop
 
 #pragma mark Getters
 
@@ -57,9 +58,9 @@
         }
         
         if (! s_redirectScheme) {
-            SRGIdentityLogError(@"authentification", @"No URL scheme declared in your application Info.plist file under the "
+            SRGIdentityLogError(@"authentication", @"No URL scheme declared in your application Info.plist file under the "
                                 "'CFBundleURLTypes' key. The application must at least contains one item with one scheme "
-                                "to allow a correct authentification workflow. Take care to have an unique URL scheme.");
+                                "to allow a correct authentication workflow. Take care to have an unique URL scheme.");
         }
     });
     return s_redirectScheme;
@@ -70,7 +71,7 @@
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
     // TODO: Uncomment when it's fix on peach idp server.
 //    NSArray<NSURLQueryItem *> *queryItems = URLComponents.queryItems ?: @[];
-//    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.uuid]];
+//    URLComponents.queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"authUid" value:self.UUID]];
     URLComponents.scheme = self.redirectScheme;
     return URLComponents.URL;
 }
@@ -92,18 +93,18 @@
 
 - (BOOL)shouldHandleReponseURL:(NSURL *)URL
 {
-    NSString *redirectUid = nil;
+    NSString *redirectUUID= nil;
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"authUid"];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     if (queryItem) {
-        redirectUid = queryItem.value;
+        redirectUUID = queryItem.value;
     }
     
     NSURL *standardizedURL = [URL standardizedURL];
     NSURL *standardizedRedirectURL = [self.redirectURL standardizedURL];
     
-    return ((self.uuid == redirectUid) || [self.uuid isEqualToString:redirectUid]) &&
+    return ((self.UUID == redirectUUID) || [self.UUID isEqualToString:redirectUUID]) &&
     ((standardizedURL.scheme == standardizedRedirectURL.scheme) || [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]) &&
     ((standardizedURL.host == standardizedRedirectURL.host) || [standardizedURL.host isEqualToString:standardizedRedirectURL.host]) &&
     ((standardizedURL.scheme == standardizedRedirectURL.path) || [standardizedURL.path isEqual:standardizedRedirectURL.path]);

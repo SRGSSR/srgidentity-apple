@@ -7,39 +7,46 @@
 #import "SRGIdentityService.h"
 
 #import "NSBundle+SRGIdentity.h"
-#import "SRGIdentityError.h"
-#import "SRGIdentityService+Private.h"
-#import "SRGAuthentificationController.h"
+#import "SRGIdentityLogger.h"
+#import "UIWindow+SRGIdentity.h"
 
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <FXReachability/FXReachability.h>
 #import <libextobjc/libextobjc.h>
+#import <SafariServices/SafariServices.h>
+#import <SRGNetwork/SRGNetwork.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
+#import <UIKit/UIKit.h>
 
 static SRGIdentityService *s_currentIdentityService;
+static BOOL s_loggingIn;
 
-NSString * const SRGIdentityServiceUserLoggedInNotification = @"SRGIdentityServiceUserLoggedInNotification";
-NSString * const SRGIdentityServiceUserLoggedOutNotification = @"SRGIdentityServiceUserLoggedOutNotification";
-NSString * const SRGIdentityServiceUserMetadatasUpdateNotification = @"SRGIdentityServiceUserMetadatasUpdateNotification";
+NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
+NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
+NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
-NSString * const SRGIdentityServiceEmailAddressKey = @"SRGIdentityServiceEmailAddressKey";
+NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 
-NSString * const SRGServiceIdentifierEmailStoreKey = @"email";
-NSString * const SRGServiceIdentifierSessionTokenStoreKey = @"sessionToken";
-NSString * const SRGServiceIdentifierUserIdStoreKey = @"userId";
-NSString * const SRGServiceIdentifierDisplayNameStoreKey = @"displayName";
+static NSString *SRGServiceIdentifierEmailStoreKey(void)
+{
+    return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".email"];
+}
 
-NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
+static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
+{
+    return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
+}
 
-@interface SRGIdentityService ()
+@interface SRGIdentityService () <SFSafariViewControllerDelegate>
 
-@property (nonatomic) NSURL *serviceURL;
+@property (nonatomic) NSURL *providerURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
-@property (nonatomic) SRGNetworkRequest *profileRequest;
+@property (nonatomic) SRGAccount *account;
 
-@property (nonatomic) SRGAuthentificationController *authentificationController;
-@property (nonatomic) SRGAuthentificationCompletionBlock authentificationCompletionBlock;
+@property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @end
 
@@ -57,13 +64,42 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
     s_currentIdentityService = currentIdentityService;
 }
 
++ (NSString *)applicationURLScheme
+{
+    static NSString *URLScheme;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
+        URLScheme = bundleURLSchemes.firstObject;
+        if (! URLScheme) {
+            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
+                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
+                                "to allow a correct authentication workflow.");
+        }
+    });
+    return URLScheme;
+}
+
 #pragma mark Object lifecycle
 
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL accessGroup:(nullable NSString *)accessGroup
+- (instancetype)initWithProviderURL:(NSURL *)providerURL
 {
     if (self = [super init]) {
-        self.serviceURL = serviceURL;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithService:self.serviceIdentifier accessGroup:accessGroup];
+        self.providerURL = providerURL;
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(reachabilityDidChange:)
+                                                   name:FXReachabilityStatusDidChangeNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(applicationWillEnterForeground:)
+                                                   name:UIApplicationWillEnterForegroundNotification
+                                                 object:nil];
+        
+        [self updateAccount];
     }
     return self;
 }
@@ -74,197 +110,248 @@ NSString * const SRGServiceIdentifierCookieName = @"identity.provider.sid";
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithServiceURL:[NSURL new] accessGroup:nil];
+    return [self initWithProviderURL:[NSURL new]];
 }
+
+#pragma clang diagnostic pop
 
 #pragma mark Getters and setters
 
-- (BOOL)isLogged
+- (BOOL)isLoggedIn
 {
     return (self.sessionToken != nil);
 }
 
 - (NSString *)sessionToken
 {
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
 - (NSString *)emailAddress
 {
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey];
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey()];
 }
 
-- (NSString *)displayName
+- (void)setAccount:(SRGAccount *)account
 {
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierDisplayNameStoreKey] ?: self.emailAddress;
-}
-
-- (NSString *)userId
-{
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierUserIdStoreKey];
-}
-
-- (NSString *)serviceIdentifier
-{
-    NSArray *hostComponents = [self.serviceURL.host componentsSeparatedByString:@"."];
-    NSArray *reverseHostComponents = [[hostComponents reverseObjectEnumerator] allObjects];
-    NSString *domain = [reverseHostComponents componentsJoinedByString:@"."];
-    return [domain stringByAppendingString:@".identity"];
-}
-
-#pragma mark Services
-
-- (SRGNetworkRequest *)accountWithCompletionBlock:(SRGAccountCompletionBlock)completionBlock
-{
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    _account = account;
     
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey];
-    if (sessionToken) {
-        [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-    }
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGIdentityServiceAccountKey] = account;
     
-    return [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        NSHTTPURLResponse *HTTPResponse = [response isKindOfClass:NSHTTPURLResponse.class] ? (NSHTTPURLResponse *)response : nil;
-        
-        SRGAccountCompletionBlock requestCompletionBlock = ^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (account) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : account.emailAddress ?: NSNull.null }];
-                }
-                completionBlock(account, HTTPResponse, error);
-            });
-        };
-        
-        if (error) {
-            requestCompletionBlock(nil, HTTPResponse, error);
-            return;
-        }
-        
-        NSDictionary *user = JSONDictionary[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:&error];
-        if (! account) {
-            requestCompletionBlock(nil, HTTPResponse, [NSError errorWithDomain:SRGIdentityErrorDomain
-                                                                          code:SRGIdentityErrorCodeInvalidData
-                                                                      userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The data is invalid.", @"Error message returned when a server response data is incorrect.") }]);
-            return;
-        }
-        
-        NSString *emailAddress = self.emailAddress;
-        if (!self.emailAddress || ![account.emailAddress isEqualToString:emailAddress]) {
-            [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
-        }
-        [self.keyChainStore setString:account.displayName forKey:SRGServiceIdentifierDisplayNameStoreKey];
-        NSString *uid = account.uid ? account.uid.stringValue : nil;
-        [self.keyChainStore setString:uid forKey:SRGServiceIdentifierUserIdStoreKey];
-        
-        requestCompletionBlock(account, HTTPResponse, nil);
-    }];
-}
-
-- (BOOL)presentAuthentificationViewControllerFromViewController:(UIViewController *)presentingViewController
-                                                completionBlock:(SRGAuthentificationCompletionBlock)completionBlock
-{
-    self.authentificationCompletionBlock = completionBlock;
-    SRGAuthentificationRequest *request = [[SRGAuthentificationRequest alloc] initWithServiceURL:self.serviceURL emailAddress:self.emailAddress];
-    self.authentificationController = [[SRGAuthentificationController alloc] initWithPresentingViewController:presentingViewController];
-    return [self.authentificationController presentControllerWithRequest:request delegate:self];
-}
-
-- (void)logout
-{
-    NSString *emailAddress = self.emailAddress;
-    
-    [UICKeyChainStore removeAllItemsForService:self.serviceIdentifier];
-    
-    [self.keyChainStore setString:emailAddress forKey:SRGServiceIdentifierEmailStoreKey];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedOutNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                         object:self
-                                                      userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
+                                                      userInfo:[userInfo copy]];
 }
 
-#pragma mark Private
+#pragma mark URLs
 
-- (void)loggedWithSessionToken:(NSString *)sessionToken
+- (NSURL *)loginRedirectURL
 {
-    [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
+    URLComponents.scheme = [SRGIdentityService applicationURLScheme];
+    return URLComponents.URL;
+}
+
+- (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
+{
+    NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.providerURL];
+    NSURL *redirectURL = [self loginRedirectURL];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *emailAddress = self.emailAddress;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserLoggedInNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
-    });
-    
-    self.profileRequest = [self accountWithCompletionBlock:^(SRGAccount * _Nullable account, NSHTTPURLResponse * _Nullable HTTPResponse, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSString *emailAddress = self.emailAddress;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserMetadatasUpdateNotification
-                                                                object:self
-                                                              userInfo:@{ SRGIdentityServiceEmailAddressKey : emailAddress ?: NSNull.null }];
-        });
-    }];
-    [self.profileRequest resume];
-}
-
-#pragma SRGAuthentificationDelegate delegate
-
-- (void)cancelAuthentification
-{
-    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
-        NSError *error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                             code:SRGAuthentificationCanceled
-                                         userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Authentification canceled.", @"Error message returned when the user or the app canceled the authentification process.") }];
-        [self didFinishWithError:error];
-    }];
-}
-
-- (BOOL)resumeAuthentificationWithURL:(NSURL *)URL
-{
-    // rejects URLs that don't match redirect (these may be completely unrelated to the authorization)
-    if (![self.authentificationController.request shouldHandleReponseURL:URL]) {
-        return NO;
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
+    NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
+                                              [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
+    if (emailAddress) {
+        NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:emailAddress];
+        queryItems = [queryItems arrayByAddingObject:emailQueryItem];
     }
+    URLComponents.queryItems = queryItems;
+    return URLComponents.URL;
+}
+
+- (BOOL)shouldHandleCallbackURL:(NSURL *)URL
+{
+    NSURL *standardizedURL = URL.standardizedURL;
+    NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
-    NSError *error = nil;
-    
+    return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
+        && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
+        && [standardizedURL.path isEqual:standardizedRedirectURL.path];
+}
+
+- (NSString *)tokenFromURL:(NSURL *)URL
+{
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-    if (queryItem) {
-        [self loggedWithSessionToken:queryItem.value];
-    }
-    else {
-        error = [NSError errorWithDomain:SRGIdentityErrorDomain
-                                    code:SRGIdentityErrorCodeInvalidData
-                                userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"The authentification data is invalid.", @"Error message returned when an authentification server response data is incorrect.") }];
+    return queryItem.value;
+}
+
+#pragma mark Login / logout
+
+- (BOOL)loginWithEmailAddress:(NSString *)emailAddress
+{
+    if (s_loggingIn || self.loggedIn) {
+        return NO;
     }
     
-    [self.authentificationController dismissExternalUserAgentAnimated:YES completion:^{
-        [self didFinishWithError:error];
-    }];
+    @weakify(self)
+    void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        @strongify(self)
+        if (callbackURL) {
+            [self handleCallbackURL:callbackURL];
+        }
+        s_loggingIn = NO;
+    };
+    
+    NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
+    
+    // iOS 12 and later, use `ASWebAuthenticationSession`
+    if (@available(iOS 12.0, *)) {
+        ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                                                          callbackURLScheme:[SRGIdentityService applicationURLScheme]
+                                                                                          completionHandler:completionHandler];
+        self.authenticationSession = authenticationSession;
+        if (! [authenticationSession start]) {
+            return NO;
+        }
+    }
+    // iOS 11, use `SFAuthenticationSession`
+    else if (@available(iOS 11.0, *)) {
+        SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                                                                    callbackURLScheme:[SRGIdentityService applicationURLScheme]
+                                                                                    completionHandler:completionHandler];
+        self.authenticationSession = authenticationSession;
+        if (! [authenticationSession start]) {
+            return NO;
+        }
+    }
+    // iOS 9 and 10, use `SFSafariViewController`
+    else {
+        SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
+        safariViewController.delegate = self;
+        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+        [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
+    }
+    
+    s_loggingIn = YES;
+    return YES;
+}
+
+- (BOOL)logout
+{
+    if (s_loggingIn || ! self.sessionToken ) {
+        return NO;
+    }
+    
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.providerURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"DELETE";
+    
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    
+    [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        // Ignore errors and cleanup local credentials in all cases.
+        [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+        [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.account = nil;
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:nil];
+        });
+    }] resume];
     
     return YES;
 }
 
-- (void)failAuthentificationWithError:(NSError *)error
+#pragma mark Callback URL handling
+
+- (BOOL)handleCallbackURL:(NSURL *)callbackURL
 {
-    [self didFinishWithError:error];
+    if (! [self shouldHandleCallbackURL:callbackURL]) {
+        return NO;
+    }
+    
+    NSString *token = [self tokenFromURL:callbackURL];
+    if (! token) {
+        return YES;
+    }
+    
+    [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                        object:self
+                                                      userInfo:nil];
+    [self updateAccount];
+    
+    if (self.authenticationSession) {
+        self.authenticationSession = nil;
+    }
+    else {
+        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+        [presentingViewController dismissViewControllerAnimated:YES completion:^{
+            s_loggingIn = NO;
+        }];
+    }
+    
+    return YES;
 }
 
-- (void)didFinishWithError:(nullable NSError *)error
+#pragma mark SFSafariViewControllerDelegate delegate
+
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
-    SRGAuthentificationCompletionBlock authentificationCompletionBlock = self.authentificationCompletionBlock;
-    
-    self.authentificationCompletionBlock = nil;
-    self.authentificationController = nil;
-    
-    if (authentificationCompletionBlock) {
-        authentificationCompletionBlock(error);
+    s_loggingIn = NO;
+}
+
+#pragma mark Account information
+
+- (void)updateAccount
+{
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    if (! sessionToken) {
+        return;
     }
+    
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.providerURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    
+    [[[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            return;
+        }
+        
+        NSDictionary *user = JSONDictionary[@"user"];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:NULL];
+        if (! account) {
+            return;
+        }
+        
+        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey()];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.account = account;
+        });
+    }] resume];
+}
+
+#pragma mark Notifications
+
+- (void)reachabilityDidChange:(NSNotification *)notification
+{
+    if ([FXReachability sharedInstance].reachable) {
+        [self updateAccount];
+    }
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification
+{
+    [self updateAccount];
 }
 
 @end
