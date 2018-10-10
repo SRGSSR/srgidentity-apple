@@ -8,17 +8,13 @@
 
 #import "AppDelegate.h"
 
-#import <AVKit/AVKit.h>
 #import <SRGIdentity/SRGIdentity.h>
 
-static NSString * const SettingLastLoggedInEmail = @"SettingLastLoggedInEmail";
+static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 @interface DemosViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
-@property (weak, nonatomic) IBOutlet UIButton *loginButton;
-@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
-@property (weak, nonatomic) IBOutlet UISwitch *testModeSwitch;
+@property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
 
 @end
 
@@ -39,15 +35,7 @@ static NSString * const SettingLastLoggedInEmail = @"SettingLastLoggedInEmail";
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceUserDidLoginNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userChanged:)
-                                                 name:SRGIdentityServiceUserDidLogoutNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(userChanged:)
+                                             selector:@selector(didUpdateAccount:)
                                                  name:SRGIdentityServiceDidUpdateAccountNotification
                                                object:nil];
     
@@ -61,19 +49,25 @@ static NSString * const SettingLastLoggedInEmail = @"SettingLastLoggedInEmail";
     return [NSString stringWithFormat:NSLocalizedString(@"SRGIdentity %@ (demo %@)", nil), SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
 }
 
-#pragma mark Data
+#pragma mark UI
 
 - (void)reloadData
 {
-    BOOL isLoggedIn = SRGIdentityService.currentIdentityService.loggedIn;
+    SRGIdentityService *identityService = SRGIdentityService.currentIdentityService;
     
-    self.displayNameLabel.text = SRGIdentityService.currentIdentityService.account.displayName ?: SRGIdentityService.currentIdentityService.emailAddress ?: NSLocalizedString(@"Not logged.", nil);
-    self.loginButton.enabled = self.testModeSwitch.on || ! isLoggedIn;
-    self.logoutButton.enabled = self.testModeSwitch.on || isLoggedIn;
-    
-    if (SRGIdentityService.currentIdentityService.emailAddress) {
-        [NSUserDefaults.standardUserDefaults setObject:SRGIdentityService.currentIdentityService.emailAddress forKey:SettingLastLoggedInEmail];
-        [NSUserDefaults.standardUserDefaults synchronize];
+    if (identityService.loggedIn) {
+        self.displayNameLabel.text = identityService.account.displayName ?: identityService.emailAddress ?: @"-";
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logout", nil)
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(logout:)];
+    }
+    else {
+        self.displayNameLabel.text = NSLocalizedString(@"Not logged in", nil);
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Login", nil)
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(login:)];
     }
 }
 
@@ -81,7 +75,8 @@ static NSString * const SettingLastLoggedInEmail = @"SettingLastLoggedInEmail";
 
 - (IBAction)login:(id)sender
 {
-    [SRGIdentityService.currentIdentityService loginWithEmailAddress:[NSUserDefaults.standardUserDefaults stringForKey:SettingLastLoggedInEmail]];
+    NSString *lastEmailAddress = [NSUserDefaults.standardUserDefaults stringForKey:LastLoggedInEmailAddress];
+    [SRGIdentityService.currentIdentityService loginWithEmailAddress:lastEmailAddress];
 }
 
 - (IBAction)logout:(id)sender
@@ -89,16 +84,17 @@ static NSString * const SettingLastLoggedInEmail = @"SettingLastLoggedInEmail";
     [SRGIdentityService.currentIdentityService logout];
 }
 
-- (IBAction)testModeToggle:(id)sender
-{
-    [self reloadData];
-}
-
 #pragma mark Notifications
 
-- (void)userChanged:(NSNotification *)notification
+- (void)didUpdateAccount:(NSNotification *)notification
 {
     [self reloadData];
+    
+    NSString *emailAddress = SRGIdentityService.currentIdentityService.emailAddress;;
+    if (emailAddress) {
+        [NSUserDefaults.standardUserDefaults setObject:emailAddress forKey:LastLoggedInEmailAddress];
+        [NSUserDefaults.standardUserDefaults synchronize];
+    }
 }
 
 @end
