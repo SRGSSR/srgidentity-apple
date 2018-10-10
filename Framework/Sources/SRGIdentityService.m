@@ -128,6 +128,18 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey()];
 }
 
+- (void)setAccount:(SRGAccount *)account
+{
+    _account = account;
+    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGIdentityServiceAccountKey] = account;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
+                                                        object:self
+                                                      userInfo:[userInfo copy]];
+}
+
 #pragma mark URLs
 
 - (NSURL *)loginRedirectURL
@@ -240,14 +252,12 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
         [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
         
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-        userInfo[SRGIdentityServiceAccountKey] = self.account;
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = nil;
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                 object:self
-                                                              userInfo:[userInfo copy]];
+                                                              userInfo:nil];
         });
     }] resume];
     
@@ -322,9 +332,6 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
-                                                                object:self
-                                                              userInfo:@{ SRGIdentityServiceAccountKey : account }];
         });
     }] resume];
 }

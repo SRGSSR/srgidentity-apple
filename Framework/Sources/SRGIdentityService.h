@@ -17,24 +17,32 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
  *  Notification sent when a user logged out.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
-OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
-
-OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 
 /**
- *  An identity service provides a way to retrieve a user identity for a given service. Peach (http://peach.ebu.io/)
- *  is the only supported service provider at the moment. Several identity services can be instantiated within
- *  an application, though most application should only require one. A global identity service can be set using
- *  the `currentIdentityService` class property.
+ *  Notification sent when account information has been updated. Use the keys available below to retrieve information from
+ *  the notification `userInfo` dictionary.
+ */
+OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
+
+/**
+ *  Information available for `SRGIdentityServiceDidUpdateAccountNotification`.
+ */
+OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updated account information, as an `SRGAccount` object.
+
+/**
+ *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Peach
+ *  (http://peach.ebu.io) is the only supported identity provider at the moment. Several identity services can be
+ *  instantiated within an application, though most application should only require one. For convenience, a global
+ *  identity service can be set using the `currentIdentityService` class property.
  *
- *  A login procedure is initiated by calling the `-loginWithEmailAddress:` method (a user account is bound to an
- *  email address). This opens the login / signup page in a safe Safari remote process, ensuring that user credentials
- *  are not leaked. Once the user has successfully logged in, a token is received by the application, which securely
- *  stores it in the keychain for later retrieval.
+ *  A user must correctly supply her credentials (email address and password) to receive a session token. This procedure
+ *  is initiated by calling the `-loginWithEmailAddress:` method, which opens a login / signup page. This page is opened
+ *  modally in a sandboxed Safari browser, ensuring that the passord is not accessible to the host application. Tokens
+ *  themselves are stored within the keychain and therefore secured by the system.
  *
- *  Tokens are stored per app and are therefore not shared. They are also not synchronized over iCloud. Only one
- *  user can be logged in at any time. To logout the current user, simply call `-logout`, at which point a new
- *  user can log in. When a user is logged out, associated keychain information is discarded.
+ *  Identities are stored per app and are therefore not shared, and are not synchronized over iCloud. Only one user
+ *  can be logged in at any time for a given service. To logout the current user, simply call `-logout`, at which point
+ *  a new user can log in.
  *
  *  Note that though several services can coexist within an application, only one login process can be made at any time.
  */
@@ -54,7 +62,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 
 /**
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful
- *  login in, an `SRGIdentityServiceUserDidLoginNotification` is emitted.
+ *  login, an `SRGIdentityServiceUserDidLoginNotification` notification is emitted.
  *
  *  @param An optional email address, with which the form is filled initially. If not specified, the form starts empty.
  *
@@ -83,21 +91,21 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;
 /**
  *  The email address (username) of the logged in user, if available.
  *
- *  @discussion Always check the `loggedIn` property to determine if a user is logged in, as this property might not
- *              be immediately available after login.
+ *  @discussion This property must be used for informative purposes. If you want to find out whether a user is logged
+ *              in, check the `loggedIn` property instead.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
 
 /**
  *  Detailed account information, if available.
  *
- *  @discussion This piece of information might not be available yet, even if a user is logged in. Always check the
- *              `loggedIn` property to determine if a user is logged in.
+ *  @discussion This property must be used for informative purposes. If you want to find out whether a user is logged
+ *              in, check the `loggedIn` property instead.
  */
 @property (nonatomic, readonly, nullable) SRGAccount *account;
 
 /**
- *  The token .
+ *  The session token which has been retrieved, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
