@@ -46,7 +46,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (NSString *)title
 {
-    return [NSString stringWithFormat:NSLocalizedString(@"SRGIdentity %@ (demo %@)", nil), SRGIdentityMarketingVersion(), @([NSBundle.mainBundle.infoDictionary[@"DemoNumber"] integerValue])];
+    return NSLocalizedString(@"SRG Identity demo", nil);
 }
 
 #pragma mark UI

@@ -30,26 +30,8 @@
 		084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		084CD70021696C3400905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		084CD70121696C3400905A38 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		084CD70221696C3900905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
-		084CD70321696C3900905A38 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
-		086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
-		086FB31921380D1300DE4CF2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
-		086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
-		086FB31D21380D1300DE4CF2 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
-		086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; };
-		086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; };
-		086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
-		086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; };
-		086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
-		086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
-		086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
-		086FB32921380D1300DE4CF2 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		086FB32C21380D1300DE4CF2 /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
@@ -57,8 +39,6 @@
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6F6ED103216BA9F600D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
-		6F6ED104216BA9F600D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
@@ -70,20 +50,11 @@
 		6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6F9FFAAF2167925F00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
-		6F9FFAB02167925F00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0853421F2163C7ED00E2EEE6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6F0EB52820FC7F58009C02CF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6F0EB53020FC7F58009C02CF;
-			remoteInfo = RTSIdentity;
-		};
 		085342262163CDBB00E2EEE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6F0EB52820FC7F58009C02CF /* Project object */;
@@ -108,24 +79,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		086FB32821380D1300DE4CF2 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				086FB32921380D1300DE4CF2 /* SRGIdentity.framework in Embed Frameworks */,
-				086FB32A21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Embed Frameworks */,
-				086FB32B21380D1300DE4CF2 /* libextobjc.framework in Embed Frameworks */,
-				6F6ED104216BA9F600D7E786 /* FXReachability.framework in Embed Frameworks */,
-				086FB32C21380D1300DE4CF2 /* UICKeyChainStore.framework in Embed Frameworks */,
-				6F9FFAB02167925F00F781A0 /* SRGNetwork.framework in Embed Frameworks */,
-				086FB32D21380D1300DE4CF2 /* Mantle.framework in Embed Frameworks */,
-				084CD70321696C3900905A38 /* SRGLogger.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6F8A940720FDD01B00AA6434 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -173,7 +126,6 @@
 		084CD6FE21696C0A00905A38 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		086FB33321380D1300DE4CF2 /* SRGIdentity-demo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,7 +134,7 @@
 		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
-		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F8A93F420FDCAA800AA6434 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -203,21 +155,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		086FB31C21380D1300DE4CF2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				086FB31D21380D1300DE4CF2 /* SRGIdentity.framework in Frameworks */,
-				086FB31E21380D1300DE4CF2 /* MAKVONotificationCenter.framework in Frameworks */,
-				086FB31F21380D1300DE4CF2 /* libextobjc.framework in Frameworks */,
-				6F6ED103216BA9F600D7E786 /* FXReachability.framework in Frameworks */,
-				086FB32021380D1300DE4CF2 /* UICKeyChainStore.framework in Frameworks */,
-				6F9FFAAF2167925F00F781A0 /* SRGNetwork.framework in Frameworks */,
-				086FB32121380D1300DE4CF2 /* Mantle.framework in Frameworks */,
-				084CD70221696C3900905A38 /* SRGLogger.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6F0C98E32121E1C200073AB6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,10 +236,9 @@
 			isa = PBXGroup;
 			children = (
 				6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */,
-				6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo1.app */,
+				6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */,
 				6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */,
 				6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */,
-				086FB33321380D1300DE4CF2 /* SRGIdentity-demo2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -450,25 +386,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		086FB31321380D1300DE4CF2 /* SRGIdentity-demo2 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 086FB32E21380D1300DE4CF2 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo2" */;
-			buildPhases = (
-				086FB31621380D1300DE4CF2 /* Sources */,
-				086FB31C21380D1300DE4CF2 /* Frameworks */,
-				086FB32221380D1300DE4CF2 /* Resources */,
-				086FB32821380D1300DE4CF2 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				086FB31421380D1300DE4CF2 /* PBXTargetDependency */,
-			);
-			name = "SRGIdentity-demo2";
-			productName = "SRGIdentity-demo2";
-			productReference = 086FB33321380D1300DE4CF2 /* SRGIdentity-demo2.app */;
-			productType = "com.apple.product-type.application";
-		};
 		6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "SRGIdentity-resources" */;
@@ -505,9 +422,9 @@
 			productReference = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo1 */ = {
+		6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo1" */;
+			buildConfigurationList = 6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo" */;
 			buildPhases = (
 				6F8A93D420FDCA0800AA6434 /* Sources */,
 				6F8A93D520FDCA0800AA6434 /* Frameworks */,
@@ -519,9 +436,9 @@
 			dependencies = (
 				6F8A940620FDD01B00AA6434 /* PBXTargetDependency */,
 			);
-			name = "SRGIdentity-demo1";
+			name = "SRGIdentity-demo";
 			productName = "SRGIdentity-demo1";
-			productReference = 6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo1.app */;
+			productReference = 6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6FB74D662101D4D200E2D365 /* SRGIdentity-tests */ = {
@@ -552,13 +469,6 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
-					086FB31321380D1300DE4CF2 = {
-						SystemCapabilities = {
-							com.apple.Keychain = {
-								enabled = 1;
-							};
-						};
-					};
 					6F0C98E52121E1C200073AB6 = {
 						CreatedOnToolsVersion = 9.4;
 					};
@@ -597,24 +507,13 @@
 			targets = (
 				6F0EB53020FC7F58009C02CF /* SRGIdentity */,
 				6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */,
-				6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo1 */,
-				086FB31321380D1300DE4CF2 /* SRGIdentity-demo2 */,
+				6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo */,
 				6FB74D662101D4D200E2D365 /* SRGIdentity-tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		086FB32221380D1300DE4CF2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				086FB32321380D1300DE4CF2 /* LaunchScreen.storyboard in Resources */,
-				086FB32521380D1300DE4CF2 /* DemosViewController.storyboard in Resources */,
-				086FB32621380D1300DE4CF2 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6F0C98E42121E1C200073AB6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -651,16 +550,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		086FB31621380D1300DE4CF2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				086FB31821380D1300DE4CF2 /* AppDelegate.m in Sources */,
-				086FB31921380D1300DE4CF2 /* main.m in Sources */,
-				086FB31A21380D1300DE4CF2 /* DemosViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6F0C98E22121E1C200073AB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -701,11 +590,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		086FB31421380D1300DE4CF2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6F0EB53020FC7F58009C02CF /* SRGIdentity */;
-			targetProxy = 0853421F2163C7ED00E2EEE6 /* PBXContainerItemProxy */;
-		};
 		6F0C98F02121E26400073AB6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */;
@@ -739,94 +623,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		086FB32F21380D1300DE4CF2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 2;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = Demo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		086FB33021380D1300DE4CF2 /* Debug-static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 2;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = Demo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = "Debug-static";
-		};
-		086FB33121380D1300DE4CF2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 2;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = Demo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		086FB33221380D1300DE4CF2 /* Release-static */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 2;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
-				INFOPLIST_FILE = Demo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo2";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = "Release-static";
-		};
 		6F0C98DA2121E14000073AB6 /* Debug-static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -924,7 +720,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -935,7 +730,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-static";
@@ -1050,7 +845,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1061,7 +855,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-static";
@@ -1321,7 +1115,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1332,7 +1125,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1343,7 +1136,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEMO_NUMBER = 1;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1354,7 +1146,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1400,17 +1192,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		086FB32E21380D1300DE4CF2 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo2" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				086FB32F21380D1300DE4CF2 /* Debug */,
-				086FB33021380D1300DE4CF2 /* Debug-static */,
-				086FB33121380D1300DE4CF2 /* Release */,
-				086FB33221380D1300DE4CF2 /* Release-static */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "SRGIdentity-resources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1444,7 +1225,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo1" */ = {
+		6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F8A93EC20FDCA0900AA6434 /* Debug */,
