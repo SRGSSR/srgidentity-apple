@@ -87,12 +87,16 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 {
     if (self = [super init]) {
         self.providerURL = providerURL;
-        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([providerURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
                                                    name:FXReachabilityStatusDidChangeNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(applicationWillEnterForeground:)
+                                                   name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
         
         [self updateAccount];
@@ -343,6 +347,11 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     if ([FXReachability sharedInstance].reachable) {
         [self updateAccount];
     }
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification
+{
+    [self updateAccount];
 }
 
 @end
