@@ -23,7 +23,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>srgidentity-demo$(DEMO_NUMBER)</string>
+				<string>srgidentity-demo1</string>
 			</array>
 		</dict>
 	</array>
