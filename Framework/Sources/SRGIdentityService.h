@@ -56,9 +56,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updat
 /**
  *  Instantiate an identity service.
  *
- *  @param serviceURL The URL of the identity service.
+ *  @param providerURL The URL of the identity provider.
  */
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithProviderURL:(NSURL *)providerURL NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful
@@ -79,9 +79,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updat
 - (BOOL)logout;
 
 /**
- *  The service URL.
+ *  The identity provider URL.
  */
-@property (nonatomic, readonly) NSURL *serviceURL;
+@property (nonatomic, readonly) NSURL *providerURL;
 
 /**
  *  `YES` iff a user is logged.

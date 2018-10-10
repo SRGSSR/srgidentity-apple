@@ -39,7 +39,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 @interface SRGIdentityService () <SFSafariViewControllerDelegate>
 
-@property (nonatomic) NSURL *serviceURL;
+@property (nonatomic) NSURL *providerURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
 @property (nonatomic, readonly) NSString *serviceIdentifier;
@@ -83,12 +83,12 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithServiceURL:(NSURL *)serviceURL
+- (instancetype)initWithProviderURL:(NSURL *)providerURL
 {
     if (self = [super init]) {
-        self.serviceURL = serviceURL;
-        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([serviceURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:serviceURL protocolType:keyChainStoreProtocolType];
+        self.providerURL = providerURL;
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = ([providerURL.scheme.lowercaseString isEqualToString:@"https"]) ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
@@ -106,7 +106,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithServiceURL:[NSURL new]];
+    return [self initWithProviderURL:[NSURL new]];
 }
 
 #pragma clang diagnostic pop
@@ -144,14 +144,14 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (NSURL *)loginRedirectURL
 {
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.serviceURL resolvingAgainstBaseURL:YES];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
     return URLComponents.URL;
 }
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.serviceURL];
+    NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.providerURL];
     NSURL *redirectURL = [self loginRedirectURL];
     
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
@@ -240,7 +240,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         return NO;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.serviceURL];
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.providerURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"DELETE";
     
@@ -313,7 +313,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.serviceURL];
+    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.providerURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     

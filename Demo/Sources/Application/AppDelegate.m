@@ -16,7 +16,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithServiceURL:[NSURL URLWithString:@"https://id.rts.ch"]];
+    SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithProviderURL:[NSURL URLWithString:@"https://id.rts.ch"]];
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];
