@@ -28,6 +28,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
  *  Information available for `SRGIdentityServiceDidUpdateAccountNotification`.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updated account information, as an `SRGAccount` object.
+OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previous account information, as an `SRGAccount` object.
 
 /**
  *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Peach
