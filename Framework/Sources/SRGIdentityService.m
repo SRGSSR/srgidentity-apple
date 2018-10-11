@@ -155,7 +155,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *requestURL = [NSURL URLWithString:@"responsive/login" relativeToURL:self.providerURL];
+    NSURL *requestURL = [NSURL URLWithString:@"login" relativeToURL:self.providerURL];
     NSURL *redirectURL = [self loginRedirectURL];
     
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
