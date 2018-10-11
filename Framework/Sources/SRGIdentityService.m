@@ -21,6 +21,7 @@
 static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
+NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
@@ -204,6 +205,11 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
         }
+        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
         s_loggingIn = NO;
     };
     
@@ -309,6 +315,12 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
     s_loggingIn = NO;
+    
+    if (! self.isLoggedIn) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                            object:self
+                                                          userInfo:nil];
+    }
 }
 
 #pragma mark Account information

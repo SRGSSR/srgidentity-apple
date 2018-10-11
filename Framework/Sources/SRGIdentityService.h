@@ -9,6 +9,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ *  Notification sent when a user canceled login without logged in.
+ */
+OBJC_EXPORT NSString * const SRGIdentityServiceUserDidCancelLoginNotification;
+
+/**
  *  Notification sent when a user successfully logged in.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
