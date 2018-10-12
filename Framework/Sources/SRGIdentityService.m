@@ -27,7 +27,7 @@ NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServ
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
-NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccountKey";
+NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -327,7 +327,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                         object:self
-                                                      userInfo:nil];    
+                                                      userInfo:nil];
     s_loggingIn = NO;
 }
 
