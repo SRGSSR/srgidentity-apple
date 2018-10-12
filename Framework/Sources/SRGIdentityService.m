@@ -13,6 +13,7 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <FXReachability/FXReachability.h>
 #import <libextobjc/libextobjc.h>
+#import <objc/runtime.h>
 #import <SafariServices/SafariServices.h>
 #import <SRGNetwork/SRGNetwork.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
@@ -21,6 +22,8 @@
 static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
+static NSMutableDictionary<NSString *, NSValue *> *s_identityServices;
+
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
@@ -28,6 +31,8 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
+
+static NSString * const SRGIdentityServicePathComponent = @"identity_service";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -39,7 +44,15 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
+@interface NSObject (SRGIdentityApplicationDelegateHooks)
+
+- (BOOL)swizzled_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
+@end
+
 @interface SRGIdentityService () <SFSafariViewControllerDelegate>
+
+@property (nonatomic, copy) NSString *identifier;
 
 @property (nonatomic) NSURL *providerURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
@@ -88,6 +101,14 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (instancetype)initWithProviderURL:(NSURL *)providerURL
 {
     if (self = [super init]) {
+        self.identifier = NSUUID.UUID.UUIDString;
+        
+        static dispatch_once_t s_onceToken;
+        dispatch_once(&s_onceToken, ^{
+            s_identityServices = [NSMutableDictionary dictionary];
+        });
+        s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
+        
         self.providerURL = providerURL;
         UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
@@ -100,10 +121,15 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
                                                selector:@selector(applicationWillEnterForeground:)
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
-        
+        [self registerApplicationDelegateHooks];
         [self updateAccount];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    s_identityServices[self.identifier] = nil;
 }
 
 #pragma clang diagnostic push
@@ -154,6 +180,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
+    URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
     return URLComponents.URL;
 }
 
@@ -377,6 +404,40 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
     [self updateAccount];
+}
+
+- (void)registerApplicationDelegateHooks
+{
+    if (@available(iOS 11.0, *)) {
+        return;
+    }
+    
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        id<UIApplicationDelegate> applicationDelegate = UIApplication.sharedApplication.delegate;
+        NSAssert(applicationDelegate != nil, @"An identity service has been instantiated before an application delegate has been set.");
+        
+        method_exchangeImplementations(class_getInstanceMethod(applicationDelegate.class, @selector(application:openURL:options:)),
+                                       class_getInstanceMethod(applicationDelegate.class, @selector(swizzled_application:openURL:options:)));
+    });
+}
+
+@end
+
+@implementation NSObject (SRGIdentityApplicationDelegateHooks)
+
+- (BOOL)swizzled_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+    NSArray<NSString *> *pathComponents = URLComponents.path.pathComponents;
+    if (pathComponents.count == 3 && [pathComponents[1] isEqualToString:SRGIdentityServicePathComponent]) {
+        NSString *identifier = pathComponents.lastObject;
+        SRGIdentityService *identityService = [s_identityServices[identifier] nonretainedObjectValue];
+        if ([identityService handleCallbackURL:URL]) {
+            return YES;
+        }
+    }
+    return [self swizzled_application:application openURL:URL options:options];
 }
 
 @end

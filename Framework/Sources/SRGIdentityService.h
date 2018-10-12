@@ -115,9 +115,6 @@ OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previ
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
-// TODO: For URL scheme processing in the Safari iOS 9 workflow. Hide if possible (swizzling).
-- (BOOL)handleCallbackURL:(NSURL *)callbackURL;
-
 @end
 
 @interface SRGIdentityService (Unavailable)

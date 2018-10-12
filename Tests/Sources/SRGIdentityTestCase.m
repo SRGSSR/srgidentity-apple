@@ -10,23 +10,29 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <XCTest/XCTest.h>
 
+@interface SRGIdentityService (Private)
+
+- (BOOL)handleCallbackURL:(NSURL *)callbackURL;
+
+@property (nonatomic, readonly, copy) NSString *identifier;
+
+@end
+
 static NSURL *TestProviderURL(void)
 {
     return [NSURL URLWithString:@"https://srgssr.local"];
 }
 
-static NSURL *TestCallbackURL(void)
+static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 {
-    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?token=0123456789", TestProviderURL().host];
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@/identity_service/%@?token=0123456789", TestProviderURL().host, identityService.identifier];
     return [NSURL URLWithString:URLString];
 }
 
 @interface SRGIdentityTestCase : XCTestCase
 
 @property (nonatomic) NSURL *providerURL;
-
 @property (nonatomic) SRGIdentityService *identityService;
-
 @property (nonatomic, weak) id<OHHTTPStubsDescriptor> loginRequestStub;
 
 @end
@@ -114,7 +120,7 @@ static NSURL *TestCallbackURL(void)
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL()];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -137,7 +143,7 @@ static NSURL *TestCallbackURL(void)
         return YES;
     }];
 
-    [self.identityService handleCallbackURL:TestCallbackURL()];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -173,7 +179,7 @@ static NSURL *TestCallbackURL(void)
         return YES;
     }];
 
-    [self.identityService handleCallbackURL:TestCallbackURL()];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
