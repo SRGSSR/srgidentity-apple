@@ -210,18 +210,23 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
+            s_loggingIn = NO;
         }
         else if (@available(iOS 12.0, *)) {
             if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                s_loggingIn = NO;
                 notifyCancel();
             }
         }
         else if (@available(iOS 11.0, *)) {
             if ([error.domain isEqualToString:SFAuthenticationErrorDomain] && error.code == SFAuthenticationErrorCanceledLogin) {
+                s_loggingIn = NO;
                 notifyCancel();
             }
         }
-        s_loggingIn = NO;
+        else {
+            s_loggingIn = NO;
+        }
     };
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
@@ -325,10 +330,11 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
+    s_loggingIn = NO;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                         object:self
                                                       userInfo:nil];
-    s_loggingIn = NO;
 }
 
 #pragma mark Account information
