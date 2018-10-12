@@ -57,8 +57,6 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 @property (nonatomic) NSURL *providerURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
-@property (nonatomic, readonly) NSString *serviceIdentifier;
-
 @property (nonatomic) SRGAccount *account;
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
