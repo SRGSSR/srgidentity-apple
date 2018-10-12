@@ -1,0 +1,2 @@
+# Fork from AliSoftware/OHHTTPStubs to support Xcode 9.x and Swift 4.
+github "rckoenes/OHHTTPStubs" ~> 6.1.1

@@ -21,6 +21,17 @@
 		080D0BEB21359E4800AA519A /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; };
 		080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08266646216E2B9D00FD8E84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 08266628216E2B1700FD8E84 /* main.m */; };
+		08266649216E34E500FD8E84 /* SRGIdentity.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664A216E34EB00FD8E84 /* FXReachability.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664B216E34FC00FD8E84 /* libextobjc.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 080D0BE021356CB500AA519A /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664C216E34FC00FD8E84 /* MAKVONotificationCenter.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664D216E34FC00FD8E84 /* Mantle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 080D0BE42135776000AA519A /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664E216E34FC00FD8E84 /* SRGLogger.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0826664F216E34FD00FD8E84 /* SRGNetwork.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08266650216E34FD00FD8E84 /* UICKeyChainStore.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 080D0BD921356A1200AA519A /* UICKeyChainStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		08266652216E354000FD8E84 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08266651216E354000FD8E84 /* OHHTTPStubs.framework */; };
+		08266653216E354A00FD8E84 /* OHHTTPStubs.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 08266651216E354000FD8E84 /* OHHTTPStubs.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 0829FA752136853C00FE0A28 /* SRGAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA762136853C00FE0A28 /* SRGAccount.m */; };
 		0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 0829FA772136853C00FE0A28 /* SRGIdentity.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +45,7 @@
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
+		6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B1BC721708013008D8823 /* Launch Screen.storyboard */; };
 		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
 		6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
@@ -55,6 +67,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		08266647216E2BFA00FD8E84 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F0EB52820FC7F58009C02CF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0826662D216E2B7200FD8E84;
+			remoteInfo = "SRGIdentity-testapp";
+		};
 		085342262163CDBB00E2EEE6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6F0EB52820FC7F58009C02CF /* Project object */;
@@ -103,6 +122,15 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				08266653216E354A00FD8E84 /* OHHTTPStubs.framework in Copy Files */,
+				0826664B216E34FC00FD8E84 /* libextobjc.framework in Copy Files */,
+				0826664C216E34FC00FD8E84 /* MAKVONotificationCenter.framework in Copy Files */,
+				0826664D216E34FC00FD8E84 /* Mantle.framework in Copy Files */,
+				0826664E216E34FC00FD8E84 /* SRGLogger.framework in Copy Files */,
+				0826664F216E34FD00FD8E84 /* SRGNetwork.framework in Copy Files */,
+				08266650216E34FD00FD8E84 /* UICKeyChainStore.framework in Copy Files */,
+				0826664A216E34EB00FD8E84 /* FXReachability.framework in Copy Files */,
+				08266649216E34E500FD8E84 /* SRGIdentity.framework in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,6 +145,11 @@
 		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
 		080D0BEE2135A6DD00AA519A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		08266627216E2B1700FD8E84 /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
+		08266628216E2B1700FD8E84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		08266629216E2B1700FD8E84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0826662E216E2B7200FD8E84 /* SRGIdentity-testapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-testapp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08266651216E354000FD8E84 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		0829FA752136853C00FE0A28 /* SRGAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAccount.h; sourceTree = "<group>"; };
 		0829FA762136853C00FE0A28 /* SRGAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAccount.m; sourceTree = "<group>"; };
 		0829FA772136853C00FE0A28 /* SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentity.h; sourceTree = "<group>"; };
@@ -131,6 +164,7 @@
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F3B1BC721708013008D8823 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
@@ -155,6 +189,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0826662B216E2B7200FD8E84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E32121E1C200073AB6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -196,6 +237,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08266652216E354000FD8E84 /* OHHTTPStubs.framework in Frameworks */,
 				6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,6 +245,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08266626216E2B1700FD8E84 /* TestApp */ = {
+			isa = PBXGroup;
+			children = (
+				08266629216E2B1700FD8E84 /* Info.plist */,
+				08266628216E2B1700FD8E84 /* main.m */,
+				08266627216E2B1700FD8E84 /* TestApp.entitlements */,
+				6F3B1BC721708013008D8823 /* Launch Screen.storyboard */,
+			);
+			path = TestApp;
+			sourceTree = "<group>";
+		};
 		0829FA742136853C00FE0A28 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +292,7 @@
 				6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */,
 				6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */,
 				6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */,
+				0826662E216E2B7200FD8E84 /* SRGIdentity-testapp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -329,6 +383,7 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
 				080D0BE021356CB500AA519A /* libextobjc.framework */,
 				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
@@ -345,8 +400,9 @@
 		6FB74D722101D5D600E2D365 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6FB74D732101D5D600E2D365 /* Sources */,
 				6FB74D762101D5D600E2D365 /* Info.plist */,
+				6FB74D732101D5D600E2D365 /* Sources */,
+				08266626216E2B1700FD8E84 /* TestApp */,
 			);
 			path = Tests;
 			sourceTree = SOURCE_ROOT;
@@ -386,6 +442,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0826662D216E2B7200FD8E84 /* SRGIdentity-testapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08266641216E2B7400FD8E84 /* Build configuration list for PBXNativeTarget "SRGIdentity-testapp" */;
+			buildPhases = (
+				0826662A216E2B7200FD8E84 /* Sources */,
+				0826662B216E2B7200FD8E84 /* Frameworks */,
+				0826662C216E2B7200FD8E84 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SRGIdentity-testapp";
+			productName = "SRGIdentity-testapp";
+			productReference = 0826662E216E2B7200FD8E84 /* SRGIdentity-testapp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "SRGIdentity-resources" */;
@@ -454,6 +527,7 @@
 			);
 			dependencies = (
 				6FB74D6E2101D4D200E2D365 /* PBXTargetDependency */,
+				08266648216E2BFA00FD8E84 /* PBXTargetDependency */,
 			);
 			name = "SRGIdentity-tests";
 			productName = "SRGIdentity-tests";
@@ -469,6 +543,9 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
+					0826662D216E2B7200FD8E84 = {
+						CreatedOnToolsVersion = 10.0;
+					};
 					6F0C98E52121E1C200073AB6 = {
 						CreatedOnToolsVersion = 9.4;
 					};
@@ -485,6 +562,7 @@
 					};
 					6FB74D662101D4D200E2D365 = {
 						CreatedOnToolsVersion = 9.4;
+						TestTargetID = 0826662D216E2B7200FD8E84;
 					};
 				};
 			};
@@ -509,11 +587,20 @@
 				6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */,
 				6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo */,
 				6FB74D662101D4D200E2D365 /* SRGIdentity-tests */,
+				0826662D216E2B7200FD8E84 /* SRGIdentity-testapp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0826662C216E2B7200FD8E84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E42121E1C200073AB6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -550,6 +637,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0826662A216E2B7200FD8E84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08266646216E2B9D00FD8E84 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F0C98E22121E1C200073AB6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -590,6 +685,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		08266648216E2BFA00FD8E84 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0826662D216E2B7200FD8E84 /* SRGIdentity-testapp */;
+			targetProxy = 08266647216E2BFA00FD8E84 /* PBXContainerItemProxy */;
+		};
 		6F0C98F02121E26400073AB6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6F0C98E52121E1C200073AB6 /* SRGIdentity-resources */;
@@ -623,6 +723,88 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		08266642216E2B7400FD8E84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Tests/TestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		08266643216E2B7400FD8E84 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Tests/TestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-static";
+		};
+		08266644216E2B7400FD8E84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Tests/TestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		08266645216E2B7400FD8E84 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Tests/TestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-static";
+		};
 		6F0C98DA2121E14000073AB6 /* Debug-static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -738,6 +920,7 @@
 		6F0C98DD2121E14000073AB6 /* Debug-static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -751,6 +934,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-testapp.app/SRGIdentity-testapp";
 			};
 			name = "Debug-static";
 		};
@@ -863,6 +1047,7 @@
 		6F0C98E12121E14600073AB6 /* Release-static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -876,6 +1061,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-testapp.app/SRGIdentity-testapp";
 			};
 			name = "Release-static";
 		};
@@ -1154,6 +1340,7 @@
 		6FB74D6F2101D4D200E2D365 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1167,12 +1354,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-testapp.app/SRGIdentity-testapp";
 			};
 			name = Debug;
 		};
 		6FB74D702101D4D200E2D365 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1186,12 +1375,24 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-testapp.app/SRGIdentity-testapp";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		08266641216E2B7400FD8E84 /* Build configuration list for PBXNativeTarget "SRGIdentity-testapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08266642216E2B7400FD8E84 /* Debug */,
+				08266643216E2B7400FD8E84 /* Debug-static */,
+				08266644216E2B7400FD8E84 /* Release */,
+				08266645216E2B7400FD8E84 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6F0C98E92121E1C200073AB6 /* Build configuration list for PBXNativeTarget "SRGIdentity-resources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

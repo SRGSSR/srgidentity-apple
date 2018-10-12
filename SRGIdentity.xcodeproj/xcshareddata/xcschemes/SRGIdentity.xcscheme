@@ -43,7 +43,28 @@
       codeCoverageEnabled = "YES"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6FB74D662101D4D200E2D365"
+               BuildableName = "SRGIdentity-tests.xctest"
+               BlueprintName = "SRGIdentity-tests"
+               ReferencedContainer = "container:SRGIdentity.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6F0EB53020FC7F58009C02CF"
+            BuildableName = "SRGIdentity.framework"
+            BlueprintName = "SRGIdentity"
+            ReferencedContainer = "container:SRGIdentity.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
