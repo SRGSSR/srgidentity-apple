@@ -10,9 +10,15 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <XCTest/XCTest.h>
 
-static NSURL *SRGIdentifierTestProviderURL(void)
+static NSURL *TestProviderURL(void)
 {
     return [NSURL URLWithString:@"https://srgssr.local"];
+}
+
+static NSURL *TestCallbackURL(void)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?token=0123456789", TestProviderURL().host];
+    return [NSURL URLWithString:URLString];
 }
 
 @interface SRGIdentityTestCase : XCTestCase
@@ -31,16 +37,16 @@ static NSURL *SRGIdentifierTestProviderURL(void)
 
 - (void)setUp
 {
-    self.providerURL = [NSURL URLWithString:@"https://srgssr.local"];
+    self.providerURL = TestProviderURL();
     
     // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:SRGIdentifierTestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
+    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
     [keyChainStore removeAllItems];
     
-    self.identityService = [[SRGIdentityService alloc] initWithProviderURL:SRGIdentifierTestProviderURL()];
+    self.identityService = [[SRGIdentityService alloc] initWithProviderURL:TestProviderURL()];
     
     self.loginRequestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL.host isEqual:SRGIdentifierTestProviderURL().host];
+        return [request.URL.host isEqual:TestProviderURL().host];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         if ([request.URL.path containsString:@"login"]) {
             NSURLComponents *URLComponents = [[NSURLComponents alloc] initWithURL:request.URL resolvingAgainstBaseURL:NO];
@@ -88,7 +94,7 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     self.identityService = nil;
     
     // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:SRGIdentifierTestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
+    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
     [keyChainStore removeAllItems];
     
     [OHHTTPStubs removeStub:self.loginRequestStub];
@@ -102,15 +108,13 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertFalse(self.identityService.isLoggedIn);
+    XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         return YES;
     }];
     
-    NSURL *redirectURL = [NSURL URLWithString:[NSString stringWithFormat:@"srgidentity-tests://%@?token=0123456789", SRGIdentifierTestProviderURL().host]];
-    
-    [self.identityService handleCallbackURL:redirectURL];
+    [self.identityService handleCallbackURL:TestCallbackURL()];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -118,7 +122,7 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNotNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertTrue(self.identityService.isLoggedIn);
+    XCTAssertTrue(self.identityService.loggedIn);
 }
 
 - (void)testLogout
@@ -127,19 +131,17 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertFalse(self.identityService.isLoggedIn);
+    XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         return YES;
     }];
-    
-    NSURL *redirectURL = [NSURL URLWithString:[NSString stringWithFormat:@"srgidentity-tests://%@?token=0123456789", SRGIdentifierTestProviderURL().host]];
 
-    [self.identityService handleCallbackURL:redirectURL];
+    [self.identityService handleCallbackURL:TestCallbackURL()];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
-    XCTAssertTrue(self.identityService.isLoggedIn);
+    XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertNotNil(self.identityService.sessionToken);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -154,7 +156,7 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertFalse(self.identityService.isLoggedIn);
+    XCTAssertFalse(self.identityService.loggedIn);
     
     XCTAssertFalse([self.identityService logout]);
 }
@@ -165,19 +167,17 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertFalse(self.identityService.isLoggedIn);
+    XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         return YES;
     }];
-    
-    NSURL *redirectURL = [NSURL URLWithString:[NSString stringWithFormat:@"srgidentity-tests://%@?token=0123456789", SRGIdentifierTestProviderURL().host]];
 
-    [self.identityService handleCallbackURL:redirectURL];
+    [self.identityService handleCallbackURL:TestCallbackURL()];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
-    XCTAssertTrue(self.identityService.isLoggedIn);
+    XCTAssertTrue(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNotNil(notification.userInfo[SRGIdentityServiceAccountKey]);
@@ -190,7 +190,7 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNotNil(self.identityService.sessionToken);
     XCTAssertNotNil(self.identityService.account);
     
-    XCTAssertTrue(self.identityService.isLoggedIn);
+    XCTAssertTrue(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         return YES;
@@ -208,7 +208,7 @@ static NSURL *SRGIdentifierTestProviderURL(void)
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
-    XCTAssertFalse(self.identityService.isLoggedIn);
+    XCTAssertFalse(self.identityService.loggedIn);
 }
 
 @end
