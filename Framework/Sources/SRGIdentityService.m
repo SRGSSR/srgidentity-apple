@@ -325,13 +325,13 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
-    s_loggingIn = NO;
-    
     if (! self.isLoggedIn) {
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                             object:self
                                                           userInfo:nil];
     }
+    
+    s_loggingIn = NO;
 }
 
 #pragma mark Account information
