@@ -45,6 +45,7 @@
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
+		6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B1BC721708013008D8823 /* Launch Screen.storyboard */; };
 		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
 		6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
@@ -163,6 +164,7 @@
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F3B1BC721708013008D8823 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				08266629216E2B1700FD8E84 /* Info.plist */,
 				08266628216E2B1700FD8E84 /* main.m */,
 				08266627216E2B1700FD8E84 /* TestApp.entitlements */,
+				6F3B1BC721708013008D8823 /* Launch Screen.storyboard */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
