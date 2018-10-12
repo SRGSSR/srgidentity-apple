@@ -201,14 +201,25 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        void (^notifyCancel)(void) = ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        };
+        
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
         }
-        else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
-                                                                object:self
-                                                              userInfo:nil];
+        else if (@available(iOS 12.0, *)) {
+            if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                notifyCancel();
+            }
+        }
+        else if (@available(iOS 11.0, *)) {
+            if ([error.domain isEqualToString:SFAuthenticationErrorDomain] && error.code == SFAuthenticationErrorCanceledLogin) {
+                notifyCancel();
+            }
         }
         s_loggingIn = NO;
     };
