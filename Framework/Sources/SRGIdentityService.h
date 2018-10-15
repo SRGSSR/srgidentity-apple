@@ -62,9 +62,10 @@ OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previ
 /**
  *  Instantiate an identity service.
  *
- *  @param providerURL The URL of the identity provider.
+ *  @param providerURL      The URL of the identity provider API.
+ *  @param authorizationURL The URL of the authorization endpoint.
  */
-- (instancetype)initWithProviderURL:(NSURL *)providerURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithProviderURL:(NSURL *)providerURL authorizationURL:(NSURL *)authorizationURL NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful

@@ -58,6 +58,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic, copy) NSString *identifier;
 
 @property (nonatomic) NSURL *providerURL;
+@property (nonatomic) NSURL *authorizationURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
 @property (nonatomic) SRGAccount *account;
@@ -131,7 +132,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithProviderURL:(NSURL *)providerURL
+- (instancetype)initWithProviderURL:(NSURL *)providerURL authorizationURL:(NSURL *)authorizationURL
 {
     if (self = [super init]) {
         self.identifier = NSUUID.UUID.UUIDString;
@@ -143,6 +144,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
         
         self.providerURL = providerURL;
+        self.authorizationURL = authorizationURL;
         UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
         
@@ -170,7 +172,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithProviderURL:[NSURL new]];
+    return [self initWithProviderURL:[NSURL new] authorizationURL:[NSURL new]];
 }
 
 #pragma clang diagnostic pop
@@ -210,7 +212,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRedirectURL
 {
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
     URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
     return URLComponents.URL;
@@ -218,10 +220,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *requestURL = [NSURL URLWithString:@"login" relativeToURL:self.providerURL];
     NSURL *redirectURL = [self loginRedirectURL];
     
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.authorizationURL resolvingAgainstBaseURL:NO];
     NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
                                               [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
     if (emailAddress) {
@@ -324,7 +325,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.providerURL];
+    NSURL *URL = [NSURL URLWithString:@"api/profile/v1/logout" relativeToURL:self.providerURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"DELETE";
     
@@ -401,7 +402,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.providerURL];
+    NSURL *URL = [NSURL URLWithString:@"api/profile/v1/userinfo" relativeToURL:self.providerURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
@@ -410,8 +411,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             return;
         }
         
-        NSDictionary *user = JSONDictionary[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:NULL];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:NULL];
         if (! account) {
             return;
         }

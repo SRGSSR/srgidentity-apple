@@ -20,7 +20,12 @@
 
 static NSURL *TestProviderURL(void)
 {
-    return [NSURL URLWithString:@"https://srgssr.local"];
+    return [NSURL URLWithString:@"https://api.srgssr.local"];
+}
+
+static NSURL *TestAuthorizationURL(void)
+{
+    return [NSURL URLWithString:@"https://www.srgssr.local/profile/login"];
 }
 
 static NSURL *TestCallbackURL(SRGIdentityService *identityService)
@@ -49,12 +54,12 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
     [keyChainStore removeAllItems];
     
-    self.identityService = [[SRGIdentityService alloc] initWithProviderURL:TestProviderURL()];
+    self.identityService = [[SRGIdentityService alloc] initWithProviderURL:TestProviderURL() authorizationURL:TestAuthorizationURL()];
     
     self.loginRequestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.host isEqual:TestProviderURL().host];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        if ([request.URL.path containsString:@"login"]) {
+        if ([request.URL.host containsString:@"www"] && [request.URL.path containsString:@"login"]) {
             NSURLComponents *URLComponents = [[NSURLComponents alloc] initWithURL:request.URL resolvingAgainstBaseURL:NO];
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"redirect"];
             NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
@@ -69,12 +74,12 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
                                                statusCode:302
                                                   headers:@{ @"Location" : redirectURLComponents.URL.absoluteString }] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
         }
-        else if ([request.URL.path containsString:@"logout"]) {
+        else if ([request.URL.host containsString:@"api"] && [request.URL.path containsString:@"logout"]) {
             return [[OHHTTPStubsResponse responseWithData:[NSData data]
                                                statusCode:204
                                                   headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
         }
-        else if ([request.URL.path containsString:@"profile"]) {
+        else if ([request.URL.host containsString:@"api"] && [request.URL.path containsString:@"profile"]) {
             NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
                                                        @"email" : @"test@srgssr.ch",
                                                        @"display_name": @"Play SRG",
@@ -82,7 +87,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
                                                        @"lastname": @"SRG",
                                                        @"gender": @"other",
                                                        @"date_of_birth": @"2001-01-01" };
-            return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{ @"user" : account } options:0 error:NULL]
+            return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
                                                statusCode:200
                                                   headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
         }
