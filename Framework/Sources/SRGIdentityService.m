@@ -22,10 +22,12 @@ static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
+NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
 NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityServiceDidUpdateAccountNotification";
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
+NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -134,9 +136,11 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 - (void)setAccount:(SRGAccount *)account
 {
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGIdentityServicePreviousAccountKey] = _account;
+
     _account = account;
     
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     userInfo[SRGIdentityServiceAccountKey] = account;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
@@ -197,11 +201,32 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+        void (^notifyCancel)(void) = ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        };
+        
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
+            s_loggingIn = NO;
         }
-        s_loggingIn = NO;
+        else if (@available(iOS 12.0, *)) {
+            if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+                s_loggingIn = NO;
+                notifyCancel();
+            }
+        }
+        else if (@available(iOS 11.0, *)) {
+            if ([error.domain isEqualToString:SFAuthenticationErrorDomain] && error.code == SFAuthenticationErrorCanceledLogin) {
+                s_loggingIn = NO;
+                notifyCancel();
+            }
+        }
+        else {
+            s_loggingIn = NO;
+        }
     };
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
@@ -306,6 +331,10 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
 {
     s_loggingIn = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                        object:self
+                                                      userInfo:nil];
 }
 
 #pragma mark Account information

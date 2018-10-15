@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
 
 /**
+ *  Notification sent when a user cancelled a login attempt.
+ */
+OBJC_EXPORT NSString * const SRGIdentityServiceUserDidCancelLoginNotification;
+
+/**
  *  Notification sent when a user logged out.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLogoutNotification;
@@ -28,6 +33,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDidUpdateAccountNotification;
  *  Information available for `SRGIdentityServiceDidUpdateAccountNotification`.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updated account information, as an `SRGAccount` object.
+OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previous account information, as an `SRGAccount` object.
 
 /**
  *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Peach

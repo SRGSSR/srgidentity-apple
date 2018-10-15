@@ -181,6 +181,7 @@ static NSURL *TestCallbackURL(void)
     
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNotNil(notification.userInfo[SRGIdentityServiceAccountKey]);
+        XCTAssertNil(notification.userInfo[SRGIdentityServicePreviousAccountKey]);
         return YES;
     }];
     
@@ -197,6 +198,7 @@ static NSURL *TestCallbackURL(void)
     }];
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil(notification.userInfo[SRGIdentityServiceAccountKey]);
+        XCTAssertNotNil(notification.userInfo[SRGIdentityServicePreviousAccountKey]);
         return YES;
     }];
     
