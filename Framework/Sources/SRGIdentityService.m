@@ -81,16 +81,12 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     // Find the application delegate to swizzle `application:openURL:options:`.
     // We must call it before the first application delegate instance. https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires
     if (appDelegateClass) {
+        Method defaultMethod = class_getInstanceMethod(appDelegateClass, @selector(srg_default_application:openURL:options:));
+        class_addMethod(appDelegateClass,
+                        @selector(application:openURL:options:),
+                        method_getImplementation(defaultMethod),
+                        method_getTypeEncoding(defaultMethod));
         Method originalMethod = class_getInstanceMethod(appDelegateClass, @selector(application:openURL:options:));
-        
-        if (originalMethod == nil) {
-            Method defaultMethod = class_getInstanceMethod(appDelegateClass, @selector(srg_default_application:openURL:options:));
-            class_addMethod(appDelegateClass,
-                            @selector(application:openURL:options:),
-                            method_getImplementation(defaultMethod),
-                            method_getTypeEncoding(defaultMethod));
-            originalMethod = class_getInstanceMethod(appDelegateClass, @selector(application:openURL:options:));
-        }
         
         Method swizzledMethod = class_getInstanceMethod(appDelegateClass, @selector(srg_swizzled_application:openURL:options:));
         method_exchangeImplementations(originalMethod, swizzledMethod);
