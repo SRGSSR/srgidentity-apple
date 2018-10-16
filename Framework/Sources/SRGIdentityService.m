@@ -66,31 +66,27 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 
 __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
-    Class appDelegateClass = NSClassFromString(NSBundle.mainBundle.infoDictionary[@"SRGIdentityAppDelegate"]);
-    if (__IPHONE_OS_VERSION_MIN_REQUIRED < 110000 && appDelegateClass == nil) {
-        SRGIdentityLogError(@"Identity iOS support", @"To support login authentification on iOS 9 and 10, your "
-                            "application Info.plist file must contain the 'SRGIdentityAppDelegate' key as a string with "
-                            "value, your application delegate class name. Please update your Info.plist file accordingly "
-                            "to make this message disappear.");
-    }
-    
     if (@available(iOS 11.0, *)) {
         return;
     }
     
-    // Find the application delegate to swizzle `application:openURL:options:`.
-    // We must call it before the first application delegate instance. https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires
-    if (appDelegateClass) {
-        Method defaultMethod = class_getInstanceMethod(appDelegateClass, @selector(srg_default_application:openURL:options:));
-        class_addMethod(appDelegateClass,
-                        @selector(application:openURL:options:),
-                        method_getImplementation(defaultMethod),
-                        method_getTypeEncoding(defaultMethod));
-        Method originalMethod = class_getInstanceMethod(appDelegateClass, @selector(application:openURL:options:));
-        
-        Method swizzledMethod = class_getInstanceMethod(appDelegateClass, @selector(srg_swizzled_application:openURL:options:));
-        method_exchangeImplementations(originalMethod, swizzledMethod);
+    // The `-application:openURL:options:` application delegate method must be available at the time the application is
+    // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
+    unsigned int numberOfClasses = 0;
+    Class *classList = objc_copyClassList(&numberOfClasses);
+    for (unsigned int i = 0; i < numberOfClasses; ++i) {
+        Class cls = classList[i];
+        if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
+            Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
+            if (! method) {
+                Method defaultMethod = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
+                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(defaultMethod), method_getTypeEncoding(defaultMethod));
+            }
+            method_exchangeImplementations(class_getInstanceMethod(cls, @selector(application:openURL:options:)),
+                                           class_getInstanceMethod(cls, @selector(srg_swizzled_application:openURL:options:)));
+        }
     }
+    free(classList);
 }
 
 @implementation SRGIdentityService
