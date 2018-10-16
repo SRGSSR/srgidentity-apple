@@ -13,6 +13,7 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <FXReachability/FXReachability.h>
 #import <libextobjc/libextobjc.h>
+#import <objc/runtime.h>
 #import <SafariServices/SafariServices.h>
 #import <SRGNetwork/SRGNetwork.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
@@ -21,6 +22,9 @@
 static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
+static NSMutableDictionary<NSString *, NSValue *> *s_identityServices;
+static NSDictionary<NSValue *, NSValue *> *s_originalImplementations;
+
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
 NSString * const SRGIdentityServiceUserDidLogoutNotification = @"SRGIdentityServiceUserDidLogoutNotification";
@@ -28,6 +32,8 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
+
+static NSString * const SRGIdentityServicePathComponent = @"identity_service";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -39,18 +45,58 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options);
+
+@interface NSObject (SRGIdentityApplicationDelegateHooks)
+
+- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
+@end
+
 @interface SRGIdentityService () <SFSafariViewControllerDelegate>
+
+@property (nonatomic, copy) NSString *identifier;
 
 @property (nonatomic) NSURL *providerURL;
 @property (nonatomic) UICKeyChainStore *keyChainStore;
-
-@property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGAccount *account;
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @end
+
+__attribute__((constructor)) static void SRGIdentityServiceInit(void)
+{
+    if (@available(iOS 11.0, *)) {
+        return;
+    }
+    
+    NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
+    
+    // The `-application:openURL:options:` application delegate method must be available at the time the application is
+    // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
+    unsigned int numberOfClasses = 0;
+    Class *classList = objc_copyClassList(&numberOfClasses);
+    for (unsigned int i = 0; i < numberOfClasses; ++i) {
+        Class cls = classList[i];
+        if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
+            Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
+            if (! method) {
+                method = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
+                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(method), method_getTypeEncoding(method));
+            }
+            
+            NSValue *key = [NSValue valueWithNonretainedObject:cls];
+            originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
+            
+            class_replaceMethod(cls, @selector(application:openURL:options:), (IMP)swizzled_application_openURL_options, method_getTypeEncoding(method));
+        }
+    }
+    free(classList);
+    
+    s_originalImplementations = [originalImplementations copy];
+}
 
 @implementation SRGIdentityService
 
@@ -88,6 +134,14 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 - (instancetype)initWithProviderURL:(NSURL *)providerURL
 {
     if (self = [super init]) {
+        self.identifier = NSUUID.UUID.UUIDString;
+        
+        static dispatch_once_t s_onceToken;
+        dispatch_once(&s_onceToken, ^{
+            s_identityServices = [NSMutableDictionary dictionary];
+        });
+        s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
+        
         self.providerURL = providerURL;
         UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
@@ -100,10 +154,14 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
                                                selector:@selector(applicationWillEnterForeground:)
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
-        
         [self updateAccount];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    s_identityServices[self.identifier] = nil;
 }
 
 #pragma clang diagnostic push
@@ -154,6 +212,7 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
+    URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
     return URLComponents.URL;
 }
 
@@ -380,3 +439,31 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
 }
 
 @end
+
+@implementation NSObject (SRGIdentityApplicationDelegateHooks)
+
+- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    return NO;
+}
+
+@end
+
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
+{
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+    NSArray<NSString *> *pathComponents = URLComponents.path.pathComponents;
+    if (pathComponents.count == 3 && [pathComponents[1] isEqualToString:SRGIdentityServicePathComponent]) {
+        NSString *identifier = pathComponents.lastObject;
+        SRGIdentityService *identityService = [s_identityServices[identifier] nonretainedObjectValue];
+        if ([identityService handleCallbackURL:URL]) {
+            return YES;
+        }
+    }
+    
+    // Use -class method to be compatible with dynamic subclassing if KVO registrations are made for self
+    // (object_getClass would return the KVO subclass, while -class returns a proper lie about the true class)
+    NSValue *key = [NSValue valueWithNonretainedObject:[self class]];
+    BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
+    return originalImplementation(self, _cmd, application, URL, options);
+}
