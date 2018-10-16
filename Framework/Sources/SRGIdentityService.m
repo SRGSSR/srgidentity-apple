@@ -229,8 +229,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
-                                              [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
+    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
     if (emailAddress) {
         NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:emailAddress];
         queryItems = [queryItems arrayByAddingObject:emailQueryItem];
