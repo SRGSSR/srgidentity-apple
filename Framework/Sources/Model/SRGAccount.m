@@ -46,10 +46,10 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
         s_mapping = @{ @keypath(SRGAccount.new, uid) : @"id",
                        @keypath(SRGAccount.new, displayName) : @"displayName",
                        @keypath(SRGAccount.new, emailAddress) : @"email",
-                       @keypath(SRGAccount.new, firstName) : @"firstname",
-                       @keypath(SRGAccount.new, lastName) : @"lastname",
+                       @keypath(SRGAccount.new, firstName) : @"firstName",
+                       @keypath(SRGAccount.new, lastName) : @"lastName",
                        @keypath(SRGAccount.new, gender) : @"gender",
-                       /*@keypath(SRGAccount.new, birthdate) : @"birthdate",*/
+                       @keypath(SRGAccount.new, birthdate) : @"birthdate",
                        @keypath(SRGAccount.new, verified) : @"verified" };
     });
     return s_mapping;
