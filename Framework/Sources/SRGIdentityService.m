@@ -23,6 +23,7 @@ static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
 static NSMutableDictionary<NSString *, NSValue *> *s_identityServices;
+static NSDictionary<NSValue *, NSValue *> *s_originalImplementations;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
@@ -44,9 +45,10 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options);
+
 @interface NSObject (SRGIdentityApplicationDelegateHooks)
 
-- (BOOL)srg_swizzled_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
 - (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
 
 @end
@@ -70,6 +72,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
+    NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
+    
     // The `-application:openURL:options:` application delegate method must be available at the time the application is
     // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
     unsigned int numberOfClasses = 0;
@@ -79,16 +83,19 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
             Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
             if (! method) {
-                Method defaultMethod = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
-                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(defaultMethod), method_getTypeEncoding(defaultMethod));
+                method = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
+                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(method), method_getTypeEncoding(method));
             }
-            method_exchangeImplementations(class_getInstanceMethod(cls, @selector(application:openURL:options:)),
-                                           class_getInstanceMethod(cls, @selector(srg_swizzled_application:openURL:options:)));
-            // Swizzle only one time.
-            break;
+            
+            NSValue *key = [NSValue valueWithNonretainedObject:cls];
+            originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
+            
+            class_replaceMethod(cls, @selector(application:openURL:options:), (IMP)swizzled_application_openURL_options, method_getTypeEncoding(method));
         }
     }
     free(classList);
+    
+    s_originalImplementations = [originalImplementations copy];
 }
 
 @implementation SRGIdentityService
@@ -435,7 +442,14 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 @implementation NSObject (SRGIdentityApplicationDelegateHooks)
 
-- (BOOL)srg_swizzled_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    return NO;
+}
+
+@end
+
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
     NSArray<NSString *> *pathComponents = URLComponents.path.pathComponents;
@@ -446,12 +460,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             return YES;
         }
     }
-    return [self srg_swizzled_application:application openURL:URL options:options];
+    
+    // Use -class method to be compatible with dynamic subclassing if KVO registrations are made for self
+    // (object_getClass would return the KVO subclass, while -class returns a proper lie about the true class)
+    NSValue *key = [NSValue valueWithNonretainedObject:[self class]];
+    BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
+    return originalImplementation(self, _cmd, application, URL, options);
 }
-
-- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-    return NO;
-}
-
-@end
