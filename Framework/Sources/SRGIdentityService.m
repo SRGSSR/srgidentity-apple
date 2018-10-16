@@ -65,7 +65,6 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGAccount *account;
-
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @end
@@ -326,22 +325,26 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (BOOL)logout
 {
-    if (s_loggingIn || ! self.sessionToken ) {
+    if (s_loggingIn) {
+        return NO;
+    }
+    
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    
+    // Cleanup keychain entries in all cases
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    
+    if (! sessionToken ) {
         return NO;
     }
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"DELETE";
-    
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // Ignore errors and cleanup local credentials in all cases.
-        [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
-        [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = nil;
             
@@ -441,6 +444,16 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (void)applicationWillEnterForeground:(NSNotification *)notification
 {
     [self updateAccount];
+}
+
+#pragma mark Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; keyChainStore = %@>",
+            [self class],
+            self,
+            self.keyChainStore];
 }
 
 @end
