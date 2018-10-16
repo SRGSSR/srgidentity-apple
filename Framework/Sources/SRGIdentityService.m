@@ -67,6 +67,8 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic) SRGAccount *account;
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
+@property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
+
 @end
 
 __attribute__((constructor)) static void SRGIdentityServiceInit(void)
@@ -329,6 +331,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
+    [self.accountUpdateRequest cancel];
+    
     NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     
     // Cleanup keychain entries in all cases
@@ -414,7 +418,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             return;
         }
@@ -429,7 +433,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
         });
-    }] resume];
+    }];
+    [self.accountUpdateRequest resume];
 }
 
 #pragma mark Notifications
