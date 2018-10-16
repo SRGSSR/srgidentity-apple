@@ -207,25 +207,21 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
                                                               userInfo:nil];
         };
         
+        s_loggingIn = NO;
+        
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
-            s_loggingIn = NO;
         }
         else if (@available(iOS 12.0, *)) {
             if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                s_loggingIn = NO;
                 notifyCancel();
             }
         }
         else if (@available(iOS 11.0, *)) {
             if ([error.domain isEqualToString:SFAuthenticationErrorDomain] && error.code == SFAuthenticationErrorCanceledLogin) {
-                s_loggingIn = NO;
                 notifyCancel();
             }
-        }
-        else {
-            s_loggingIn = NO;
         }
     };
     
