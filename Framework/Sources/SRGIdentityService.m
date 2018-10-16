@@ -84,6 +84,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             }
             method_exchangeImplementations(class_getInstanceMethod(cls, @selector(application:openURL:options:)),
                                            class_getInstanceMethod(cls, @selector(srg_swizzled_application:openURL:options:)));
+            // Swizzle only one time.
+            break;
         }
     }
     free(classList);
