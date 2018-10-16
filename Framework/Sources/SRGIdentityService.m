@@ -33,7 +33,7 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
-static NSString * const SRGIdentityServicePathComponent = @"identity_service";
+static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -219,7 +219,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
-    URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
+    URLComponents.queryItems = @[ [[NSURLQueryItem alloc] initWithName:SRGIdentityServiceQueryItemName value:self.identifier] ];
     return URLComponents.URL;
 }
 
@@ -474,10 +474,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
-    NSArray<NSString *> *pathComponents = URLComponents.path.pathComponents;
-    if (pathComponents.count == 3 && [pathComponents[1] isEqualToString:SRGIdentityServicePathComponent]) {
-        NSString *identifier = pathComponents.lastObject;
-        SRGIdentityService *identityService = [s_identityServices[identifier] nonretainedObjectValue];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    if (queryItem.value) {
+        SRGIdentityService *identityService = [s_identityServices[queryItem.value] nonretainedObjectValue];
         if ([identityService handleCallbackURL:URL]) {
             return YES;
         }

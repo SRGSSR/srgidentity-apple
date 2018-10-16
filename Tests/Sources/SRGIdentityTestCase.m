@@ -30,7 +30,7 @@ static NSURL *TestWebsiteURL(void)
 
 static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 {
-    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@/identity_service/%@?token=0123456789", TestWebserviceURL().host, identityService.identifier];
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&token=0123456789", TestWebserviceURL().host, identityService.identifier];
     return [NSURL URLWithString:URLString];
 }
 
