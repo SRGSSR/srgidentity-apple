@@ -36,7 +36,6 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 
 @interface SRGIdentityTestCase : XCTestCase
 
-@property (nonatomic) NSURL *providerURL;
 @property (nonatomic) SRGIdentityService *identityService;
 @property (nonatomic, weak) id<OHHTTPStubsDescriptor> loginRequestStub;
 
@@ -48,13 +47,8 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 
 - (void)setUp
 {
-    self.providerURL = TestWebserviceURL();
-    
-    // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestWebserviceURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
-    [keyChainStore removeAllItems];
-    
     self.identityService = [[SRGIdentityService alloc] initWithWebserviceURL:TestWebserviceURL() websiteURL:TestWebsiteURL()];
+    [self.identityService logout];
     
     self.loginRequestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.host isEqual:TestWebserviceURL().host];
@@ -106,11 +100,8 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 
 - (void)tearDown
 {
+    [self.identityService logout];
     self.identityService = nil;
-    
-    // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestWebserviceURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
-    [keyChainStore removeAllItems];
     
     [OHHTTPStubs removeStub:self.loginRequestStub];
 }

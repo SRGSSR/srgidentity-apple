@@ -335,7 +335,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
     [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     
-    if (! sessionToken ) {
+    if (! sessionToken) {
         return NO;
     }
     
