@@ -243,9 +243,14 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSURL *standardizedURL = URL.standardizedURL;
     NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    
     return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
         && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
-        && [standardizedURL.path isEqual:standardizedRedirectURL.path];
+        && [standardizedURL.path isEqual:standardizedRedirectURL.path]
+        && [self.identifier isEqualToString:queryItem.value];
 }
 
 - (NSString *)tokenFromURL:(NSURL *)URL
