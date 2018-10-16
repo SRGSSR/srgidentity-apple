@@ -44,13 +44,13 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
         s_mapping = @{ @keypath(SRGAccount.new, uid) : @"id",
-                       @keypath(SRGAccount.new, displayName) : @"display_name",
+                       @keypath(SRGAccount.new, displayName) : @"displayName",
                        @keypath(SRGAccount.new, emailAddress) : @"email",
                        @keypath(SRGAccount.new, firstName) : @"firstname",
                        @keypath(SRGAccount.new, lastName) : @"lastname",
                        @keypath(SRGAccount.new, gender) : @"gender",
-                       @keypath(SRGAccount.new, birthdate) : @"date_of_birth",
-                       @keypath(SRGAccount.new, verified) : @"email_verified" };
+                       /*@keypath(SRGAccount.new, birthdate) : @"birthdate",*/
+                       @keypath(SRGAccount.new, verified) : @"verified" };
     });
     return s_mapping;
 }

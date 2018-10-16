@@ -5,17 +5,18 @@ This getting started guide discusses all concepts required to use the SRG Identi
 
 ## Service instantiation
 
-At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a given (Peach) identity provider URL, for example:
+At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a given (Peach) identity provider URL and an identity portal where you can login, for example:
 
 ```objective-c
-NSURL *URL = ...;
-SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithProviderURL:URL];
+SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithWebserviceURL:webserviceURL websiteURL:websiteURL];
 ```
+
+Both the webservice URLs and website URL must provide services expected by the library to work (convention over configuration).
 
 You can have several identity services in an application, though most applications should require only one. To make it easier to access the main identity service of an application, the `SRGIdentityService ` class provides a class property to set and retrieved it as shared instance:
 
 ```objective-c
-SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithProviderURL:URL];
+SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithWebserviceURL:webserviceURL websiteURL:websiteURL];
 ```
 
 For simplicity, this getting started guide assumes that a shared service has been set. If you cannot use the shared instance, store the services you instantiated somewhere and provide access to them in some way.
@@ -41,8 +42,6 @@ To logout the current user, simply call `-logout`;
 ```objective-c
 [SRGIdentityService.currentIdentityService logout];
 ```
-
-Only a single user can be logged in at any time. If you want for a new user to be able to log in, you must logout any existing user first.
 
 ## iOS 9 and 10 support
 

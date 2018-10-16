@@ -57,9 +57,12 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic, copy) NSString *identifier;
 
-@property (nonatomic) NSURL *providerURL;
-@property (nonatomic) NSURL *authorizationURL;
+
+@property (nonatomic) NSURL *webserviceURL;
+@property (nonatomic) NSURL *websiteURL;
+
 @property (nonatomic) UICKeyChainStore *keyChainStore;
+@property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGAccount *account;
 
@@ -132,7 +135,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithProviderURL:(NSURL *)providerURL authorizationURL:(NSURL *)authorizationURL
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL
 {
     if (self = [super init]) {
         self.identifier = NSUUID.UUID.UUIDString;
@@ -143,10 +146,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         });
         s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
         
-        self.providerURL = providerURL;
-        self.authorizationURL = authorizationURL;
-        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
+        self.webserviceURL = webserviceURL;
+        self.websiteURL = websiteURL;
+        
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [websiteURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:websiteURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
@@ -172,7 +176,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithProviderURL:[NSURL new] authorizationURL:[NSURL new]];
+    return [self initWithWebserviceURL:[NSURL new] websiteURL:[NSURL new]];
 }
 
 #pragma clang diagnostic pop
@@ -212,7 +216,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRedirectURL
 {
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:NO];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
     URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
     return URLComponents.URL;
@@ -222,7 +226,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     NSURL *redirectURL = [self loginRedirectURL];
     
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.authorizationURL resolvingAgainstBaseURL:NO];
+    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
                                               [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
     if (emailAddress) {
@@ -325,7 +330,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/profile/v1/logout" relativeToURL:self.providerURL];
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     request.HTTPMethod = @"DELETE";
     
@@ -402,7 +407,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/profile/v1/userinfo" relativeToURL:self.providerURL];
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/userinfo"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
