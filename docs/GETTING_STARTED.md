@@ -5,7 +5,7 @@ This getting started guide discusses all concepts required to use the SRG Identi
 
 ## Service instantiation
 
-At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a given (Peach) identity provider URL and an identity portal where you can login, for example:
+At its core, the SRG Identity library reduces to a single identity service class, `SRGIdentityService`, which you instantiate for a given (identity provider URL and an identity website where you can login, for example:
 
 ```objective-c
 SRGIdentityService *identityService = [[SRGIdentityService alloc] initWithWebserviceURL:webserviceURL websiteURL:websiteURL];

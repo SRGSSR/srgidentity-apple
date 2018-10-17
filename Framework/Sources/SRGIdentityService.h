@@ -36,10 +36,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updat
 OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previous account information, as an `SRGAccount` object.
 
 /**
- *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Peach
- *  (http://peach.ebu.io) is the only supported identity provider at the moment. Several identity services can be
- *  instantiated within an application, though most application should only require one. For convenience, a global
- *  identity service can be set using the `currentIdentityService` class property.
+ *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Several
+ *  identity services can be instantiated within an application, though most application should only require one. For
+ *  convenience, a global identity service can be set using the `currentIdentityService` class property.
  *
  *  A user must correctly supply her credentials (email address and password) to receive a session token. This procedure
  *  is initiated by calling the `-loginWithEmailAddress:` method, which opens a login / signup page. This page is opened
