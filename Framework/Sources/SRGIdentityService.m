@@ -66,10 +66,6 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic) NSURL *websiteURL;
 
 @property (nonatomic) UICKeyChainStore *keyChainStore;
-@property (nonatomic, readonly) NSString *serviceIdentifier;
-
-@property (nonatomic) SRGAccount *account;
-@property (nonatomic, copy) NSString *sessionToken;
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
