@@ -428,8 +428,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.account = account;
             self.emailAddress = account.emailAddress;
+            self.account = account;
         });
     }];
     [self.accountUpdateRequest resume];
