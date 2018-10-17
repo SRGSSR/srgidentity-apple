@@ -45,6 +45,11 @@ static NSString *SRGServiceIdentifierSessionTokenStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".sessionToken"];
 }
 
+static NSString *SRGServiceIdentifierAccountStoreKey(void)
+{
+    return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".account"];
+}
+
 static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options);
 
 @interface NSObject (SRGIdentityApplicationDelegateHooks)
@@ -161,6 +166,15 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                selector:@selector(applicationWillEnterForeground:)
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
+        
+        if (self.sessionToken) {
+            NSData *accountData = [self.keyChainStore dataForKey:SRGServiceIdentifierAccountStoreKey()];
+            self.account = (accountData) ? [NSKeyedUnarchiver unarchiveObjectWithData:accountData] : nil;
+        }
+        else {
+            [self cleanupKeychain];
+        }
+        
         [self updateAccount];
     }
     return self;
@@ -340,8 +354,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     
     // Cleanup keychain entries in all cases
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    [self cleanupKeychain];
     
     if (! sessionToken) {
         return NO;
@@ -367,6 +380,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }] resume];
     
     return YES;
+}
+
+- (void)cleanupKeychain
+{
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierAccountStoreKey()];
 }
 
 #pragma mark Callback URL handling
@@ -438,6 +458,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         }
         
         [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey()];
+        [self.keyChainStore setData:[NSKeyedArchiver archivedDataWithRootObject:account] forKey:SRGServiceIdentifierAccountStoreKey()];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
