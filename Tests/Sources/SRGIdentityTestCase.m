@@ -10,6 +10,8 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <XCTest/XCTest.h>
 
+static NSString *TestValidToken = @"0123456789";
+
 @interface SRGIdentityService (Private)
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL;
@@ -28,9 +30,9 @@ static NSURL *TestWebsiteURL(void)
     return [NSURL URLWithString:@"https://www.srgssr.local"];
 }
 
-static NSURL *TestCallbackURL(SRGIdentityService *identityService)
+static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *token)
 {
-    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&token=0123456789", TestWebserviceURL().host, identityService.identifier];
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&token=%@", TestWebserviceURL().host, identityService.identifier, token];
     return [NSURL URLWithString:URLString];
 }
 
@@ -77,16 +79,24 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
                                                       headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
             }
             else if ([request.URL.path containsString:@"userinfo"]) {
-                NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
-                                                           @"email" : @"test@srgssr.ch",
-                                                           @"display_name": @"Play SRG",
-                                                           @"firstname": @"Play",
-                                                           @"lastname": @"SRG",
-                                                           @"gender": @"other",
-                                                           @"date_of_birth": @"2001-01-01" };
-                return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
-                                                   statusCode:200
-                                                      headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+                NSString *validAuthorizationHeader = [NSString stringWithFormat:@"sessionToken %@", @"0123456789"];
+                if ([[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:validAuthorizationHeader]) {
+                    NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
+                                                               @"email" : @"test@srgssr.ch",
+                                                               @"display_name": @"Play SRG",
+                                                               @"firstname": @"Play",
+                                                               @"lastname": @"SRG",
+                                                               @"gender": @"other",
+                                                               @"date_of_birth": @"2001-01-01" };
+                    return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
+                                                       statusCode:200
+                                                          headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+                }
+                else {
+                    return [[OHHTTPStubsResponse responseWithData:[NSData data]
+                                                       statusCode:401
+                                                          headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+                }
             }
         }
         
@@ -117,10 +127,11 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -140,10 +151,11 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
 
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -151,6 +163,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertNotNil(self.identityService.sessionToken);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
     
@@ -180,7 +193,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
         return YES;
     }];
 
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService)];
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -213,6 +226,34 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     }];
     
     XCTAssertTrue([self.identityService logout]);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testAutomaticLogoutWhenUnauthorized
+{
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, @"invalid_token")];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    
+    // Wait until account information is requested. The token is invalid, the user unauthorized and therefore logged out automatically
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
