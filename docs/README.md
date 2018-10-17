@@ -4,7 +4,7 @@
 
 ## About
 
-The SRG Identity framework is a simple way to authenticate users within SRG SSR applications. [Peach](http://peach.ebu.io) identity provider is the only supported service at the moment.
+The SRG Identity framework is a simple way to authenticate users within SRG SSR applications.
 
 ## Compatibility
 

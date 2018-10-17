@@ -33,7 +33,7 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
-static NSString * const SRGIdentityServicePathComponent = @"identity_service";
+static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
 {
@@ -57,12 +57,17 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic, copy) NSString *identifier;
 
-@property (nonatomic) NSURL *providerURL;
+
+@property (nonatomic) NSURL *webserviceURL;
+@property (nonatomic) NSURL *websiteURL;
+
 @property (nonatomic) UICKeyChainStore *keyChainStore;
+@property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGAccount *account;
-
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
+
+@property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
 
 @end
 
@@ -131,7 +136,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithProviderURL:(NSURL *)providerURL
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL
 {
     if (self = [super init]) {
         self.identifier = NSUUID.UUID.UUIDString;
@@ -142,9 +147,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         });
         s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
         
-        self.providerURL = providerURL;
-        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [providerURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
-        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:providerURL protocolType:keyChainStoreProtocolType];
+        self.webserviceURL = webserviceURL;
+        self.websiteURL = websiteURL;
+        
+        UICKeyChainStoreProtocolType keyChainStoreProtocolType = [websiteURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
+        self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:websiteURL protocolType:keyChainStoreProtocolType];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(reachabilityDidChange:)
@@ -170,7 +177,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithProviderURL:[NSURL new]];
+    return [self initWithWebserviceURL:[NSURL new] websiteURL:[NSURL new]];
 }
 
 #pragma clang diagnostic pop
@@ -210,20 +217,19 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRedirectURL
 {
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.providerURL resolvingAgainstBaseURL:YES];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
-    URLComponents.path = [[@"/" stringByAppendingPathComponent:SRGIdentityServicePathComponent] stringByAppendingPathComponent:self.identifier];
+    URLComponents.queryItems = @[ [[NSURLQueryItem alloc] initWithName:SRGIdentityServiceQueryItemName value:self.identifier] ];
     return URLComponents.URL;
 }
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *requestURL = [NSURL URLWithString:@"login" relativeToURL:self.providerURL];
     NSURL *redirectURL = [self loginRedirectURL];
     
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:requestURL resolvingAgainstBaseURL:YES];
-    NSArray<NSURLQueryItem *> *queryItems = @[[[NSURLQueryItem alloc] initWithName:@"withcode" value:@"true"],
-                                              [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString]];
+    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
     if (emailAddress) {
         NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:emailAddress];
         queryItems = [queryItems arrayByAddingObject:emailQueryItem];
@@ -237,9 +243,14 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSURL *standardizedURL = URL.standardizedURL;
     NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
     
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    
     return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
         && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
-        && [standardizedURL.path isEqual:standardizedRedirectURL.path];
+        && [standardizedURL.path isEqual:standardizedRedirectURL.path]
+        && [self.identifier isEqualToString:queryItem.value];
 }
 
 - (NSString *)tokenFromURL:(NSURL *)URL
@@ -320,21 +331,31 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (BOOL)logout
 {
-    if (s_loggingIn || ! self.sessionToken ) {
+    if (s_loggingIn) {
         return NO;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/logout" relativeToURL:self.providerURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"DELETE";
+    [self.accountUpdateRequest cancel];
     
     NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    
+    // Cleanup keychain entries in all cases
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
+    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    
+    if (! sessionToken) {
+        return NO;
+    }
+    
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    request.HTTPMethod = @"DELETE";
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // Ignore errors and cleanup local credentials in all cases.
-        [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
-        [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+        if (error) {
+            SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = nil;
@@ -401,17 +422,17 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:@"api/v2/session/user/profile" relativeToURL:self.providerURL];
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/userinfo"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
+            SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
             return;
         }
         
-        NSDictionary *user = JSONDictionary[@"user"];
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:user error:NULL];
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:NULL];
         if (! account) {
             return;
         }
@@ -421,7 +442,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
         });
-    }] resume];
+    }];
+    [self.accountUpdateRequest resume];
 }
 
 #pragma mark Notifications
@@ -438,6 +460,16 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self updateAccount];
 }
 
+#pragma mark Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; keyChainStore = %@>",
+            [self class],
+            self,
+            self.keyChainStore];
+}
+
 @end
 
 @implementation NSObject (SRGIdentityApplicationDelegateHooks)
@@ -452,10 +484,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
-    NSArray<NSString *> *pathComponents = URLComponents.path.pathComponents;
-    if (pathComponents.count == 3 && [pathComponents[1] isEqualToString:SRGIdentityServicePathComponent]) {
-        NSString *identifier = pathComponents.lastObject;
-        SRGIdentityService *identityService = [s_identityServices[identifier] nonretainedObjectValue];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    if (queryItem.value) {
+        SRGIdentityService *identityService = [s_identityServices[queryItem.value] nonretainedObjectValue];
         if ([identityService handleCallbackURL:URL]) {
             return YES;
         }

@@ -18,20 +18,24 @@
 
 @end
 
-static NSURL *TestProviderURL(void)
+static NSURL *TestWebserviceURL(void)
 {
-    return [NSURL URLWithString:@"https://srgssr.local"];
+    return [NSURL URLWithString:@"https://api.srgssr.local"];
+}
+
+static NSURL *TestWebsiteURL(void)
+{
+    return [NSURL URLWithString:@"https://www.srgssr.local"];
 }
 
 static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 {
-    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@/identity_service/%@?token=0123456789", TestProviderURL().host, identityService.identifier];
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&token=0123456789", TestWebserviceURL().host, identityService.identifier];
     return [NSURL URLWithString:URLString];
 }
 
 @interface SRGIdentityTestCase : XCTestCase
 
-@property (nonatomic) NSURL *providerURL;
 @property (nonatomic) SRGIdentityService *identityService;
 @property (nonatomic, weak) id<OHHTTPStubsDescriptor> loginRequestStub;
 
@@ -43,65 +47,61 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
 
 - (void)setUp
 {
-    self.providerURL = TestProviderURL();
-    
-    // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
-    [keyChainStore removeAllItems];
-    
-    self.identityService = [[SRGIdentityService alloc] initWithProviderURL:TestProviderURL()];
+    self.identityService = [[SRGIdentityService alloc] initWithWebserviceURL:TestWebserviceURL() websiteURL:TestWebsiteURL()];
+    [self.identityService logout];
     
     self.loginRequestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [request.URL.host isEqual:TestProviderURL().host];
+        return [request.URL.host isEqual:TestWebserviceURL().host];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        if ([request.URL.path containsString:@"login"]) {
-            NSURLComponents *URLComponents = [[NSURLComponents alloc] initWithURL:request.URL resolvingAgainstBaseURL:NO];
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"redirect"];
-            NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-            
-            NSURL *redirectURL = [NSURL URLWithString:queryItem.value];
-            NSURLComponents *redirectURLComponents = [[NSURLComponents alloc] initWithURL:redirectURL resolvingAgainstBaseURL:NO];
-            NSArray<NSURLQueryItem *> *queryItems = redirectURLComponents.queryItems ?: @[];
-            queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"token" value:@"0123456789"]];
-            redirectURLComponents.queryItems = queryItems;
-            
-            return [[OHHTTPStubsResponse responseWithData:[NSData data]
-                                               statusCode:302
-                                                  headers:@{ @"Location" : redirectURLComponents.URL.absoluteString }] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+        if ([request.URL.host isEqualToString:TestWebsiteURL().host]) {
+            if ([request.URL.path containsString:@"login"]) {
+                NSURLComponents *URLComponents = [[NSURLComponents alloc] initWithURL:request.URL resolvingAgainstBaseURL:NO];
+                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"redirect"];
+                NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+                
+                NSURL *redirectURL = [NSURL URLWithString:queryItem.value];
+                NSURLComponents *redirectURLComponents = [[NSURLComponents alloc] initWithURL:redirectURL resolvingAgainstBaseURL:NO];
+                NSArray<NSURLQueryItem *> *queryItems = redirectURLComponents.queryItems ?: @[];
+                queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"token" value:@"0123456789"]];
+                redirectURLComponents.queryItems = queryItems;
+                
+                return [[OHHTTPStubsResponse responseWithData:[NSData data]
+                                                   statusCode:302
+                                                      headers:@{ @"Location" : redirectURLComponents.URL.absoluteString }] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+            }
         }
-        else if ([request.URL.path containsString:@"logout"]) {
-            return [[OHHTTPStubsResponse responseWithData:[NSData data]
-                                               statusCode:204
-                                                  headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+        else if ([request.URL.host isEqualToString:TestWebserviceURL().host]) {
+            if ([request.URL.path containsString:@"logout"]) {
+                return [[OHHTTPStubsResponse responseWithData:[NSData data]
+                                                   statusCode:204
+                                                      headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+            }
+            else if ([request.URL.path containsString:@"userinfo"]) {
+                NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
+                                                           @"email" : @"test@srgssr.ch",
+                                                           @"display_name": @"Play SRG",
+                                                           @"firstname": @"Play",
+                                                           @"lastname": @"SRG",
+                                                           @"gender": @"other",
+                                                           @"date_of_birth": @"2001-01-01" };
+                return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
+                                                   statusCode:200
+                                                      headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
+            }
         }
-        else if ([request.URL.path containsString:@"profile"]) {
-            NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
-                                                       @"email" : @"test@srgssr.ch",
-                                                       @"display_name": @"Play SRG",
-                                                       @"firstname": @"Play",
-                                                       @"lastname": @"SRG",
-                                                       @"gender": @"other",
-                                                       @"date_of_birth": @"2001-01-01" };
-            return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{ @"user" : account } options:0 error:NULL]
-                                               statusCode:200
-                                                  headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
-        }
-        else {
-            return [[OHHTTPStubsResponse responseWithData:[NSData data]
-                                               statusCode:404
-                                                  headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
-        }
+        
+        // No match, return 404
+        return [[OHHTTPStubsResponse responseWithData:[NSData data]
+                                           statusCode:404
+                                              headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
     self.loginRequestStub.name = @"Login request";
 }
 
 - (void)tearDown
 {
+    [self.identityService logout];
     self.identityService = nil;
-    
-    // Remove all items in the keychain.
-    UICKeyChainStore *keyChainStore = [UICKeyChainStore keyChainStoreWithServer:TestProviderURL() protocolType:UICKeyChainStoreProtocolTypeHTTPS];
-    [keyChainStore removeAllItems];
     
     [OHHTTPStubs removeStub:self.loginRequestStub];
 }

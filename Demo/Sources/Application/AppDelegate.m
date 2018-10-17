@@ -19,7 +19,8 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];
     
-    SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithProviderURL:[NSURL URLWithString:@"https://id.rts.ch"]];
+    SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithWebserviceURL:[NSURL URLWithString:@"https://hummingbird.rts.ch/api/profile"]
+                                                                                       websiteURL:[NSURL URLWithString:@"https://www.rts.ch/profile"]];
     
     DemosViewController *demosViewController = [[DemosViewController alloc] init];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:demosViewController];
