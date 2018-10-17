@@ -393,6 +393,48 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.account = nil;
 }
 
+#pragma mark Account information
+
+- (void)updateAccount
+{
+    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    if (! sessionToken) {
+        return;
+    }
+    
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/userinfo"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    
+    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
+            
+            if ([error.domain isEqualToString:SRGNetworkErrorDomain] && error.code == SRGNetworkErrorHTTP && [error.userInfo[SRGNetworkHTTPStatusCodeKey] integerValue] == 401) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self cleanup];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                        object:self
+                                                                      userInfo:nil];
+                });
+            }
+            return;
+        }
+        
+        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:NULL];
+        if (! account) {
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.account = account;
+            self.emailAddress = account.emailAddress;
+        });
+    }];
+    [self.accountUpdateRequest resume];
+}
+
 #pragma mark Callback URL handling
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL
@@ -435,38 +477,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                         object:self
                                                       userInfo:nil];
-}
-
-#pragma mark Account information
-
-- (void)updateAccount
-{
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-    if (! sessionToken) {
-        return;
-    }
-    
-    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/userinfo"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
-    
-    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (error) {
-            SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
-            return;
-        }
-        
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:NULL];
-        if (! account) {
-            return;
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.account = account;
-            self.emailAddress = account.emailAddress;
-        });
-    }];
-    [self.accountUpdateRequest resume];
 }
 
 #pragma mark Notifications
