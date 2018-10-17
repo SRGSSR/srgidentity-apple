@@ -108,7 +108,7 @@ OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previ
  *  @discussion This property must be used for informative purposes. If you want to find out whether a user is logged
  *              in, check the `loggedIn` property instead.
  */
-@property (nonatomic, readonly, nullable) SRGAccount *account;
+@property (nonatomic, readonly, copy, nullable) SRGAccount *account;
 
 /**
  *  The session token which has been retrieved, if any.
