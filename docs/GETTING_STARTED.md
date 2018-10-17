@@ -43,3 +43,9 @@ To logout the current user, simply call `-logout`;
 ```
 
 Only a single user can be logged in at any time. If you want for a new user to be able to log in, you must logout any existing user first.
+
+## iOS 9 and 10 support
+
+iOS 9 and 10 support requires your application to declare at least one [custom URL scheme](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), which is then used by the framework to transfer control back from Safari to your application after successful login.
+
+If your application uses custom schemes for other purposes, implement the `-application:openURL:options:` application delegate method as usual. If no explicit URL handling is required, implementing this method is not required, as the framework will take care of injecting an implementation at runtime so that URL handling works.
