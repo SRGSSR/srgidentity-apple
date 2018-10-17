@@ -156,13 +156,13 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     
     XCTAssertTrue([self.identityService logout]);
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-    
     XCTAssertNil(self.identityService.emailAddress);
     XCTAssertNil(self.identityService.sessionToken);
     XCTAssertNil(self.identityService.account);
     
     XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertFalse([self.identityService logout]);
 }
