@@ -353,6 +353,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = nil;
             
@@ -424,6 +428,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
+            SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
             return;
         }
         
