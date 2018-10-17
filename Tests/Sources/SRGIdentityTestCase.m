@@ -176,6 +176,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertFalse(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
 
@@ -186,6 +187,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertTrue(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         XCTAssertNotNil(notification.userInfo[SRGIdentityServiceAccountKey]);
         XCTAssertNil(notification.userInfo[SRGIdentityServicePreviousAccountKey]);
         return YES;
@@ -200,9 +202,11 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService)
     XCTAssertTrue(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
         XCTAssertNil(notification.userInfo[SRGIdentityServiceAccountKey]);
         XCTAssertNotNil(notification.userInfo[SRGIdentityServicePreviousAccountKey]);
         return YES;

@@ -62,7 +62,6 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic, copy) NSString *identifier;
 
-
 @property (nonatomic) NSURL *webserviceURL;
 @property (nonatomic) NSURL *websiteURL;
 
@@ -70,6 +69,8 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic, readonly) NSString *serviceIdentifier;
 
 @property (nonatomic) SRGAccount *account;
+@property (nonatomic, copy) NSString *sessionToken;
+
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
@@ -167,14 +168,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
         
-        if (self.sessionToken) {
-            NSData *accountData = [self.keyChainStore dataForKey:SRGServiceIdentifierAccountStoreKey()];
-            self.account = (accountData) ? [NSKeyedUnarchiver unarchiveObjectWithData:accountData] : nil;
-        }
-        else {
-            [self cleanupKeychain];
-        }
-        
         [self updateAccount];
     }
     return self;
@@ -203,28 +196,45 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     return (self.sessionToken != nil);
 }
 
-- (NSString *)sessionToken
-{
-    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-}
-
 - (NSString *)emailAddress
 {
     return [self.keyChainStore stringForKey:SRGServiceIdentifierEmailStoreKey()];
 }
 
+- (void)setEmailAddress:(NSString *)emailAddress
+{
+    [self.keyChainStore setString:emailAddress forKey:SRGServiceIdentifierEmailStoreKey()];
+}
+
+- (SRGAccount *)account
+{
+    NSData *accountData = [self.keyChainStore dataForKey:SRGServiceIdentifierAccountStoreKey()];
+    return accountData ? [NSKeyedUnarchiver unarchiveObjectWithData:accountData] : nil;
+}
+
 - (void)setAccount:(SRGAccount *)account
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[SRGIdentityServicePreviousAccountKey] = _account;
-
-    _account = account;
+    userInfo[SRGIdentityServicePreviousAccountKey] = self.account;
+    
+    NSData *accountData = account ? [NSKeyedArchiver archivedDataWithRootObject:account] : nil;
+    [self.keyChainStore setData:accountData forKey:SRGServiceIdentifierAccountStoreKey()];
     
     userInfo[SRGIdentityServiceAccountKey] = account;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                         object:self
                                                       userInfo:[userInfo copy]];
+}
+
+- (NSString *)sessionToken
+{
+    return [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
+}
+
+- (void)setSessionToken:(NSString *)sessionToken
+{
+    [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
 #pragma mark URLs
@@ -351,14 +361,16 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [self.accountUpdateRequest cancel];
     
-    NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-    
-    // Cleanup keychain entries in all cases
-    [self cleanupKeychain];
-    
+    NSString *sessionToken = self.sessionToken;
     if (! sessionToken) {
         return NO;
     }
+    
+    [self cleanup];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                        object:self
+                                                      userInfo:nil];
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -369,24 +381,16 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         if (error) {
             SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
         }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.account = nil;
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                                object:self
-                                                              userInfo:nil];
-        });
     }] resume];
     
     return YES;
 }
 
-- (void)cleanupKeychain
+- (void)cleanup
 {
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierEmailStoreKey()];
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierSessionTokenStoreKey()];
-    [self.keyChainStore removeItemForKey:SRGServiceIdentifierAccountStoreKey()];
+    self.emailAddress = nil;
+    self.sessionToken = nil;
+    self.account = nil;
 }
 
 #pragma mark Callback URL handling
@@ -397,12 +401,12 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSString *token = [self tokenFromURL:callbackURL];
-    if (! token) {
+    NSString *sessionToken = [self tokenFromURL:callbackURL];
+    if (! sessionToken) {
         return YES;
     }
     
-    [self.keyChainStore setString:token forKey:SRGServiceIdentifierSessionTokenStoreKey()];
+    self.sessionToken = sessionToken;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
                                                         object:self
@@ -457,11 +461,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             return;
         }
         
-        [self.keyChainStore setString:account.emailAddress forKey:SRGServiceIdentifierEmailStoreKey()];
-        [self.keyChainStore setData:[NSKeyedArchiver archivedDataWithRootObject:account] forKey:SRGServiceIdentifierAccountStoreKey()];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.account = account;
+            self.emailAddress = account.emailAddress;
         });
     }];
     [self.accountUpdateRequest resume];
