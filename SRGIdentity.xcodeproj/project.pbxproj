@@ -43,7 +43,6 @@
 		084CD70121696C3400905A38 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
-		6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6FCBFEF7210B578B006BC355 /* Localizable.strings */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B1BC721708013008D8823 /* Launch Screen.storyboard */; };
 		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
@@ -182,11 +181,6 @@
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FCBFEF8210B578B006BC355 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6FCBFEFA210B57BD006BC355 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6FCBFEFB210B57BD006BC355 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6FCBFEFC210B57BE006BC355 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6FCBFEFD210B57BE006BC355 /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,7 +414,6 @@
 			isa = PBXGroup;
 			children = (
 				083FBD9D217A84D60025253D /* Info.plist */,
-				6FCBFEF7210B578B006BC355 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -607,7 +600,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F0C98EE2121E1D600073AB6 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,21 +700,6 @@
 			targetProxy = 085342282163CDBC00E2EEE6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		6FCBFEF7210B578B006BC355 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FCBFEF8210B578B006BC355 /* en */,
-				6FCBFEFA210B57BD006BC355 /* it */,
-				6FCBFEFB210B57BD006BC355 /* de */,
-				6FCBFEFC210B57BE006BC355 /* fr */,
-				6FCBFEFD210B57BE006BC355 /* rm */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		08266642216E2B7400FD8E84 /* Debug */ = {
