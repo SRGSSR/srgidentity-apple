@@ -156,6 +156,7 @@
 		0829FA782136853C00FE0A28 /* SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentity.m; sourceTree = "<group>"; };
 		0829FA7A2136853C00FE0A28 /* NSBundle+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+SRGIdentity.h"; sourceTree = "<group>"; };
 		0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+SRGIdentity.m"; sourceTree = "<group>"; };
+		083FBD9D217A84D60025253D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		084CD6FE21696C0A00905A38 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -418,6 +419,7 @@
 		6FCBFEF6210B571C006BC355 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				083FBD9D217A84D60025253D /* Info.plist */,
 				6FCBFEF7210B578B006BC355 /* Localizable.strings */,
 			);
 			path = Resources;
@@ -1071,7 +1073,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Framework/Info.plist;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
 				PRODUCT_NAME = SRGIdentity;
@@ -1086,7 +1088,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Framework/Info.plist;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
 				PRODUCT_NAME = SRGIdentity;
@@ -1101,7 +1103,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Framework/Info.plist;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
 				PRODUCT_NAME = SRGIdentity;
@@ -1116,7 +1118,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Framework/Info.plist;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
 				PRODUCT_NAME = SRGIdentity;
