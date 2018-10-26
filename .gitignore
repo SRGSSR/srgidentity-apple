@@ -1,0 +1,12 @@
+.DS_Store
+
+*.xcscmblueprint
+xcuserdata
+
+/archive
+/build
+
+/Carthage
+
+/fastlane/report.xml
+/fastlane/test_output
