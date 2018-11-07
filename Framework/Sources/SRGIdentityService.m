@@ -431,6 +431,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.accountUpdateRequest resume];
 }
 
+#pragma mark Unauthorization reporting
+
+- (void)reportUnauthorization
+{
+    
+}
+
 #pragma mark Callback URL handling
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL
