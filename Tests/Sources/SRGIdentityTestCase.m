@@ -45,6 +45,18 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
 
 @implementation SRGIdentityTestCase
 
+#pragma mark Helpers
+
+- (XCTestExpectation *)expectationForElapsedTimeInterval:(NSTimeInterval)timeInterval withHandler:(void (^)(void))handler
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Wait for %@ seconds", @(timeInterval)]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+        handler ? handler() : nil;
+    });
+    return expectation;
+}
+
 #pragma mark Setup and teardown
 
 - (void)setUp
@@ -136,7 +148,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertNil(self.identityService.emailAddress);
-    XCTAssertNotNil(self.identityService.sessionToken);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     XCTAssertNil(self.identityService.account);
     
     XCTAssertTrue(self.identityService.loggedIn);
@@ -160,10 +172,11 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertTrue(self.identityService.loggedIn);
-    XCTAssertNotNil(self.identityService.sessionToken);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
         return YES;
     }];
     
@@ -209,13 +222,14 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertNotNil(self.identityService.emailAddress);
-    XCTAssertNotNil(self.identityService.sessionToken);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     XCTAssertNotNil(self.identityService.account);
     
     XCTAssertTrue(self.identityService.loggedIn);
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
         return YES;
     }];
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -239,7 +253,6 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
 - (void)testAutomaticLogoutWhenUnauthorized
 {
     [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
     
@@ -248,10 +261,11 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, @"invalid_token");
     
     // Wait until account information is requested. The token is invalid, the user unauthorized and therefore logged out automatically
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @YES);
         return YES;
     }];
     
@@ -262,6 +276,71 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     XCTAssertNil(self.identityService.account);
     
     XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testUnverifiedReportedUnauthorization
+{
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        return YES;
+    }];
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService reportUnauthorization];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+}
+
+- (void)testMultipleUnauthorizationReports
+{
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    __block NSInteger numberOfUpdates = 0;
+    id accountUpdateObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++numberOfUpdates;
+    }];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService reportUnauthorization];
+    [self.identityService reportUnauthorization];
+    [self.identityService reportUnauthorization];
+    [self.identityService reportUnauthorization];
+    [self.identityService reportUnauthorization];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:accountUpdateObserver];
+    }];
+    
+    XCTAssertEqual(numberOfUpdates, 1);
 }
 
 @end
