@@ -125,10 +125,12 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUnauthorizedKey;        // Key to
  *  method to ask the identity service to check whether the apparent situation is confirmed. The service will in all
  *  cases update account information to check whether the reported unauthorization is actually true.
  *
- *  If the user is confirmed to be unauthorized, it is automatically logged out. The `SRGIdentityServiceUserDidLogoutNotification`
- *  notification is sent with its `SRGIdentityServiceUnauthorizedKey` set to `YES`. If the user is still authorized, though, only
- *  account information gets updated, but no logout is made. This means that the third-party service for which the issue was reported
- *  is wrong, probably because it could not correctly validate the session token.
+ *  A user is confirmed to be unauthorized is automatically logged out. The `SRGIdentityServiceUserDidLogoutNotification`
+ *  notification is sent with `SRGIdentityServiceUnauthorizedKey` set to `@YES` in its `userInfo` dictionary.
+ *
+ *  If the user is still authorized, though, only account information gets updated, but no logout is made. This means that
+ *  the third-party service for which the issue was reported is wrong, probably because it could not correctly validate the
+ *  session token.
  *
  *  @discussion The method does nothing if called while a unauthorization check is already being made, or if no user
  *              is currently logged in.
