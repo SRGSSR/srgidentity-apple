@@ -310,9 +310,10 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
 }
 
-- (void)testMultipleUnauthorizationReports
+- (void)testMultipleUnverifiedReportedUnauthorizations
 {
-    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+    // A first account update is performed after login. Wait for it
+    [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         return YES;
     }];
     
@@ -330,6 +331,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
+    // Unverified reported unauthorizations lead to an account update. Expect at most 1
     [self.identityService reportUnauthorization];
     [self.identityService reportUnauthorization];
     [self.identityService reportUnauthorization];
