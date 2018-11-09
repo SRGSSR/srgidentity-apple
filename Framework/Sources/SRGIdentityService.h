@@ -38,7 +38,7 @@ OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previ
 /**
  *  Information available for `SRGIdentityServiceUserDidLogoutNotification`.
  */
-OBJC_EXPORT NSString * const SRGIdentityServiceUnauthorizedKey;        // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the user was unauthorized.
+OBJC_EXPORT NSString * const SRGIdentityServiceUnauthorizedKey;         // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the user was unauthorized.
 
 /**
  *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Several
