@@ -345,4 +345,33 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     XCTAssertEqual(numberOfUpdates, 1);
 }
 
+- (void)testNotLoggedInReportedUnauthorization
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    id loginObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLoginNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No login is expected");
+    }];
+    id accountUpdateObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No account update is expected");
+    }];
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    [self.identityService reportUnauthorization];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:loginObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:accountUpdateObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+}
+
 @end
