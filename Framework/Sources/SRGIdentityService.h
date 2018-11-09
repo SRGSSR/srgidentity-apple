@@ -36,6 +36,11 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountKey;              // Updat
 OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previous account information, as an `SRGAccount` object.
 
 /**
+ *  Information available for `SRGIdentityServiceUserDidLogoutNotification`.
+ */
+OBJC_EXPORT NSString * const SRGIdentityServiceUnauthorizedKey;         // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the user was unauthorized.
+
+/**
  *  An identity service provides a way to retrieve and store a user identity in the form of a session token. Several
  *  identity services can be instantiated within an application, though most application should only require one. For
  *  convenience, a global identity service can be set using the `currentIdentityService` class property.
@@ -114,6 +119,23 @@ OBJC_EXPORT NSString * const SRGIdentityServicePreviousAccountKey;      // Previ
  *  The session token which has been retrieved, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
+
+/**
+ *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this
+ *  method to ask the identity service to check whether the apparent situation is confirmed. The service will in all
+ *  cases update account information to check whether the reported unauthorization is actually true.
+ *
+ *  A user is confirmed to be unauthorized is automatically logged out. The `SRGIdentityServiceUserDidLogoutNotification`
+ *  notification is sent with `SRGIdentityServiceUnauthorizedKey` set to `@YES` in its `userInfo` dictionary.
+ *
+ *  If the user is still authorized, though, only account information gets updated, but no logout is made. This means that
+ *  the third-party service for which the issue was reported is wrong, probably because it could not correctly validate the
+ *  session token.
+ *
+ *  @discussion The method does nothing if called while a unauthorization check is already being made, or if no user
+ *              is currently logged in.
+ */
+- (void)reportUnauthorization;
 
 @end
 

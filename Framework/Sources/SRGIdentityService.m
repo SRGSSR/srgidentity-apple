@@ -33,6 +33,8 @@ NSString * const SRGIdentityServiceDidUpdateAccountNotification = @"SRGIdentityS
 NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
+NSString * const SRGIdentityServiceUnauthorizedKey = @"SRGIdentityServiceUnauthorized";
+
 static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
 static NSString *SRGServiceIdentifierEmailStoreKey(void)
@@ -366,7 +368,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
-                                                      userInfo:nil];
+                                                      userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -393,6 +395,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)updateAccount
 {
+    if (self.accountUpdateRequest) {
+        return;
+    }
+    
     NSString *sessionToken = [self.keyChainStore stringForKey:SRGServiceIdentifierSessionTokenStoreKey()];
     if (! sessionToken) {
         return;
@@ -403,6 +409,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
     self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        self.accountUpdateRequest = nil;
+        
         if (error) {
             SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
             
@@ -412,7 +420,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
-                                                                      userInfo:nil];
+                                                                      userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
                 });
             }
             return;
@@ -429,6 +437,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         });
     }];
     [self.accountUpdateRequest resume];
+}
+
+#pragma mark Unauthorization reporting
+
+- (void)reportUnauthorization
+{
+    [self updateAccount];
 }
 
 #pragma mark Callback URL handling
