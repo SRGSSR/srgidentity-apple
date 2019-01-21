@@ -451,7 +451,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
-        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
+        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancelAndDismiss : SRGIdentityNavigationActionAllow;
     };
     
     presentation(request, URLHandler);
