@@ -443,7 +443,15 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
 {
-    // TODO: Check application scheme
+    // TODO: Prevent multiple presentations
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.apple.com"]];
+    
+    SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
+        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
+    };
+    
+    presentation(request, URLHandler);
 }
 
 - (NSURLRequest *)accountRequest
