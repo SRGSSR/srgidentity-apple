@@ -275,10 +275,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         && [self.identifier isEqualToString:queryItem.value];
 }
 
-- (NSString *)tokenFromURL:(NSURL *)URL
+- (NSString *)queryValueFromURL:(NSURL *)URL name:(NSString *)queryName
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), queryName];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     return queryItem.value;
 }
@@ -490,29 +490,48 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSString *sessionToken = [self tokenFromURL:callbackURL];
-    if (! sessionToken) {
+    NSString *action = [self queryValueFromURL:callbackURL name:@"action"];
+    NSString *sessionToken = [self queryValueFromURL:callbackURL name:@"token"];
+    
+    if (sessionToken) {
+        self.sessionToken = sessionToken;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                            object:self
+                                                          userInfo:nil];
+        [self updateAccount];
+        
+        if (self.authenticationSession) {
+            self.authenticationSession = nil;
+        }
+        else {
+            UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+            [presentingViewController dismissViewControllerAnimated:YES completion:^{
+                s_loggingIn = NO;
+            }];
+        }
+        return YES;
+    }
+    else if ([action isEqualToString:@"unauthorized"]) {
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
+        return YES;
+    }
+    else if ([action isEqualToString:@"log_out"] || [action isEqualToString:@"account_deleted"]) {
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
         return YES;
     }
     
-    self.sessionToken = sessionToken;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
-                                                        object:self
-                                                      userInfo:nil];
-    [self updateAccount];
-    
-    if (self.authenticationSession) {
-        self.authenticationSession = nil;
-    }
-    else {
-        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController dismissViewControllerAnimated:YES completion:^{
-            s_loggingIn = NO;
-        }];
-    }
-    
-    return YES;
+    return NO;
 }
 
 #pragma mark SFSafariViewControllerDelegate delegate
