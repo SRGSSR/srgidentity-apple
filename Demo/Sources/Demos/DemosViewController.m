@@ -15,6 +15,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 @interface DemosViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
+@property (nonatomic, weak) IBOutlet UIButton *accountButton;
 
 @end
 
@@ -74,17 +75,26 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                                                                                  target:self
                                                                                  action:@selector(login:)];
     }
+    
+    self.accountButton.hidden = ! identityService.loggedIn;
 }
 
 #pragma mark Actions
 
-- (IBAction)login:(id)sender
+- (IBAction)showAccount:(id)sender
+{
+    [SRGIdentityService.currentIdentityService prepareAccountRequestWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        
+    }];
+}
+
+- (void)login:(id)sender
 {
     NSString *lastEmailAddress = [NSUserDefaults.standardUserDefaults stringForKey:LastLoggedInEmailAddress];
     [SRGIdentityService.currentIdentityService loginWithEmailAddress:lastEmailAddress];
 }
 
-- (IBAction)logout:(id)sender
+- (void)logout:(id)sender
 {
     [SRGIdentityService.currentIdentityService logout];
 }
