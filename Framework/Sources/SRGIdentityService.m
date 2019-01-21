@@ -235,7 +235,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
-#pragma mark URLs
+#pragma mark URL handling
 
 - (NSURL *)redirectURL
 {
@@ -445,7 +445,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     // TODO: Prevent multiple presentations
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.apple.com"]];
+    NSURLRequest *request = [self accountRequest];
+    if (! request) {
+        return;
+    }
     
     SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
         return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
@@ -471,7 +474,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", self.sessionToken] forHTTPHeaderField:@"Authorization"];
     return [request copy];
 }
-
 
 #pragma mark Unauthorization reporting
 
