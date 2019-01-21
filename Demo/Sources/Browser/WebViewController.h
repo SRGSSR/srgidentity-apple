@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Create an instance.
  */
-- (instancetype)initWithRequest:(NSURLRequest *)request;
+- (instancetype)initWithRequest:(NSURLRequest *)request decidePolicy:(WKNavigationActionPolicy (^ _Nullable)(NSURL *))decidePolicyBlock;
 
 @end
 

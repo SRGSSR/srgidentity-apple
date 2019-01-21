@@ -407,9 +407,9 @@
 		6F979F1821F603DF002A2495 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				6F979F1B21F603DF002A2495 /* WebViewController.h */,
 				6F979F1921F603DF002A2495 /* WebViewController.m */,
 				6F979F1A21F603DF002A2495 /* WebViewController.storyboard */,
-				6F979F1B21F603DF002A2495 /* WebViewController.h */,
 			);
 			path = Browser;
 			sourceTree = "<group>";

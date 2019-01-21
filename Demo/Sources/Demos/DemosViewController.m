@@ -85,7 +85,23 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 - (IBAction)showAccount:(id)sender
 {
     [SRGIdentityService.currentIdentityService prepareAccountRequestWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request];
+        
+        WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request decidePolicy:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+            switch (URLHandler(URL)) {
+                case SRGIdentityNavigationActionAllow:
+                    return WKNavigationActionPolicyAllow;
+                    break;
+                    
+                case SRGIdentityNavigationActionCancelAndDismiss:
+                    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+                    return WKNavigationActionPolicyCancel;
+                    break;
+                    
+                default:
+                    return WKNavigationActionPolicyCancel;
+                    break;
+            }
+        }];
         webViewController.title = NSLocalizedString(@"Account", nil);
         webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
                                                                                               style:UIBarButtonItemStyleDone

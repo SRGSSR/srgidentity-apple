@@ -15,6 +15,7 @@ static void *s_kvoContext = &s_kvoContext;
 @interface WebViewController ()
 
 @property (nonatomic) NSURLRequest *request;
+@property (nonatomic, copy) WKNavigationActionPolicy (^decidePolicyBlock)(NSURL *URL);
 
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
@@ -27,10 +28,11 @@ static void *s_kvoContext = &s_kvoContext;
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithRequest:(NSURLRequest *)request
+- (instancetype)initWithRequest:(NSURLRequest *)request decidePolicy:(WKNavigationActionPolicy (^)(NSURL *URL))decidePolicyBlock
 {
     if (self = [super init]) {
         self.request = request;
+        self.decidePolicyBlock = decidePolicyBlock;
     }
     return self;
 }
@@ -138,7 +140,12 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    decisionHandler(WKNavigationActionPolicyAllow);
+    if (self.decidePolicyBlock) {
+        decisionHandler(self.decidePolicyBlock(navigationAction.request.URL));
+    }
+    else {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
 }
 
 #pragma mark KVO
