@@ -54,6 +54,18 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
     return [NSURL URLWithString:URLString];
 }
 
+static NSURL *TestIgnored1CallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&action=unknown", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"myapp://%@?identity_service=%@", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
 @interface SRGIdentityTestCase : XCTestCase
 
 @property (nonatomic) SRGIdentityService *identityService;
@@ -161,7 +173,8 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    XCTAssertTrue(hasHandledCallbackURL);
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -198,7 +211,8 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestLogoutCallbackURL(self.identityService)];
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestLogoutCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -235,7 +249,8 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestAccountDeletedCallbackURL(self.identityService)];
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestAccountDeletedCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -272,7 +287,8 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestUnauthorizedCallbackURL(self.identityService)];
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestUnauthorizedCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -281,6 +297,45 @@ static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
     XCTAssertNil(self.identityService.account);
     
     XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testIgnoredHandleCallbackURL
+{
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+        
+    BOOL hasHandledCallbackURL1 = [self.identityService handleCallbackURL:TestIgnored1CallbackURL(self.identityService)];
+    XCTAssertFalse(hasHandledCallbackURL1);
+    BOOL hasHandledCallbackURL2 = [self.identityService handleCallbackURL:TestIgnored2CallbackURL(self.identityService)];
+    XCTAssertFalse(hasHandledCallbackURL2);
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
 }
 
 - (void)testLogout
