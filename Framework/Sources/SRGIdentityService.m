@@ -439,6 +439,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.accountUpdateRequest resume];
 }
 
+#pragma mark Account request
+
+- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+{
+    // TODO: Check application scheme
+}
+
 #pragma mark Unauthorization reporting
 
 - (void)reportUnauthorization

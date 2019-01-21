@@ -9,6 +9,24 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ *  Possible actions recommended when navigating within the account page in a web browser.
+ */
+typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
+    /**
+     *  Navigation should occur normally.
+     */
+    SRGIdentityNavigationActionAllow = 0,
+    /**
+     *  Navigation should be cancelled.
+     */
+    SRGIdentityNavigationActionCancel,
+    /**
+     *  Navigation should be cancelled, and the account view should be dismissed.
+     */
+    SRGIdentityNavigationActionCancelAndDismiss
+};
+
+/**
  *  Notification sent when a user successfully logged in.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
@@ -119,6 +137,18 @@ OBJC_EXPORT NSString * const SRGIdentityServiceUnauthorizedKey;         // Key t
  *  The session token which has been retrieved, if any.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
+
+/**
+ *  Prepare a request for displaying (and editing) account information in a web browser. The application itself is
+ *  responsible of displaying the web page by implementing the mandatory presentation block.
+ *
+ *  The presentation layer is responsible of calling the she supplied URL handler whenever a navigation is detected.
+ *  If using `WKWebView`, this happens when its `-webView:decidePolicyForNavigationAction:decisionHandler:` delegate
+ *  method is called. If the handler returns a recommended action, which the presentation layer should follow.
+ *
+ *  @discussion If no user is logged in, calling this method does nothing.
+ */
+- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation;
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this
