@@ -58,6 +58,10 @@
 		6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
 		6F8A940320FDD01B00AA6434 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F979F1C21F603DF002A2495 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F979F1921F603DF002A2495 /* WebViewController.m */; };
+		6F979F1D21F603DF002A2495 /* WebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F979F1A21F603DF002A2495 /* WebViewController.storyboard */; };
+		6F979F1F21F6056F002A2495 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; };
+		6F979F2021F6056F002A2495 /* Masonry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -108,6 +112,7 @@
 				080D0BE921359E4800AA519A /* libextobjc.framework in Embed Frameworks */,
 				6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */,
 				080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */,
+				6F979F2021F6056F002A2495 /* Masonry.framework in Embed Frameworks */,
 				6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */,
 				080D0BE721359E4800AA519A /* Mantle.framework in Embed Frameworks */,
 				084CD70121696C3400905A38 /* SRGLogger.framework in Embed Frameworks */,
@@ -177,6 +182,10 @@
 		6F8A93F820FDCAA800AA6434 /* DemosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemosViewController.h; sourceTree = "<group>"; };
 		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
 		6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DemosViewController.storyboard; sourceTree = "<group>"; };
+		6F979F1921F603DF002A2495 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		6F979F1A21F603DF002A2495 /* WebViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebViewController.storyboard; sourceTree = "<group>"; };
+		6F979F1B21F603DF002A2495 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		6F979F1E21F6056F002A2495 /* Masonry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Masonry.framework; path = Carthage/Build/iOS/Masonry.framework; sourceTree = "<group>"; };
 		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityTestCase.m; sourceTree = "<group>"; };
@@ -222,6 +231,7 @@
 				080D0BE821359E4800AA519A /* libextobjc.framework in Frameworks */,
 				6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */,
 				080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */,
+				6F979F1F21F6056F002A2495 /* Masonry.framework in Frameworks */,
 				6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */,
 				080D0BE621359E4800AA519A /* Mantle.framework in Frameworks */,
 				084CD70021696C3400905A38 /* SRGLogger.framework in Frameworks */,
@@ -350,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				6F8A93F320FDCAA800AA6434 /* Application */,
+				6F979F1821F603DF002A2495 /* Browser */,
 				6F8A93F720FDCAA800AA6434 /* Demos */,
 			);
 			path = Sources;
@@ -378,11 +389,12 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
 				080D0BE021356CB500AA519A /* libextobjc.framework */,
 				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
 				080D0BE42135776000AA519A /* Mantle.framework */,
+				6F979F1E21F6056F002A2495 /* Masonry.framework */,
+				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
 				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
 				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
@@ -390,6 +402,16 @@
 				086FB2CA21368ADE00DE4CF2 /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F979F1821F603DF002A2495 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				6F979F1921F603DF002A2495 /* WebViewController.m */,
+				6F979F1A21F603DF002A2495 /* WebViewController.storyboard */,
+				6F979F1B21F603DF002A2495 /* WebViewController.h */,
+			);
+			path = Browser;
 			sourceTree = "<group>";
 		};
 		6FB74D722101D5D600E2D365 /* Tests */ = {
@@ -615,6 +637,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F979F1D21F603DF002A2495 /* WebViewController.storyboard in Resources */,
 				6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */,
 				6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */,
 				6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */,
@@ -665,6 +688,7 @@
 				6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */,
 				6F8A93FD20FDCAA800AA6434 /* main.m in Sources */,
 				6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */,
+				6F979F1C21F603DF002A2495 /* WebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

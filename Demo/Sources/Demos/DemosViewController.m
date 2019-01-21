@@ -7,6 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
+#import "WebViewController.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -84,8 +85,20 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 - (IBAction)showAccount:(id)sender
 {
     [SRGIdentityService.currentIdentityService prepareAccountRequestWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        
+        WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request];
+        webViewController.title = NSLocalizedString(@"Account", nil);
+        webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+                                                                                              style:UIBarButtonItemStyleDone
+                                                                                             target:self
+                                                                                             action:@selector(closeAccount:)];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }];
+}
+
+- (void)closeAccount:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)login:(id)sender
