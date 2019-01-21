@@ -237,7 +237,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark URLs
 
-- (NSURL *)loginRedirectURL
+- (NSURL *)redirectURL
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
@@ -247,7 +247,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *redirectURL = [self loginRedirectURL];
+    NSURL *redirectURL = [self redirectURL];
     
     NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
@@ -263,7 +263,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (BOOL)shouldHandleCallbackURL:(NSURL *)URL
 {
     NSURL *standardizedURL = URL.standardizedURL;
-    NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
+    NSURL *standardizedRedirectURL = [self redirectURL].standardizedURL;
     
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
@@ -445,6 +445,25 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     // TODO: Check application scheme
 }
+
+- (NSURLRequest *)accountRequest
+{
+    if (! self.sessionToken) {
+        return nil;
+    }
+    
+    NSURL *redirectURL = [self redirectURL];
+    
+    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"/"];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
+    URLComponents.queryItems = queryItems;
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URLComponents.URL];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", self.sessionToken] forHTTPHeaderField:@"Authorization"];
+    return [request copy];
+}
+
 
 #pragma mark Unauthorization reporting
 
