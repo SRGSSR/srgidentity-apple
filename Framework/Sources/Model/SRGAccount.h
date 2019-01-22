@@ -43,7 +43,12 @@ OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
 /**
  *  The unique account identifier.
  */
-@property (nonatomic, readonly, copy, nullable) NSNumber *uid;
+@property (nonatomic, readonly, copy, nullable) NSString *uid;
+
+/**
+ *  The unique public account identifier.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *publicUid;
 
 /**
  *  The account display name.
