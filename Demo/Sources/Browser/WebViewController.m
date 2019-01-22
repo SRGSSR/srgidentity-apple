@@ -60,6 +60,7 @@ static void *s_kvoContext = &s_kvoContext;
     // WKWebView cannot be instantiated in storyboards, do it programmatically
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
+    webView.scrollView.delegate = self;
     [self.view insertSubview:webView atIndex:0];
     [webView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11, *)) {
@@ -85,6 +86,36 @@ static void *s_kvoContext = &s_kvoContext;
     self.errorLabel.text = nil;
     
     [self.webView loadRequest:self.request];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    [self updateContentInsets];
+}
+
+#pragma mark UI
+
+- (void)updateContentInsets
+{
+    UIScrollView *scrollView = self.webView.scrollView;
+    
+    // Must adjust depending on the web page viewport-fit setting, see https://modelessdesign.com/backdrop/283
+    if (@available(iOS 11, *)) {
+        if (scrollView.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentAlways) {
+            scrollView.contentInset = UIEdgeInsetsZero;
+            return;
+        }
+    }
+    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
+}
+
+#pragma mark UIScrollViewDelegate protocol
+
+- (void)scrollViewDidChangeAdjustedContentInset:(UIScrollView *)scrollView
+{
+    [self updateContentInsets];
 }
 
 #pragma mark WKNavigationDelegate

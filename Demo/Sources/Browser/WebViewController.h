@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A basic web view controller class for in-app display.
  */
-@interface WebViewController : UIViewController <WKNavigationDelegate>
+@interface WebViewController : UIViewController <WKNavigationDelegate, UIScrollViewDelegate>
 
 /**
  *  Create an instance.

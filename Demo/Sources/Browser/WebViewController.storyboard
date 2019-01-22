@@ -23,7 +23,7 @@
                                 <color key="trackTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zR-iV-atX" userLabel="Error Label">
-                                <rect key="frame" x="40" y="322" width="295" height="24"/>
+                                <rect key="frame" x="40" y="331.5" width="295" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -32,7 +32,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="z6m-lg-Z2j" secondAttribute="trailing" id="2Tc-5a-7lG"/>
-                            <constraint firstItem="0zR-iV-atX" firstAttribute="centerY" secondItem="mSX-iW-3vb" secondAttribute="centerY" constant="-9.5" id="73Q-B6-n50"/>
+                            <constraint firstItem="0zR-iV-atX" firstAttribute="centerY" secondItem="mSX-iW-3vb" secondAttribute="centerY" id="73Q-B6-n50"/>
                             <constraint firstItem="mSX-iW-3vb" firstAttribute="trailing" secondItem="0zR-iV-atX" secondAttribute="trailing" constant="40" id="9WG-zZ-heO"/>
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="Ip8-LD-Aml"/>
                             <constraint firstItem="0zR-iV-atX" firstAttribute="leading" secondItem="mSX-iW-3vb" secondAttribute="leading" constant="40" id="Vbi-Ys-fFr"/>
