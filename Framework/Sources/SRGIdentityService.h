@@ -17,10 +17,6 @@ typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
      */
     SRGIdentityNavigationActionAllow = 0,
     /**
-     *  Navigation should be cancelled.
-     */
-    SRGIdentityNavigationActionCancel,
-    /**
      *  Navigation should be cancelled, and the account view should be dismissed.
      */
     SRGIdentityNavigationActionCancelAndDismiss

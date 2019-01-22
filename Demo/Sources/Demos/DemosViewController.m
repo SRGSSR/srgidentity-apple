@@ -95,10 +95,6 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                     [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
                     return WKNavigationActionPolicyCancel;
                     break;
-                    
-                default:
-                    return WKNavigationActionPolicyCancel;
-                    break;
             }
         }];
         webViewController.title = NSLocalizedString(@"Account", nil);
