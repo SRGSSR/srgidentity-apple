@@ -34,6 +34,7 @@ NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 NSString * const SRGIdentityServiceUnauthorizedKey = @"SRGIdentityServiceUnauthorized";
+NSString * const SRGIdentityServiceAccountDeletedKey = @"SRGIdentityServiceAccountDeletedKey";
 
 static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
@@ -502,7 +503,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                           userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
         return YES;
     }
-    else if ([action isEqualToString:@"log_out"] || [action isEqualToString:@"account_deleted"]) {
+    else if ([action isEqualToString:@"log_out"]) {
         NSAssert(self.loggedIn, @"User must be logged in");
         
         [self.accountUpdateRequest cancel];
@@ -511,6 +512,18 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+        return YES;
+    }
+    else if ([action isEqualToString:@"account_deleted"]) {
+        NSAssert(self.loggedIn, @"User must be logged in");
+        
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO,
+                                                                      SRGIdentityServiceAccountDeletedKey : @YES }];
         return YES;
     }
     

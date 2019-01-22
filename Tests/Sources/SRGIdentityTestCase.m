@@ -246,6 +246,7 @@ static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
         XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceAccountDeletedKey], @YES);
         return YES;
     }];
     
