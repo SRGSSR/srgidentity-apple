@@ -139,9 +139,11 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountDeletedKey;       // Key t
  *  Prepare a request for displaying (and editing) account information in a web browser. The application itself is
  *  responsible of displaying the web page by implementing the mandatory presentation block.
  *
- *  The presentation layer is responsible of calling the she supplied URL handler whenever a navigation is detected.
+ *  The presentation layer is responsible of calling the supplied URL handler whenever a navigation is detected.
  *  If using `WKWebView`, this happens when its `-webView:decisionHandlerForNavigationAction:decisionHandler:` delegate
- *  method is called. If the handler returns a recommended action, which the presentation layer should follow.
+ *  method is called. The handler returns a recommended action for the URL which is navigated to, which the presentation
+ *  layer should follow. In particular, the presentation layer should dismiss the web browser if this action is
+ *  `SRGIdentityNavigationActionCancelAndDismiss`.
  *
  *  @discussion If no user is logged in, calling this method does nothing.
  */

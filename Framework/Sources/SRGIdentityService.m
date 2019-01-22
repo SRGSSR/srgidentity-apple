@@ -444,8 +444,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
 {
-    // TODO: Prevent multiple presentations
-    
     NSURLRequest *request = [self accountRequest];
     if (! request) {
         return;
