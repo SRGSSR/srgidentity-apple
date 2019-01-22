@@ -35,15 +35,17 @@ static void *s_kvoContext = &s_kvoContext;
 - (instancetype)initWithRequest:(NSURLRequest *)request decidePolicy:(WKNavigationActionPolicy (^)(NSURL *URL))decidePolicyBlock
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    if ((self = [storyboard instantiateInitialViewController])) {
-        self.request = request;
-        self.decidePolicyBlock = decidePolicyBlock;
-    }
-    return self;
+    WebViewController *webViewController = [storyboard instantiateInitialViewController];
+    webViewController.request = request;
+    webViewController.decidePolicyBlock = decidePolicyBlock;
+    return webViewController;
 }
 
 - (void)dealloc
 {
+    // Avoid iOS 9 crash: https://stackoverflow.com/questions/35529080/wkwebview-crashes-on-deinit
+    self.webView.scrollView.delegate = nil;
+    
     self.webView = nil;             // Unregister KVO
 }
 
