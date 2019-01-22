@@ -491,9 +491,33 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     NSString *action = [self queryValueFromURL:callbackURL name:@"action"];
-    NSString *sessionToken = [self queryValueFromURL:callbackURL name:@"token"];
+    if ([action isEqualToString:@"unauthorized"]) {
+        NSAssert(self.loggedIn, @"User must be logged in");
+        
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
+        return YES;
+    }
+    else if ([action isEqualToString:@"log_out"] || [action isEqualToString:@"account_deleted"]) {
+        NSAssert(self.loggedIn, @"User must be logged in");
+        
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                            object:self
+                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+        return YES;
+    }
     
+    NSString *sessionToken = [self queryValueFromURL:callbackURL name:@"token"];
     if (sessionToken) {
+        NSAssert(! self.loggedIn, @"No user must be logged in");
+        
         self.sessionToken = sessionToken;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
@@ -510,24 +534,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                 s_loggingIn = NO;
             }];
         }
-        return YES;
-    }
-    else if ([action isEqualToString:@"unauthorized"]) {
-        [self.accountUpdateRequest cancel];
-        [self cleanup];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
-        return YES;
-    }
-    else if ([action isEqualToString:@"log_out"] || [action isEqualToString:@"account_deleted"]) {
-        [self.accountUpdateRequest cancel];
-        [self cleanup];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
         return YES;
     }
     
