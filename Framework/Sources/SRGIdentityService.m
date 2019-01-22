@@ -276,7 +276,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         && [self.identifier isEqualToString:queryItem.value];
 }
 
-- (NSString *)queryValueFromURL:(NSURL *)URL name:(NSString *)queryName
+- (NSString *)queryItemValueFromURL:(NSURL *)URL withName:(NSString *)queryName
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), queryName];
@@ -491,7 +491,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSString *action = [self queryValueFromURL:callbackURL name:@"action"];
+    NSString *action = [self queryItemValueFromURL:callbackURL withName:@"action"];
     if ([action isEqualToString:@"unauthorized"]) {
         NSAssert(self.loggedIn, @"User must be logged in");
         
@@ -527,7 +527,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     
-    NSString *sessionToken = [self queryValueFromURL:callbackURL name:@"token"];
+    NSString *sessionToken = [self queryItemValueFromURL:callbackURL withName:@"token"];
     if (sessionToken) {
         NSAssert(! self.loggedIn, @"No user must be logged in");
         
