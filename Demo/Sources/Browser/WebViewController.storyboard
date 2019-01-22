@@ -28,10 +28,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zWd-AE-vNy">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0X-Ff-0my">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="0MU-Jq-aGj"/>
+                                </constraints>
                                 <items>
-                                    <barButtonItem title="Item" id="uvL-1v-Mc9"/>
+                                    <barButtonItem width="18" systemItem="fixedSpace" id="GyX-5N-ewY"/>
+                                    <barButtonItem image="ButtonBarArrowLeft.png" landscapeImage="ButtonBarArrowLeftSmall.png" style="plain" id="CpF-PI-8de" userLabel="Previous Bar Button Item"/>
+                                    <barButtonItem width="40" systemItem="fixedSpace" id="J3T-fY-19v"/>
+                                    <barButtonItem image="ButtonBarArrowRight.png" landscapeImage="ButtonBarArrowRightSmall.png" style="plain" id="akw-Pq-7mw" userLabel="Next Bar Button Item"/>
+                                    <barButtonItem systemItem="flexibleSpace" id="c1B-27-pUV"/>
+                                    <barButtonItem style="plain" systemItem="refresh" id="Tcq-q4-cBz" userLabel="Refresh Bar Button Item"/>
+                                    <barButtonItem width="18" systemItem="fixedSpace" id="N0a-wn-ddk"/>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -40,18 +49,19 @@
                             <constraint firstAttribute="trailing" secondItem="z6m-lg-Z2j" secondAttribute="trailing" id="2Tc-5a-7lG"/>
                             <constraint firstItem="0zR-iV-atX" firstAttribute="centerY" secondItem="mSX-iW-3vb" secondAttribute="centerY" id="73Q-B6-n50"/>
                             <constraint firstItem="mSX-iW-3vb" firstAttribute="trailing" secondItem="0zR-iV-atX" secondAttribute="trailing" constant="40" id="9WG-zZ-heO"/>
+                            <constraint firstAttribute="trailing" secondItem="P0X-Ff-0my" secondAttribute="trailing" id="INy-OS-ESS"/>
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="Ip8-LD-Aml"/>
                             <constraint firstItem="0zR-iV-atX" firstAttribute="leading" secondItem="mSX-iW-3vb" secondAttribute="leading" constant="40" id="Vbi-Ys-fFr"/>
-                            <constraint firstItem="zWd-AE-vNy" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="ZrZ-6N-Sat"/>
+                            <constraint firstItem="mSX-iW-3vb" firstAttribute="bottom" secondItem="P0X-Ff-0my" secondAttribute="bottom" id="Vc5-yo-Sa2"/>
+                            <constraint firstItem="P0X-Ff-0my" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="Xd7-Tg-RfY"/>
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="top" secondItem="mSX-iW-3vb" secondAttribute="top" id="cBa-xs-q17"/>
-                            <constraint firstAttribute="bottom" secondItem="zWd-AE-vNy" secondAttribute="bottom" id="ioY-y8-lkL"/>
-                            <constraint firstAttribute="trailing" secondItem="zWd-AE-vNy" secondAttribute="trailing" id="tXa-Xu-HFf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mSX-iW-3vb"/>
                     </view>
                     <connections>
                         <outlet property="errorLabel" destination="0zR-iV-atX" id="kt2-hu-2k4"/>
                         <outlet property="progressView" destination="z6m-lg-Z2j" id="abl-wJ-MRC"/>
+                        <outlet property="toolbar" destination="P0X-Ff-0my" id="b9z-ef-SN3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZMv-tZ-03C" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -59,4 +69,10 @@
             <point key="canvasLocation" x="565" y="-89"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ButtonBarArrowLeft.png" width="16" height="16"/>
+        <image name="ButtonBarArrowLeftSmall.png" width="16" height="16"/>
+        <image name="ButtonBarArrowRight.png" width="16" height="16"/>
+        <image name="ButtonBarArrowRightSmall.png" width="16" height="16"/>
+    </resources>
 </document>

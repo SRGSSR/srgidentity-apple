@@ -24,6 +24,8 @@ static void *s_kvoContext = &s_kvoContext;
 @property (nonatomic, weak) UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
 
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+
 @end
 
 @implementation WebViewController
@@ -111,7 +113,10 @@ static void *s_kvoContext = &s_kvoContext;
             return;
         }
     }
-    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
+    
+    CGFloat toolbarHeight = CGRectGetHeight(self.toolbar.frame);
+    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length + toolbarHeight, 0.f);
+    scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0.f, 0.f, toolbarHeight, 0.f);
 }
 
 #pragma mark UIScrollViewDelegate protocol
