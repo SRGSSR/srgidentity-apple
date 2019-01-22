@@ -6,6 +6,8 @@
 
 #import "WebViewController.h"
 
+#import "NSBundle+SRGIdentity.h"
+
 #import <libextobjc/libextobjc.h>
 #import <Masonry/Masonry.h>
 #import <SRGNetwork/SRGNetwork.h>
@@ -30,7 +32,8 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request decidePolicy:(WKNavigationActionPolicy (^)(NSURL *URL))decidePolicyBlock
 {
-    if (self = [super init]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    if ((self = [storyboard instantiateInitialViewController])) {
         self.request = request;
         self.decidePolicyBlock = decidePolicyBlock;
     }

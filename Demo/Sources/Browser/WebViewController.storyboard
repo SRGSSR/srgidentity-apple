@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sg3-Kc-EVt">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,7 +13,7 @@
         <!--Web View Controller-->
         <scene sceneID="oeM-2s-aPF">
             <objects>
-                <viewController storyboardIdentifier="WebViewController" id="sg3-Kc-EVt" customClass="WebViewController" sceneMemberID="viewController">
+                <viewController id="sg3-Kc-EVt" customClass="WebViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7SV-r1-F0P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,6 +28,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zWd-AE-vNy">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Item" id="uvL-1v-Mc9"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -36,7 +42,10 @@
                             <constraint firstItem="mSX-iW-3vb" firstAttribute="trailing" secondItem="0zR-iV-atX" secondAttribute="trailing" constant="40" id="9WG-zZ-heO"/>
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="Ip8-LD-Aml"/>
                             <constraint firstItem="0zR-iV-atX" firstAttribute="leading" secondItem="mSX-iW-3vb" secondAttribute="leading" constant="40" id="Vbi-Ys-fFr"/>
+                            <constraint firstItem="zWd-AE-vNy" firstAttribute="leading" secondItem="7SV-r1-F0P" secondAttribute="leading" id="ZrZ-6N-Sat"/>
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="top" secondItem="mSX-iW-3vb" secondAttribute="top" id="cBa-xs-q17"/>
+                            <constraint firstAttribute="bottom" secondItem="zWd-AE-vNy" secondAttribute="bottom" id="ioY-y8-lkL"/>
+                            <constraint firstAttribute="trailing" secondItem="zWd-AE-vNy" secondAttribute="trailing" id="tXa-Xu-HFf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mSX-iW-3vb"/>
                     </view>
