@@ -24,8 +24,6 @@ static void *s_kvoContext = &s_kvoContext;
 @property (nonatomic, weak) UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
 
-@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
-
 @end
 
 @implementation WebViewController
@@ -95,6 +93,13 @@ static void *s_kvoContext = &s_kvoContext;
     [self.webView loadRequest:self.request];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.webView stopLoading];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
@@ -107,6 +112,7 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)updateContentInsets
 {
     UIScrollView *scrollView = self.webView.scrollView;
+    scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
     
     // Must adjust depending on the web page viewport-fit setting, see https://modelessdesign.com/backdrop/283
     if (@available(iOS 11, *)) {
@@ -116,9 +122,7 @@ static void *s_kvoContext = &s_kvoContext;
         }
     }
     
-    CGFloat toolbarHeight = CGRectGetHeight(self.toolbar.frame);
-    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length + toolbarHeight, 0.f);
-    scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0.f, 0.f, toolbarHeight, 0.f);
+    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
 }
 
 #pragma mark UIScrollViewDelegate protocol
