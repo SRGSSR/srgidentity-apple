@@ -144,7 +144,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountDeletedKey;       // Key t
  *  responsible of displaying the web page by implementing the mandatory presentation block.
  *
  *  The presentation layer is responsible of calling the she supplied URL handler whenever a navigation is detected.
- *  If using `WKWebView`, this happens when its `-webView:decidePolicyForNavigationAction:decisionHandler:` delegate
+ *  If using `WKWebView`, this happens when its `-webView:decisionHandlerForNavigationAction:decisionHandler:` delegate
  *  method is called. If the handler returns a recommended action, which the presentation layer should follow.
  *
  *  @discussion If no user is logged in, calling this method does nothing.

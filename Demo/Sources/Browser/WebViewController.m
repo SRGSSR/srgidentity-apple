@@ -17,7 +17,7 @@ static void *s_kvoContext = &s_kvoContext;
 @interface WebViewController ()
 
 @property (nonatomic) NSURLRequest *request;
-@property (nonatomic, copy) WKNavigationActionPolicy (^decidePolicyBlock)(NSURL *URL);
+@property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *URL);
 
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
@@ -30,12 +30,12 @@ static void *s_kvoContext = &s_kvoContext;
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithRequest:(NSURLRequest *)request decidePolicy:(WKNavigationActionPolicy (^)(NSURL *URL))decidePolicyBlock
+- (instancetype)initWithRequest:(NSURLRequest *)request decisionHandler:(WKNavigationActionPolicy (^)(NSURL *URL))decisionHandler
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     WebViewController *webViewController = [storyboard instantiateInitialViewController];
     webViewController.request = request;
-    webViewController.decidePolicyBlock = decidePolicyBlock;
+    webViewController.decisionHandler = decisionHandler;
     return webViewController;
 }
 
@@ -183,10 +183,10 @@ static void *s_kvoContext = &s_kvoContext;
     }
 }
 
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+- (void)webView:(WKWebView *)webView decisionHandlerForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if (self.decidePolicyBlock) {
-        decisionHandler(self.decidePolicyBlock(navigationAction.request.URL));
+    if (self.decisionHandler) {
+        decisionHandler(self.decisionHandler(navigationAction.request.URL));
     }
     else {
         decisionHandler(WKNavigationActionPolicyAllow);
