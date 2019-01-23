@@ -17,7 +17,7 @@ static void *s_kvoContext = &s_kvoContext;
 @interface WebViewController ()
 
 @property (nonatomic) NSURLRequest *request;
-@property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *URL);
+@property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *);
 
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
