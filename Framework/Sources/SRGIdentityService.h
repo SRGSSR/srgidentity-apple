@@ -17,9 +17,9 @@ typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
      */
     SRGIdentityNavigationActionAllow = 0,
     /**
-     *  Navigation should be cancelled, and the account view should be dismissed.
+     *  Navigation should be cancelled.
      */
-    SRGIdentityNavigationActionCancelAndDismiss
+    SRGIdentityNavigationActionCancel
 };
 
 /**
@@ -147,7 +147,8 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountDeletedKey;       // Key t
  *
  *  @discussion If no user is logged in, calling this method does nothing.
  */
-- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation;
+- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation
+                                    dismissal:(void (^)(void))dismissal;
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this

@@ -73,6 +73,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
+@property (nonatomic, copy) void (^dismissal)(void);
 
 @end
 
@@ -367,6 +368,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [self cleanup];
     
+    if (self.dismissal) {
+        self.dismissal();
+        self.dismissal = nil;
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
                                                       userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
@@ -419,6 +425,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self cleanup];
                     
+                    if (self.dismissal) {
+                        self.dismissal();
+                        self.dismissal = nil;
+                    }
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
                                                                       userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
@@ -443,14 +454,17 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 #pragma mark Account request
 
 - (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+                                    dismissal:(void (^)(void))dismissal
 {
     NSURLRequest *request = [self accountRequest];
     if (! request) {
         return;
     }
     
+    self.dismissal = dismissal;
+    
     SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
-        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancelAndDismiss : SRGIdentityNavigationActionAllow;
+        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
     };
     
     presentation(request, URLHandler);
@@ -496,6 +510,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         [self.accountUpdateRequest cancel];
         [self cleanup];
         
+        if (self.dismissal) {
+            self.dismissal();
+            self.dismissal = nil;
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
@@ -507,6 +526,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         [self.accountUpdateRequest cancel];
         [self cleanup];
         
+        if (self.dismissal) {
+            self.dismissal();
+            self.dismissal = nil;
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
                                                           userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
@@ -517,6 +541,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
+        
+        if (self.dismissal) {
+            self.dismissal();
+            self.dismissal = nil;
+        }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
