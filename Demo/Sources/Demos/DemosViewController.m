@@ -18,8 +18,6 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
 @property (nonatomic, weak) IBOutlet UIButton *accountButton;
 
-@property (nonatomic, copy) void (^dismissed)(void);
-
 @end
 
 @implementation DemosViewController
@@ -86,7 +84,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (IBAction)showAccount:(id)sender
 {
-    [SRGIdentityService.currentIdentityService prepareAccountRequestWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull), void (^ _Nonnull dismissed)(void)) {
+    [SRGIdentityService.currentIdentityService prepareAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
         WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
             switch (URLHandler(URL)) {
                 case SRGIdentityNavigationActionAllow:
@@ -103,20 +101,16 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                                                                                               style:UIBarButtonItemStyleDone
                                                                                              target:self
                                                                                              action:@selector(closeAccount:)];
-        self.dismissed = dismissed;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navigationController animated:YES completion:nil];
     } dismissal:^{
-        [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }];
 }
 
 - (void)closeAccount:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        self.dismissed();
-        self.dismissed = nil;
-    }];
+    [SRGIdentityService.currentIdentityService dismissAccountView];
 }
 
 - (void)login:(id)sender

@@ -367,11 +367,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     [self cleanup];
-    
-    if (self.dismissal) {
-        self.dismissal();
-        self.dismissal = nil;
-    }
+    [self removeAccountView];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
@@ -424,11 +420,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             if ([error.domain isEqualToString:SRGNetworkErrorDomain] && error.code == SRGNetworkErrorHTTP && [error.userInfo[SRGNetworkHTTPStatusCodeKey] integerValue] == 401) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self cleanup];
-                    
-                    if (self.dismissal) {
-                        self.dismissal();
-                        self.dismissal = nil;
-                    }
+                    [self removeAccountView];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
@@ -453,8 +445,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Account request
 
-- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull), void (^ _Nonnull)(void)))presentation
-                                    dismissal:(void (^)(void))dismissal
+- (void)prepareAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+                                 dismissal:(void (^)(void))dismissal
 {
     NSURLRequest *request = [self accountRequest];
     if (! request) {
@@ -471,11 +463,19 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
     };
     
-    void (^dismissed)(void) = ^{
-        self.dismissal = nil;
-    };
-    
-    presentation(request, URLHandler, dismissed);
+    presentation(request, URLHandler);
+}
+
+- (void)dismissAccountView
+{
+    [self removeAccountView];
+    [self updateAccount];
+}
+
+- (void)removeAccountView
+{
+    self.dismissal ? self.dismissal() : nil;
+    self.dismissal = nil;
 }
 
 - (NSURLRequest *)accountRequest
@@ -517,11 +517,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        
-        if (self.dismissal) {
-            self.dismissal();
-            self.dismissal = nil;
-        }
+        [self removeAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
@@ -533,11 +529,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        
-        if (self.dismissal) {
-            self.dismissal();
-            self.dismissal = nil;
-        }
+        [self removeAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
@@ -549,11 +541,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        
-        if (self.dismissal) {
-            self.dismissal();
-            self.dismissal = nil;
-        }
+        [self removeAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
