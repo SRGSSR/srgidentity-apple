@@ -142,8 +142,9 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountDeletedKey;       // Key t
  *  The presentation layer is responsible of calling the supplied URL handler whenever a navigation is detected.
  *  If using `WKWebView`, this happens when its `-webView:decisionHandlerForNavigationAction:decisionHandler:` delegate
  *  method is called. The handler returns a recommended action for the URL which is navigated to, which the presentation
- *  layer should follow. In particular, the presentation layer should dismiss the web browser if this action is
- *  `SRGIdentityNavigationActionCancelAndDismiss`.
+ *  layer should follow. The presentation layer is responsible to dismiss the web browser if `dismissal` block is called.
+ *  If the presentation layer dismissed the web brower itself, its responsability to call the `dismissed`block to end
+ *  the presentation process and allow a future one.
  *
  *  @discussion If no user is logged in, calling this method does nothing.
  */

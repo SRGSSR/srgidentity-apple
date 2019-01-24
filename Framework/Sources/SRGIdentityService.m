@@ -461,6 +461,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
+    if (self.dismissal) {
+        return;
+    }
+    
     self.dismissal = dismissal;
     
     SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
