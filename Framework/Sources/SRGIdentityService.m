@@ -453,7 +453,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Account request
 
-- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull), void (^ _Nonnull)(void)))presentation
                                     dismissal:(void (^)(void))dismissal
 {
     NSURLRequest *request = [self accountRequest];
@@ -467,7 +467,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
     };
     
-    presentation(request, URLHandler);
+    void (^dismissed)(void) = ^{
+        self.dismissal = nil;
+    };
+    
+    presentation(request, URLHandler, dismissed);
 }
 
 - (NSURLRequest *)accountRequest

@@ -147,7 +147,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceAccountDeletedKey;       // Key t
  *
  *  @discussion If no user is logged in, calling this method does nothing.
  */
-- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation
+- (void)prepareAccountRequestWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL), void (^dismissed)(void)))presentation
                                     dismissal:(void (^)(void))dismissal;
 
 /**
