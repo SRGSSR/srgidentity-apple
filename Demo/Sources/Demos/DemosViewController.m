@@ -106,10 +106,9 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
         self.dismissed = dismissed;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navigationController animated:YES completion:nil];
-    }
-                                                                           dismissal:^{
-                                                                               [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-                                                                           }];
+    } dismissal:^{
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 
 - (void)closeAccount:(id)sender
