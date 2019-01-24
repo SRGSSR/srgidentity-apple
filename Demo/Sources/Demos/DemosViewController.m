@@ -84,7 +84,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (IBAction)showAccount:(id)sender
 {
-    [SRGIdentityService.currentIdentityService prepareAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+    [SRGIdentityService.currentIdentityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
         WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
             switch (URLHandler(URL)) {
                 case SRGIdentityNavigationActionAllow:
@@ -110,7 +110,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (void)closeAccount:(id)sender
 {
-    [SRGIdentityService.currentIdentityService dismissAccountView];
+    [SRGIdentityService.currentIdentityService hideAccountView];
 }
 
 - (void)login:(id)sender

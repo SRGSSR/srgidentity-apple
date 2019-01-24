@@ -367,7 +367,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     [self cleanup];
-    [self removeAccountView];
+    [self dismissAccountView];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
@@ -420,7 +420,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             if ([error.domain isEqualToString:SRGNetworkErrorDomain] && error.code == SRGNetworkErrorHTTP && [error.userInfo[SRGNetworkHTTPStatusCodeKey] integerValue] == 401) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self cleanup];
-                    [self removeAccountView];
+                    [self dismissAccountView];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
@@ -445,8 +445,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Account request
 
-- (void)prepareAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
-                                 dismissal:(void (^)(void))dismissal
+- (void)showAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+                              dismissal:(void (^)(void))dismissal
 {
     NSURLRequest *request = [self accountRequest];
     if (! request) {
@@ -466,13 +466,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     presentation(request, URLHandler);
 }
 
-- (void)dismissAccountView
+- (void)hideAccountView
 {
-    [self removeAccountView];
+    [self dismissAccountView];
     [self updateAccount];
 }
 
-- (void)removeAccountView
+- (void)dismissAccountView
 {
     self.dismissal ? self.dismissal() : nil;
     self.dismissal = nil;
@@ -517,7 +517,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        [self removeAccountView];
+        [self dismissAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
@@ -529,7 +529,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        [self removeAccountView];
+        [self dismissAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
@@ -541,7 +541,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         [self.accountUpdateRequest cancel];
         [self cleanup];
-        [self removeAccountView];
+        [self dismissAccountView];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                             object:self
