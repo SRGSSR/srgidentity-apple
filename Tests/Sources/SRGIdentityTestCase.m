@@ -66,6 +66,12 @@ static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
     return [NSURL URLWithString:URLString];
 }
 
+static NSURL *TestIgnored3CallbackURL()
+{
+    NSString *URLString = [NSString stringWithFormat:@"https://www.srgssr.ch"];
+    return [NSURL URLWithString:URLString];
+}
+
 @interface SRGIdentityTestCase : XCTestCase
 
 @property (nonatomic) SRGIdentityService *identityService;
@@ -331,6 +337,8 @@ static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
     XCTAssertFalse(hasHandledCallbackURL1);
     BOOL hasHandledCallbackURL2 = [self.identityService handleCallbackURL:TestIgnored2CallbackURL(self.identityService)];
     XCTAssertFalse(hasHandledCallbackURL2);
+    BOOL hasHandledCallbackURL3 = [self.identityService handleCallbackURL:TestIgnored3CallbackURL()];
+    XCTAssertFalse(hasHandledCallbackURL3);
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
         [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
