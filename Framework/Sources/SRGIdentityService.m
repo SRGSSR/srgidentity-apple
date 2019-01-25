@@ -511,54 +511,56 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
+    BOOL wasLoggedIn = self.loggedIn;
+    
     NSString *action = [self queryItemValueFromURL:callbackURL withName:@"action"];
     if ([action isEqualToString:@"unauthorized"]) {
-        NSAssert(self.loggedIn, @"User must be logged in");
-        
         [self.accountUpdateRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
+        }
         return YES;
     }
     else if ([action isEqualToString:@"log_out"]) {
-        NSAssert(self.loggedIn, @"User must be logged in");
-        
         [self.accountUpdateRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+        }
         return YES;
     }
     else if ([action isEqualToString:@"account_deleted"]) {
-        NSAssert(self.loggedIn, @"User must be logged in");
-        
         [self.accountUpdateRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
-                                                            object:self
-                                                          userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO,
-                                                                      SRGIdentityServiceAccountDeletedKey : @YES }];
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO,
+                                                                          SRGIdentityServiceAccountDeletedKey : @YES }];
+        }
         return YES;
     }
     
     NSString *sessionToken = [self queryItemValueFromURL:callbackURL withName:@"token"];
-    if (sessionToken) {
-        NSAssert(! self.loggedIn, @"No user must be logged in");
-        
+    if (sessionToken) {        
         self.sessionToken = sessionToken;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
-                                                            object:self
-                                                          userInfo:nil];
+        if (! wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
         [self updateAccount];
         
         if (self.authenticationSession) {
