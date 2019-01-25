@@ -123,13 +123,14 @@ static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
             else if ([request.URL.path containsString:@"userinfo"]) {
                 NSString *validAuthorizationHeader = [NSString stringWithFormat:@"sessionToken %@", @"0123456789"];
                 if ([[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:validAuthorizationHeader]) {
-                    NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
-                                                               @"email" : @"test@srgssr.ch",
-                                                               @"display_name": @"Play SRG",
-                                                               @"firstname": @"Play",
-                                                               @"lastname": @"SRG",
+                    NSDictionary<NSString *, id> *account = @{ @"id" : @"1234",
+                                                               @"publicUid" : @"4321",
+                                                               @"login" : @"test@srgssr.ch",
+                                                               @"displayName": @"Play SRG",
+                                                               @"firstName": @"Play",
+                                                               @"lastName": @"SRG",
                                                                @"gender": @"other",
-                                                               @"date_of_birth": @"2001-01-01" };
+                                                               @"birthdate": @"2001-01-01" };
                     return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
                                                        statusCode:200
                                                           headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
