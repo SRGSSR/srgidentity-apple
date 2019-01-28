@@ -158,11 +158,6 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     self.loadingView.hidden = YES;
-    
-    NSURL *failingURL = ([error.domain isEqualToString:NSURLErrorDomain]) ? error.userInfo[NSURLErrorFailingURLErrorKey] : nil;
-    if (failingURL && ! [failingURL.scheme isEqualToString:@"http"] && ! [failingURL.scheme isEqualToString:@"https"] && ! [failingURL.scheme isEqualToString:@"file"]) {
-        error = nil;
-    }
 
     if ([error.domain isEqualToString:NSURLErrorDomain]) {
         self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForStatusCode:error.code];
