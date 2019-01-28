@@ -448,6 +448,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (void)showAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
                               dismissal:(void (^)(void))dismissal
 {
+    NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
+    
     NSURLRequest *request = [self accountRequest];
     if (! request) {
         return;
@@ -468,6 +470,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)hideAccountView
 {
+    NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
+    
     [self dismissAccountView];
     [self updateAccount];
 }

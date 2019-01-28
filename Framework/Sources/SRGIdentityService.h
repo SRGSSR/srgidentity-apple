@@ -155,13 +155,17 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  If you want to dismiss the account view, call `-hideAccountView`. Direct view removal leads to undefined behavior, as
  *  the identity service would not be correctly notified of the dismissal.
  *
- *  @discussion If no user is logged in, calling this method does nothing. Only one account view can be presented at any time.
+ *  @discussion This method must be called from the main thread (presentation and dismissal blocks will be called on the main
+ *              thread as well). If no user is logged in, calling the method does nothing. Note that only one account view can
+ *              be presented at any given time.
  */
 - (void)showAccountViewWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation
                               dismissal:(void (^)(void))dismissal;
 
 /**
  *  Hide the account view, calling the dismissal block registered when it was shown.
+ *
+ *  @discussion This method must be called from the main thread. If no account view is shown, the method does nothing.
  */
 - (void)hideAccountView;
 

@@ -12,9 +12,6 @@
 
 static NSString *TestValidToken = @"0123456789";
 
-NSString * const SRGIdentityTestShowAccountPresentationNotification = @"SRGIdentityTestShowAccountPresentationNotification";
-NSString * const SRGIdentityTestDismissalAccountPresentationNotification = @"SRGIdentityTestDismissalAccountPresentationNotification";
-
 @interface SRGIdentityService (Private)
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL;
@@ -542,7 +539,7 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertEqual(numberOfUpdates, 1);
 }
 
-- (void)testNotLoggedInReportedUnauthorization
+- (void)testReportedUnauthorizationWhenLoggedOut
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -557,9 +554,9 @@ static NSURL *TestIgnored3CallbackURL()
         XCTFail(@"No logout is expected");
     }];
     
-    [self.identityService reportUnauthorization];
-    
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService reportUnauthorization];
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
         [NSNotificationCenter.defaultCenter removeObserver:loginObserver];
@@ -571,37 +568,23 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertNil(self.identityService.sessionToken);
 }
 
-- (void)testShowAccountViewWithPresentationNotLogged
+- (void)testShowAccountViewWhenLoggedOut
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
     
-    id showObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestShowAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No account presentation show call is expected.");
-    }];
-    id dismissalObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestDismissalAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No account presentation dismissal call is expected.");
-    }];
-    
-    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
-    } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
-    }];
-    
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:showObserver];
-        [NSNotificationCenter.defaultCenter removeObserver:dismissalObserver];
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        XCTFail(@"No account view presentation is expected.");
+    } dismissal:^{
+        XCTFail(@"No account view dismissal is expected.");
     }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
 }
 
-- (void)testShowAndHideAccountViewWithPresentationLogged
+- (void)testShowAndHideAccountViewWhenLoggedIn
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -618,26 +601,15 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
+        XCTAssertTrue(NSThread.isMainThread);
+        [presentationExpectation fulfill];
     } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-    
-    [self expectationForNotification:SRGIdentityTestDismissalAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
+        XCTAssertTrue(NSThread.isMainThread);
+        [dismissalExpectation fulfill];
     }];
     
     [self.identityService hideAccountView];
@@ -648,7 +620,7 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
 }
 
-- (void)testCantShowTwiceAccountViewWithPresentationLogged
+- (void)testAccountViewCannotBePresentedTwice
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -665,40 +637,27 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
+        [presentationExpectation fulfill];
     } dismissal:^{}];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
-    
-    id showObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestShowAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail("No account presentation show call is expected.");
-    }];
-    
-    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
-    } dismissal:^{}];
     
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:showObserver];
-    }];
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        XCTFail("Presentation cannot be made twice");
+    } dismissal:^{}];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
 }
 
-- (void)testAccountViewWithPresentationMultipleURLHandler
+- (void)testAccountViewURLHandlerAllowedActions
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -715,23 +674,14 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
     
     __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
         currentURLHandler = URLHandler;
-    } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
-    }];
+        [presentationExpectation fulfill];
+    } dismissal:^{}];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -741,16 +691,9 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertEqual(navigationAction2, SRGIdentityNavigationActionAllow);
     SRGIdentityNavigationAction navigationAction3 = currentURLHandler(TestIgnored3CallbackURL());
     XCTAssertEqual(navigationAction3, SRGIdentityNavigationActionAllow);
-    
-    SRGIdentityNavigationAction navigationAction4 = currentURLHandler(TestLogoutCallbackURL(self.identityService));
-    XCTAssertEqual(navigationAction4, SRGIdentityNavigationActionCancel);
-    SRGIdentityNavigationAction navigationAction5 = currentURLHandler(TestAccountDeletedCallbackURL(self.identityService));
-    XCTAssertEqual(navigationAction5, SRGIdentityNavigationActionCancel);
-    SRGIdentityNavigationAction navigationAction6 = currentURLHandler(TestUnauthorizedCallbackURL(self.identityService));
-    XCTAssertEqual(navigationAction6, SRGIdentityNavigationActionCancel);
 }
 
-- (void)testAccountViewWithPresentationLogoutURLHandler
+- (void)testAccountViewURLHandlerLogout
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -767,64 +710,32 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
     
     __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
         currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
     } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
+        [dismissalExpectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-    
-    __block BOOL dismissalAccountPresentationReceived = NO;
-    __block BOOL userDidLogoutReceived = NO;
-    
-    [self expectationForNotification:SRGIdentityTestDismissalAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        
-        if (!dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            dismissalAccountPresentationReceived = YES;
-        }
-        return YES;
-    }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
         XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
-        
-        if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            userDidLogoutReceived = YES;
-        }
         return YES;
     }];
     
     SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestLogoutCallbackURL(self.identityService));
     XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
     
-    XCTAssertFalse(self.identityService.loggedIn);
-    XCTAssertNil(self.identityService.sessionToken);
-    
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
-    XCTAssertTrue(dismissalAccountPresentationReceived);
-    XCTAssertTrue(userDidLogoutReceived);
-    
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
     
-    id dismissalObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestDismissalAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No account presentation dismissal call is expected.");
-    }];
     id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No logout is expected");
     }];
@@ -835,12 +746,11 @@ static NSURL *TestIgnored3CallbackURL()
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:dismissalObserver];
         [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
     }];
 }
 
-- (void)testAccountViewWithPresentationAccountDeletedURLHandler
+- (void)testAccountViewURLHandlerDeletion
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -857,64 +767,32 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
     
     __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
         currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
     } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
+        [dismissalExpectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-    
-    __block BOOL dismissalAccountPresentationReceived = NO;
-    __block BOOL userDidLogoutReceived = NO;
-    
-    [self expectationForNotification:SRGIdentityTestDismissalAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        
-        if (!dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            dismissalAccountPresentationReceived = YES;
-        }
-        return YES;
-    }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
         XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
-        
-        if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            userDidLogoutReceived = YES;
-        }
         return YES;
     }];
     
     SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestAccountDeletedCallbackURL(self.identityService));
     XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
     
-    XCTAssertFalse(self.identityService.loggedIn);
-    XCTAssertNil(self.identityService.sessionToken);
-    
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
-    XCTAssertTrue(dismissalAccountPresentationReceived);
-    XCTAssertTrue(userDidLogoutReceived);
-    
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
     
-    id dismissalObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestDismissalAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No account presentation dismissal call is expected.");
-    }];
     id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No logout is expected");
     }];
@@ -925,12 +803,11 @@ static NSURL *TestIgnored3CallbackURL()
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:dismissalObserver];
         [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
     }];
 }
 
-- (void)testAccountViewWithPresentationUnauthorizedURLHandler
+- (void)testAccountViewURLHandlerUnauthorized
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -947,64 +824,32 @@ static NSURL *TestIgnored3CallbackURL()
     XCTAssertTrue(self.identityService.loggedIn);
     XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
     
-    [self expectationForNotification:SRGIdentityTestShowAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        return YES;
-    }];
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
     
     __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
     
     [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestShowAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
         currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
     } dismissal:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityTestDismissalAccountPresentationNotification
-                                                            object:self
-                                                          userInfo:nil];
+        [dismissalExpectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-    
-    __block BOOL dismissalAccountPresentationReceived = NO;
-    __block BOOL userDidLogoutReceived = NO;
-    
-    [self expectationForNotification:SRGIdentityTestDismissalAccountPresentationNotification object:self handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertTrue([NSThread isMainThread]);
-        
-        if (!dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            dismissalAccountPresentationReceived = YES;
-        }
-        return YES;
-    }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
         XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
-        
-        if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
-            userDidLogoutReceived = YES;
-        }
         return YES;
     }];
     
     SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestUnauthorizedCallbackURL(self.identityService));
     XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
     
-    XCTAssertFalse(self.identityService.loggedIn);
-    XCTAssertNil(self.identityService.sessionToken);
-    
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
-    XCTAssertTrue(dismissalAccountPresentationReceived);
-    XCTAssertTrue(userDidLogoutReceived);
-    
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
     
-    id dismissalObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityTestDismissalAccountPresentationNotification object:self queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No account presentation dismissal call is expected.");
-    }];
     id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No logout is expected");
     }];
@@ -1015,7 +860,6 @@ static NSURL *TestIgnored3CallbackURL()
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:dismissalObserver];
         [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
     }];
 }
