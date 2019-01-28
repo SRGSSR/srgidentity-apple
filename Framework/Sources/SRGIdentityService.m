@@ -34,7 +34,7 @@ NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 NSString * const SRGIdentityServiceUnauthorizedKey = @"SRGIdentityServiceUnauthorized";
-NSString * const SRGIdentityServiceAccountDeletedKey = @"SRGIdentityServiceAccountDeletedKey";
+NSString * const SRGIdentityServiceDeletedKey = @"SRGIdentityServiceDeletedKey";
 
 static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
@@ -547,7 +547,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                 object:self
                                                               userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO,
-                                                                          SRGIdentityServiceAccountDeletedKey : @YES }];
+                                                                          SRGIdentityServiceDeletedKey : @YES }];
         }
         return YES;
     }
