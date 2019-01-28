@@ -37,16 +37,15 @@ Once a user has successfully logged in, a corresponding session token is availab
 
 ### Account page
 
-When a user is logged in, its account webpage can be displayed within your application. This requires the use of a custom web browser supporting `NSURLRequest` as input. For this reason, `SFSafariViewController` is not natively supported at the moment (as it requires a simple `NSURL`).
+When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. Display this page requires the use of a custom web browser supporting `NSURLRequest` as input. `SFSafariViewController` is therefore not natively supported at the moment, as it requires a simple `NSURL`.
 
-Your application must call `-[SRGIdentityService prepareAccountRequestWithPresentation:]` when a user is logged in to initiate the account display process. This generates the required request for displaying the account page and calls a presentation block, within which your application can instantiate its web browser. 
+When a user is logged in, your application can call `-[SRGIdentityService showAccountViewWithPresentation:dismissal:]` to initiate the account display process. This generates the required URL request for displaying the account page and calls a presentation block, within which your application can instantiate the web browser and install it within its view controller hierarchy.
 
-As the user interacts with the account page in the displayed web browser, URLs to which the browser navigates must be supplied through a handler block, also provided to the presentation block. This block returns extracted recommended actions based on the information extracted from each URL that goes through it:
+As the user interacts with the account page in the displayed web browser, URLs to which the browser navigates must be handed over to a URL handler block (provided to the presentation block as a parameter). This block will process each URL supplied to it, process identified actions (e.g. account deletion) and return a recommended action your browser implementation should follow (either continue or cancel navigation).
 
-* `SRGIdentityNavigationActionAllow`: Navigation should continue normally.
-* `SRGIdentityNavigationActionCancelAndDismiss`: Navigation should be cancelled and the account page browser dismissed.
+When calling the account display method above, you must also provide a dismissal block, which must implement how the web browser must be removed from view. You can manually trigger this block by calling `-[SRGIdentityService hideAccountView]`, but it will usually be triggered by identified account web page actions, for example when the account is deleted.
 
-Have a look at the demo project for a concrete implementation example.
+For concrete implementation details, please have a look at the demo project.
 
 ### Logout
 
