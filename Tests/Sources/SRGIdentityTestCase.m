@@ -217,7 +217,7 @@ static NSURL *TestIgnored3CallbackURL()
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -255,8 +255,8 @@ static NSURL *TestIgnored3CallbackURL()
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceDeletedKey], @YES);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceDeletedKey] boolValue]);
         return YES;
     }];
     
@@ -294,7 +294,7 @@ static NSURL *TestIgnored3CallbackURL()
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @YES);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -373,7 +373,7 @@ static NSURL *TestIgnored3CallbackURL()
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -426,7 +426,7 @@ static NSURL *TestIgnored3CallbackURL()
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -462,7 +462,7 @@ static NSURL *TestIgnored3CallbackURL()
     
     // Wait until account information is requested. The token is invalid, the user unauthorized and therefore logged out automatically
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @YES);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -800,7 +800,7 @@ static NSURL *TestIgnored3CallbackURL()
     }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         
         if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
             userDidLogoutReceived = YES;
@@ -890,7 +890,7 @@ static NSURL *TestIgnored3CallbackURL()
     }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         
         if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
             userDidLogoutReceived = YES;
@@ -980,7 +980,7 @@ static NSURL *TestIgnored3CallbackURL()
     }];
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @YES);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         
         if (dismissalAccountPresentationReceived && !userDidLogoutReceived) {
             userDidLogoutReceived = YES;

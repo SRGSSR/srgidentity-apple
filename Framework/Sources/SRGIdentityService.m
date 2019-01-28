@@ -371,7 +371,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
-                                                      userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+                                                      userInfo:nil];
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -533,7 +533,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                 object:self
-                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+                                                              userInfo:nil];
         }
         return YES;
     }
@@ -545,8 +545,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                 object:self
-                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO,
-                                                                          SRGIdentityServiceDeletedKey : @YES }];
+                                                              userInfo:@{ SRGIdentityServiceDeletedKey : @YES }];
         }
         return YES;
     }
