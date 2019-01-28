@@ -486,8 +486,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSURL *redirectURL = [self redirectURL];
     
-    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"/"];
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.websiteURL resolvingAgainstBaseURL:NO];
     NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
     URLComponents.queryItems = queryItems;
     
