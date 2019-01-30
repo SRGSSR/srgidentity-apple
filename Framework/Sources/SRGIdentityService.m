@@ -72,7 +72,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
-@property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
+@property (nonatomic) SRGRequest *accountUpdateRequest;
 @property (nonatomic, copy) void (^dismissal)(void);
 
 @end
@@ -378,11 +378,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     request.HTTPMethod = @"DELETE";
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [[[SRGRequest dataRequestWithURLRequest:request session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
         }
-    }] resume];
+    }] requestWithOptions:SRGNetworkRequestBackgroundThreadCompletionEnabled] resume];
     
     return YES;
 }
@@ -411,7 +411,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    self.accountUpdateRequest = [SRGRequest JSONDictionaryRequestWithURLRequest:request session:NSURLSession.sharedSession completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         self.accountUpdateRequest = nil;
         
         if (error) {
