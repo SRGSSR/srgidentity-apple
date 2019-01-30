@@ -72,7 +72,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
-@property (nonatomic) SRGRequest *accountUpdateRequest;
+@property (nonatomic, weak) SRGRequest *accountUpdateRequest;
 @property (nonatomic, copy) void (^dismissal)(void);
 
 @end
@@ -389,6 +389,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)cleanup
 {
+    [self.accountUpdateRequest cancel];
     self.emailAddress = nil;
     self.sessionToken = nil;
     self.account = nil;
@@ -411,7 +412,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    self.accountUpdateRequest = [SRGRequest objectRequestWithURLRequest:request session:NSURLSession.sharedSession parser:^id _Nullable(NSData * _Nonnull data, NSError * _Nullable __autoreleasing * _Nullable pError) {
+    SRGRequest *accountRequest = [SRGRequest objectRequestWithURLRequest:request session:NSURLSession.sharedSession parser:^id _Nullable(NSData * _Nonnull data, NSError * _Nullable __autoreleasing * _Nullable pError) {
         NSDictionary *JSONDictionary = SRGNetworkJSONDictionaryParser(data, pError);
         if (! JSONDictionary) {
             return nil;
@@ -419,8 +420,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         return [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:pError];
     } completionBlock:^(SRGAccount * _Nullable account, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        self.accountUpdateRequest = nil;
-        
         if (error) {
             SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
             
@@ -444,7 +443,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         self.emailAddress = account.emailAddress;
         self.account = account;
     }];
-    [self.accountUpdateRequest resume];
+    [accountRequest resume];
+    self.accountUpdateRequest = accountRequest;
 }
 
 #pragma mark Account request
