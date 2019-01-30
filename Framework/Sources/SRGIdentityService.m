@@ -72,7 +72,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
-@property (nonatomic, weak) SRGRequest *accountUpdateRequest;
+@property (nonatomic, weak) SRGRequest *accountRequest;
 @property (nonatomic, copy) void (^dismissal)(void);
 
 @end
@@ -359,7 +359,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    [self.accountUpdateRequest cancel];
+    [self.accountRequest cancel];
     
     NSString *sessionToken = self.sessionToken;
     if (! sessionToken) {
@@ -389,7 +389,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)cleanup
 {
-    [self.accountUpdateRequest cancel];
+    [self.accountRequest cancel];
     self.emailAddress = nil;
     self.sessionToken = nil;
     self.account = nil;
@@ -399,7 +399,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)updateAccount
 {
-    if (self.accountUpdateRequest) {
+    if (self.accountRequest) {
         return;
     }
     
@@ -444,7 +444,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         self.account = account;
     }];
     [accountRequest resume];
-    self.accountUpdateRequest = accountRequest;
+    self.accountRequest = accountRequest;
 }
 
 #pragma mark Account request
@@ -454,7 +454,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
-    NSURLRequest *request = [self accountRequest];
+    NSURLRequest *request = [self accountPresentationRequest];
     if (! request) {
         return;
     }
@@ -486,7 +486,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.dismissal = nil;
 }
 
-- (NSURLRequest *)accountRequest
+- (NSURLRequest *)accountPresentationRequest
 {
     if (! self.sessionToken) {
         return nil;
@@ -522,7 +522,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSString *action = [self queryItemValueFromURL:callbackURL withName:@"action"];
     if ([action isEqualToString:@"unauthorized"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
@@ -534,7 +534,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     else if ([action isEqualToString:@"log_out"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
@@ -546,7 +546,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     else if ([action isEqualToString:@"account_deleted"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
