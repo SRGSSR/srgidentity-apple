@@ -34,6 +34,7 @@ NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 NSString * const SRGIdentityServiceUnauthorizedKey = @"SRGIdentityServiceUnauthorized";
+NSString * const SRGIdentityServiceDeletedKey = @"SRGIdentityServiceDeletedKey";
 
 static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
@@ -72,6 +73,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
+@property (nonatomic, copy) void (^dismissal)(void);
 
 @end
 
@@ -235,9 +237,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
-#pragma mark URLs
+#pragma mark URL handling
 
-- (NSURL *)loginRedirectURL
+- (NSURL *)redirectURL
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
     URLComponents.scheme = [SRGIdentityService applicationURLScheme];
@@ -247,7 +249,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
 {
-    NSURL *redirectURL = [self loginRedirectURL];
+    NSURL *redirectURL = [self redirectURL];
     
     NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
@@ -263,7 +265,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (BOOL)shouldHandleCallbackURL:(NSURL *)URL
 {
     NSURL *standardizedURL = URL.standardizedURL;
-    NSURL *standardizedRedirectURL = [self loginRedirectURL].standardizedURL;
+    NSURL *standardizedRedirectURL = [self redirectURL].standardizedURL;
     
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
@@ -275,10 +277,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         && [self.identifier isEqualToString:queryItem.value];
 }
 
-- (NSString *)tokenFromURL:(NSURL *)URL
+- (NSString *)queryItemValueFromURL:(NSURL *)URL withName:(NSString *)queryName
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), @"token"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), queryName];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     return queryItem.value;
 }
@@ -365,10 +367,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     [self cleanup];
+    [self dismissAccountView];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
-                                                      userInfo:@{ SRGIdentityServiceUnauthorizedKey : @NO }];
+                                                      userInfo:nil];
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
@@ -417,6 +420,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             if ([error.domain isEqualToString:SRGNetworkErrorDomain] && error.code == SRGNetworkErrorHTTP && [error.userInfo[SRGNetworkHTTPStatusCodeKey] integerValue] == 401) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self cleanup];
+                    [self dismissAccountView];
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
@@ -439,6 +443,62 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.accountUpdateRequest resume];
 }
 
+#pragma mark Account request
+
+- (void)showAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
+                              dismissal:(void (^)(void))dismissal
+{
+    NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
+    
+    NSURLRequest *request = [self accountRequest];
+    if (! request) {
+        return;
+    }
+    
+    if (self.dismissal) {
+        return;
+    }
+    
+    self.dismissal = dismissal;
+    
+    SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
+        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
+    };
+    
+    presentation(request, URLHandler);
+}
+
+- (void)hideAccountView
+{
+    NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
+    
+    [self dismissAccountView];
+    [self updateAccount];
+}
+
+- (void)dismissAccountView
+{
+    self.dismissal ? self.dismissal() : nil;
+    self.dismissal = nil;
+}
+
+- (NSURLRequest *)accountRequest
+{
+    if (! self.sessionToken) {
+        return nil;
+    }
+    
+    NSURL *redirectURL = [self redirectURL];
+    
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.websiteURL resolvingAgainstBaseURL:NO];
+    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
+    URLComponents.queryItems = queryItems;
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URLComponents.URL];
+    [request setValue:[NSString stringWithFormat:@"sessionToken %@", self.sessionToken] forHTTPHeaderField:@"Authorization"];
+    return [request copy];
+}
+
 #pragma mark Unauthorization reporting
 
 - (void)reportUnauthorization
@@ -454,29 +514,70 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    NSString *sessionToken = [self tokenFromURL:callbackURL];
-    if (! sessionToken) {
+    BOOL wasLoggedIn = self.loggedIn;
+    
+    NSString *action = [self queryItemValueFromURL:callbackURL withName:@"action"];
+    if ([action isEqualToString:@"unauthorized"]) {
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        [self dismissAccountView];
+        
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceUnauthorizedKey : @YES }];
+        }
+        return YES;
+    }
+    else if ([action isEqualToString:@"log_out"]) {
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        [self dismissAccountView];
+        
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
+        return YES;
+    }
+    else if ([action isEqualToString:@"account_deleted"]) {
+        [self.accountUpdateRequest cancel];
+        [self cleanup];
+        [self dismissAccountView];
+        
+        if (wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
+                                                                object:self
+                                                              userInfo:@{ SRGIdentityServiceDeletedKey : @YES }];
+        }
         return YES;
     }
     
-    self.sessionToken = sessionToken;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
-                                                        object:self
-                                                      userInfo:nil];
-    [self updateAccount];
-    
-    if (self.authenticationSession) {
-        self.authenticationSession = nil;
+    NSString *sessionToken = [self queryItemValueFromURL:callbackURL withName:@"token"];
+    if (sessionToken) {        
+        self.sessionToken = sessionToken;
+        
+        if (! wasLoggedIn) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
+        [self updateAccount];
+        
+        if (self.authenticationSession) {
+            self.authenticationSession = nil;
+        }
+        else {
+            UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+            [presentingViewController dismissViewControllerAnimated:YES completion:^{
+                s_loggingIn = NO;
+            }];
+        }
+        return YES;
     }
-    else {
-        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController dismissViewControllerAnimated:YES completion:^{
-            s_loggingIn = NO;
-        }];
-    }
     
-    return YES;
+    return NO;
 }
 
 #pragma mark SFSafariViewControllerDelegate delegate

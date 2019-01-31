@@ -7,6 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
+#import "WebViewController.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -15,6 +16,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 @interface DemosViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
+@property (nonatomic, weak) IBOutlet UIButton *accountButton;
 
 @end
 
@@ -74,17 +76,50 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                                                                                  target:self
                                                                                  action:@selector(login:)];
     }
+    
+    self.accountButton.hidden = ! identityService.loggedIn;
 }
 
 #pragma mark Actions
 
-- (IBAction)login:(id)sender
+- (IBAction)showAccount:(id)sender
+{
+    [SRGIdentityService.currentIdentityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+            switch (URLHandler(URL)) {
+                case SRGIdentityNavigationActionAllow:
+                    return WKNavigationActionPolicyAllow;
+                    break;
+                    
+                case SRGIdentityNavigationActionCancel:
+                    return WKNavigationActionPolicyCancel;
+                    break;
+            }
+        }];
+        webViewController.title = NSLocalizedString(@"Account", nil);
+        webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+                                                                                              style:UIBarButtonItemStyleDone
+                                                                                             target:self
+                                                                                             action:@selector(closeAccount:)];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    } dismissal:^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+}
+
+- (void)closeAccount:(id)sender
+{
+    [SRGIdentityService.currentIdentityService hideAccountView];
+}
+
+- (void)login:(id)sender
 {
     NSString *lastEmailAddress = [NSUserDefaults.standardUserDefaults stringForKey:LastLoggedInEmailAddress];
     [SRGIdentityService.currentIdentityService loginWithEmailAddress:lastEmailAddress];
 }
 
-- (IBAction)logout:(id)sender
+- (void)logout:(id)sender
 {
     [SRGIdentityService.currentIdentityService logout];
 }

@@ -30,9 +30,45 @@ static NSURL *TestWebsiteURL(void)
     return [NSURL URLWithString:@"https://www.srgssr.local"];
 }
 
-static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *token)
+static NSURL *TestLoginCallbackURL(SRGIdentityService *identityService, NSString *token)
 {
     NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&token=%@", TestWebserviceURL().host, identityService.identifier, token];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestLogoutCallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&action=log_out", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestAccountDeletedCallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&action=account_deleted", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestUnauthorizedCallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&action=unauthorized", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestIgnored1CallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"srgidentity-tests://%@?identity_service=%@&action=unknown", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
+{
+    NSString *URLString = [NSString stringWithFormat:@"myapp://%@?identity_service=%@", TestWebserviceURL().host, identityService.identifier];
+    return [NSURL URLWithString:URLString];
+}
+
+static NSURL *TestIgnored3CallbackURL()
+{
+    NSString *URLString = [NSString stringWithFormat:@"https://www.srgssr.ch"];
     return [NSURL URLWithString:URLString];
 }
 
@@ -93,13 +129,14 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
             else if ([request.URL.path containsString:@"userinfo"]) {
                 NSString *validAuthorizationHeader = [NSString stringWithFormat:@"sessionToken %@", @"0123456789"];
                 if ([[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:validAuthorizationHeader]) {
-                    NSDictionary<NSString *, id> *account = @{ @"id" : @(1234),
-                                                               @"email" : @"test@srgssr.ch",
-                                                               @"display_name": @"Play SRG",
-                                                               @"firstname": @"Play",
-                                                               @"lastname": @"SRG",
+                    NSDictionary<NSString *, id> *account = @{ @"id" : @"1234",
+                                                               @"publicUid" : @"4321",
+                                                               @"login" : @"test@srgssr.ch",
+                                                               @"displayName": @"Play SRG",
+                                                               @"firstName": @"Play",
+                                                               @"lastName": @"SRG",
                                                                @"gender": @"other",
-                                                               @"date_of_birth": @"2001-01-01" };
+                                                               @"birthdate": @"2001-01-01" };
                     return [[OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
                                                        statusCode:200
                                                           headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
@@ -130,7 +167,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
 
 #pragma mark Tests
 
-- (void)testHandleCallbackURL
+- (void)testLoginHandleCallbackURL
 {
     XCTAssertNil(self.identityService.emailAddress);
     XCTAssertNil(self.identityService.sessionToken);
@@ -143,7 +180,8 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    XCTAssertTrue(hasHandledCallbackURL);
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -152,6 +190,162 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     XCTAssertNil(self.identityService.account);
     
     XCTAssertTrue(self.identityService.loggedIn);
+}
+
+- (void)testLogoutHandleCallbackURL
+{
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        return YES;
+    }];
+    
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestLogoutCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testAccountDeletedHandleCallbackURL
+{
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceDeletedKey] boolValue]);
+        return YES;
+    }];
+    
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestAccountDeletedCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testUnauthorizedHandleCallbackURL
+{
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        return YES;
+    }];
+    
+    BOOL hasHandledCallbackURL = [self.identityService handleCallbackURL:TestUnauthorizedCallbackURL(self.identityService)];
+    XCTAssertTrue(hasHandledCallbackURL);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+}
+
+- (void)testIgnoredHandleCallbackURL
+{
+    XCTAssertNil(self.identityService.emailAddress);
+    XCTAssertNil(self.identityService.sessionToken);
+    XCTAssertNil(self.identityService.account);
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    BOOL hasHandledCallbackURL1 = [self.identityService handleCallbackURL:TestIgnored1CallbackURL(self.identityService)];
+    XCTAssertFalse(hasHandledCallbackURL1);
+    BOOL hasHandledCallbackURL2 = [self.identityService handleCallbackURL:TestIgnored2CallbackURL(self.identityService)];
+    XCTAssertFalse(hasHandledCallbackURL2);
+    BOOL hasHandledCallbackURL3 = [self.identityService handleCallbackURL:TestIgnored3CallbackURL()];
+    XCTAssertFalse(hasHandledCallbackURL3);
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
 }
 
 - (void)testLogout
@@ -166,8 +360,8 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
-
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -176,7 +370,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -205,8 +399,8 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         XCTAssertTrue([NSThread isMainThread]);
         return YES;
     }];
-
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -229,7 +423,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([NSThread isMainThread]);
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @NO);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     [self expectationForNotification:SRGIdentityServiceDidUpdateAccountNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -256,7 +450,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, @"invalid_token")];
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, @"invalid_token")];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -265,7 +459,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     
     // Wait until account information is requested. The token is invalid, the user unauthorized and therefore logged out automatically
     [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGIdentityServiceUnauthorizedKey], @YES);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
         return YES;
     }];
     
@@ -284,7 +478,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -317,7 +511,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         return YES;
     }];
     
-    [self.identityService handleCallbackURL:TestCallbackURL(self.identityService, TestValidToken)];
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
     
@@ -345,7 +539,7 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     XCTAssertEqual(numberOfUpdates, 1);
 }
 
-- (void)testNotLoggedInReportedUnauthorization
+- (void)testReportedUnauthorizationWhenLoggedOut
 {
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
@@ -360,9 +554,9 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
         XCTFail(@"No logout is expected");
     }];
     
-    [self.identityService reportUnauthorization];
-    
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService reportUnauthorization];
     
     [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
         [NSNotificationCenter.defaultCenter removeObserver:loginObserver];
@@ -372,6 +566,302 @@ static NSURL *TestCallbackURL(SRGIdentityService *identityService, NSString *tok
     
     XCTAssertFalse(self.identityService.loggedIn);
     XCTAssertNil(self.identityService.sessionToken);
+}
+
+- (void)testShowAccountViewWhenLoggedOut
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        XCTFail(@"No account view presentation is expected.");
+    } dismissal:^{
+        XCTFail(@"No account view dismissal is expected.");
+    }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testShowAndHideAccountViewWhenLoggedIn
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        XCTAssertTrue(NSThread.isMainThread);
+        [presentationExpectation fulfill];
+    } dismissal:^{
+        XCTAssertTrue(NSThread.isMainThread);
+        [dismissalExpectation fulfill];
+    }];
+    
+    [self.identityService hideAccountView];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+}
+
+- (void)testAccountViewCannotBePresentedTwice
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        [presentationExpectation fulfill];
+    } dismissal:^{}];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        XCTFail("Presentation cannot be made twice");
+    } dismissal:^{}];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testAccountViewURLHandlerAllowedActions
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    
+    __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
+    } dismissal:^{}];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestIgnored1CallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionAllow);
+    SRGIdentityNavigationAction navigationAction2 = currentURLHandler(TestIgnored2CallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction2, SRGIdentityNavigationActionAllow);
+    SRGIdentityNavigationAction navigationAction3 = currentURLHandler(TestIgnored3CallbackURL());
+    XCTAssertEqual(navigationAction3, SRGIdentityNavigationActionAllow);
+}
+
+- (void)testAccountViewURLHandlerLogout
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
+    
+    __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
+    } dismissal:^{
+        [dismissalExpectation fulfill];
+    }];
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        return YES;
+    }];
+    
+    SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestLogoutCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    SRGIdentityNavigationAction navigationAction2 = currentURLHandler(TestLogoutCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction2, SRGIdentityNavigationActionCancel);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+}
+
+- (void)testAccountViewURLHandlerDeletion
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
+    
+    __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
+    } dismissal:^{
+        [dismissalExpectation fulfill];
+    }];
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertFalse([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        return YES;
+    }];
+    
+    SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestAccountDeletedCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    SRGIdentityNavigationAction navigationAction2 = currentURLHandler(TestAccountDeletedCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction2, SRGIdentityNavigationActionCancel);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
+}
+
+- (void)testAccountViewURLHandlerUnauthorized
+{
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLoginNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        return YES;
+    }];
+    
+    [self.identityService handleCallbackURL:TestLoginCallbackURL(self.identityService, TestValidToken)];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertTrue(self.identityService.loggedIn);
+    XCTAssertEqualObjects(self.identityService.sessionToken, TestValidToken);
+    
+    XCTestExpectation *presentationExpectation = [self expectationWithDescription:@"Presentation"];
+    XCTestExpectation *dismissalExpectation = [self expectationWithDescription:@"Dismissal"];
+    
+    __block SRGIdentityNavigationAction (^currentURLHandler)(NSURL *) = nil;
+    
+    [self.identityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        currentURLHandler = URLHandler;
+        [presentationExpectation fulfill];
+    } dismissal:^{
+        [dismissalExpectation fulfill];
+    }];
+    
+    [self expectationForNotification:SRGIdentityServiceUserDidLogoutNotification object:self.identityService handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertTrue([NSThread isMainThread]);
+        XCTAssertTrue([notification.userInfo[SRGIdentityServiceUnauthorizedKey] boolValue]);
+        return YES;
+    }];
+    
+    SRGIdentityNavigationAction navigationAction1 = currentURLHandler(TestUnauthorizedCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction1, SRGIdentityNavigationActionCancel);
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+    
+    XCTAssertFalse(self.identityService.loggedIn);
+    XCTAssertNil(self.identityService.sessionToken);
+    
+    id logoutObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGIdentityServiceUserDidLogoutNotification object:self.identityService queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No logout is expected");
+    }];
+    
+    SRGIdentityNavigationAction navigationAction2 = currentURLHandler(TestUnauthorizedCallbackURL(self.identityService));
+    XCTAssertEqual(navigationAction2, SRGIdentityNavigationActionCancel);
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:5. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:logoutObserver];
+    }];
 }
 
 @end

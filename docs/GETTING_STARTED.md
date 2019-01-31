@@ -35,6 +35,18 @@ This presents a sandboxed Safari browser, in which the user can supply her crede
 
 Once a user has successfully logged in, a corresponding session token is available in the keychain. Use the `SRGIdentityService.currentIdentityService.sessionToken` property when you need to retrieve it.
 
+### Account page
+
+When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. Display this page requires the use of a custom web browser supporting `NSURLRequest` as input. `SFSafariViewController` is therefore not natively supported at the moment, as it requires a simple `NSURL`.
+
+When a user is logged in, your application can call `-[SRGIdentityService showAccountViewWithPresentation:dismissal:]` to initiate the account display process. This generates the required URL request for displaying the account page and calls a presentation block, within which your application can instantiate the web browser and install it within its view controller hierarchy.
+
+As the user interacts with the account page in the displayed web browser, URLs to which the browser navigates must be handed over to a URL handler block (provided to the presentation block as a parameter). This block will process each URL supplied to it, process identified actions (e.g. account deletion) and return a recommended action your browser implementation should follow (either continue or cancel navigation).
+
+When calling the account display method above, you must also provide a dismissal block, which must implement how the web browser must be removed from view. You can manually trigger this block by calling `-[SRGIdentityService hideAccountView]`, but it will usually be triggered by identified account web page actions, for example when the account is deleted.
+
+For concrete implementation details, please have a look at the demo project.
+
 ### Logout
 
 To logout the current user, simply call `-logout`;

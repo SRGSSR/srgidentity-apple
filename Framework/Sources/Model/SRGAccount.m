@@ -23,7 +23,8 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
 
 @interface SRGAccount ()
 
-@property (nonatomic, copy) NSNumber *uid;
+@property (nonatomic, copy) NSString *uid;
+@property (nonatomic, copy) NSString *publicUid;
 @property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic, copy) NSString *firstName;
@@ -44,8 +45,9 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
         s_mapping = @{ @keypath(SRGAccount.new, uid) : @"id",
+                       @keypath(SRGAccount.new, publicUid) : @"publicUid",
                        @keypath(SRGAccount.new, displayName) : @"displayName",
-                       @keypath(SRGAccount.new, emailAddress) : @"email",
+                       @keypath(SRGAccount.new, emailAddress) : @"login",
                        @keypath(SRGAccount.new, firstName) : @"firstName",
                        @keypath(SRGAccount.new, lastName) : @"lastName",
                        @keypath(SRGAccount.new, gender) : @"gender",
