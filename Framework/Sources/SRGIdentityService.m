@@ -72,7 +72,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
-@property (nonatomic) SRGNetworkRequest *accountUpdateRequest;
+@property (nonatomic, weak) SRGRequest *accountRequest;
 @property (nonatomic, copy) void (^dismissal)(void);
 
 @end
@@ -359,7 +359,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return NO;
     }
     
-    [self.accountUpdateRequest cancel];
+    [self.accountRequest cancel];
     
     NSString *sessionToken = self.sessionToken;
     if (! sessionToken) {
@@ -378,17 +378,18 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     request.HTTPMethod = @"DELETE";
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[[SRGNetworkRequest alloc] initWithURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [[[SRGRequest dataRequestWithURLRequest:request session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
         }
-    }] resume];
+    }] requestWithOptions:SRGNetworkRequestBackgroundThreadCompletionEnabled] resume];
     
     return YES;
 }
 
 - (void)cleanup
 {
+    [self.accountRequest cancel];
     self.emailAddress = nil;
     self.sessionToken = nil;
     self.account = nil;
@@ -398,7 +399,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)updateAccount
 {
-    if (self.accountUpdateRequest) {
+    if (self.accountRequest) {
         return;
     }
     
@@ -411,9 +412,14 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    self.accountUpdateRequest = [[SRGNetworkRequest alloc] initWithJSONDictionaryURLRequest:request session:NSURLSession.sharedSession options:0 completionBlock:^(NSDictionary * _Nullable JSONDictionary, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        self.accountUpdateRequest = nil;
+    SRGRequest *accountRequest = [SRGRequest objectRequestWithURLRequest:request session:NSURLSession.sharedSession parser:^id _Nullable(NSData * _Nonnull data, NSError * _Nullable __autoreleasing * _Nullable pError) {
+        NSDictionary *JSONDictionary = SRGNetworkJSONDictionaryParser(data, pError);
+        if (! JSONDictionary) {
+            return nil;
+        }
         
+        return [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:pError];
+    } completionBlock:^(SRGAccount * _Nullable account, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             SRGIdentityLogInfo(@"service", @"Account update failed with error %@", error);
             
@@ -430,17 +436,15 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             return;
         }
         
-        SRGAccount *account = [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:NULL];
         if (! account) {
             return;
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.emailAddress = account.emailAddress;
-            self.account = account;
-        });
+        self.emailAddress = account.emailAddress;
+        self.account = account;
     }];
-    [self.accountUpdateRequest resume];
+    [accountRequest resume];
+    self.accountRequest = accountRequest;
 }
 
 #pragma mark Account request
@@ -450,7 +454,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
-    NSURLRequest *request = [self accountRequest];
+    NSURLRequest *request = [self accountPresentationRequest];
     if (! request) {
         return;
     }
@@ -482,7 +486,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.dismissal = nil;
 }
 
-- (NSURLRequest *)accountRequest
+- (NSURLRequest *)accountPresentationRequest
 {
     if (! self.sessionToken) {
         return nil;
@@ -518,7 +522,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSString *action = [self queryItemValueFromURL:callbackURL withName:@"action"];
     if ([action isEqualToString:@"unauthorized"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
@@ -530,7 +534,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     else if ([action isEqualToString:@"log_out"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
@@ -542,7 +546,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return YES;
     }
     else if ([action isEqualToString:@"account_deleted"]) {
-        [self.accountUpdateRequest cancel];
+        [self.accountRequest cancel];
         [self cleanup];
         [self dismissAccountView];
         
