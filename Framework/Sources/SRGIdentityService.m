@@ -79,11 +79,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @end
 
 __attribute__((constructor)) static void SRGIdentityServiceInit(void)
-{
-    if (@available(iOS 11.0, *)) {
-        return;
-    }
-    
+{    
     NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
     
     // The `-application:openURL:options:` application delegate method must be available at the time the application is
