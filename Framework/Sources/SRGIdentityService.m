@@ -67,6 +67,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @property (nonatomic) NSURL *webserviceURL;
 @property (nonatomic) NSURL *websiteURL;
+@property (nonatomic) SRGIdentityLoginMethod loginMethod;
 
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
@@ -142,7 +143,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL loginMethod:(SRGIdentityLoginMethod)loginMethod
 {
     if (self = [super init]) {
         self.identifier = NSUUID.UUID.UUIDString;
@@ -155,6 +156,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         
         self.webserviceURL = webserviceURL;
         self.websiteURL = websiteURL;
+        self.loginMethod = loginMethod;
         
         UICKeyChainStoreProtocolType keyChainStoreProtocolType = [websiteURL.scheme.lowercaseString isEqualToString:@"https"] ? UICKeyChainStoreProtocolTypeHTTPS : UICKeyChainStoreProtocolTypeHTTP;
         self.keyChainStore = [UICKeyChainStore keyChainStoreWithServer:websiteURL protocolType:keyChainStoreProtocolType];
@@ -171,6 +173,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         [self updateAccount];
     }
     return self;
+}
+
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL
+{
+    return [self initWithWebserviceURL:webserviceURL websiteURL:websiteURL loginMethod:SRGIdentityLoginMethodDefault];
 }
 
 - (void)dealloc
@@ -321,32 +328,41 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
     
-    // iOS 12 and later, use `ASWebAuthenticationSession`
-    if (@available(iOS 12.0, *)) {
-        ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                                                                          callbackURLScheme:[SRGIdentityService applicationURLScheme]
-                                                                                          completionHandler:completionHandler];
-        self.authenticationSession = authenticationSession;
-        if (! [authenticationSession start]) {
-            return NO;
-        }
-    }
-    // iOS 11, use `SFAuthenticationSession`
-    else if (@available(iOS 11.0, *)) {
-        SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                                                                    callbackURLScheme:[SRGIdentityService applicationURLScheme]
-                                                                                    completionHandler:completionHandler];
-        self.authenticationSession = authenticationSession;
-        if (! [authenticationSession start]) {
-            return NO;
-        }
-    }
-    // iOS 9 and 10, use `SFSafariViewController`
-    else {
+    void (^loginWithSafari)(void) = ^{
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         safariViewController.delegate = self;
         UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
         [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
+    };
+    
+    if (self.loginMethod == SRGIdentityLoginMethodAuthenticationSession) {
+        // iOS 12 and later, use `ASWebAuthenticationSession`
+        if (@available(iOS 12.0, *)) {
+            ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                                                              callbackURLScheme:[SRGIdentityService applicationURLScheme]
+                                                                                              completionHandler:completionHandler];
+            self.authenticationSession = authenticationSession;
+            if (! [authenticationSession start]) {
+                return NO;
+            }
+        }
+        // iOS 11, use `SFAuthenticationSession`
+        else if (@available(iOS 11.0, *)) {
+            SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:requestURL
+                                                                                        callbackURLScheme:[SRGIdentityService applicationURLScheme]
+                                                                                        completionHandler:completionHandler];
+            self.authenticationSession = authenticationSession;
+            if (! [authenticationSession start]) {
+                return NO;
+            }
+        }
+        // iOS 9 and 10, use `SFSafariViewController`
+        else {
+            loginWithSafari();
+        }
+    }
+    else {
+        loginWithSafari();
     }
     
     s_loggingIn = YES;
