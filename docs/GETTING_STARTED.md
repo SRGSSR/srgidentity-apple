@@ -31,6 +31,18 @@ To allow for a user to login, call the `-loginWithEmailAddress:` instance method
 
 This presents a sandboxed Safari browser, in which the user can supply her credentials or open an account. A user remains logged in until she logs out.
 
+#### Remark
+
+Login occurs within a simple Safari in-app browser by default. Starting with iOS 11, you might prefer using an authentication session, which lets user credentials be shared between your app and Safari, providing automatic login for apps associated with the same identity provider. Before the user can enter her credentials, a system alert will be displayed to inform her about credential sharing.
+
+To enable this feature, use the corresponding login method when creating the service:
+
+```objective-c
+SRGIdentityService.currentIdentityService = [[SRGIdentityService alloc] initWithWebserviceURL:webserviceURL websiteURL:websiteURL loginMethod:SRGIdentityLoginMethodAuthenticationSession];
+```
+
+On iOS 10 devices and older, the default Safari in-app browser will be used instead.
+
 ### Token
 
 Once a user has successfully logged in, a corresponding session token is available in the keychain. Use the `SRGIdentityService.currentIdentityService.sessionToken` property when you need to retrieve it.

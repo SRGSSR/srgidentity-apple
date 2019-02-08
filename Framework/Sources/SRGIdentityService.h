@@ -9,6 +9,27 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ *  Available login methods.
+ */
+typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
+    /**
+     *  The default recommended method.
+     */
+    SRGIdentityLoginMethodDefault = 0,
+    /**
+     *  Login is displayed in a dedicated Safari web view.
+     */
+    SRGIdentityLoginMethodSafari = SRGIdentityLoginMethodDefault,
+    /**
+     *  Use an authentication session when available (iOS 11 and 12 only). User credentials can be shared between your
+     *  app and Safari. This makes it possible for a user to automatically authenticate in another app associated with
+     *  the same identity provider (if credentials are still available). Note that a system alert will inform the user
+     *  about credentials sharing first.
+     */
+    SRGIdentityLoginMethodAuthenticationSession
+};
+
+/**
  *  Recommended actions when navigating within the account page in a web browser.
  */
 typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
@@ -79,12 +100,18 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 @property (class, nonatomic, nullable) SRGIdentityService *currentIdentityService;
 
 /**
- *  Instantiate an identity service.
+ *  Instantiate an identity service. A login method can be selected.
  *
  *  @param webserviceURL The URL of the identity webservices.
  *  @param websiteURL    The URL of the identity web portal.
+ *  @param loginMethod   The login method to use if possible.
  */
-- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL loginMethod:(SRGIdentityLoginMethod)loginMethod NS_DESIGNATED_INITIALIZER;
+
+/**
+ *  Same as `-initWithWebserviceURL:websiteURL:loginMethod:`, using the default recommended login method.
+ */
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL;
 
 /**
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful
