@@ -14,6 +14,11 @@ default_platform :ios
 platform :ios do
   before_all do |lane|
     ensure_git_status_clean
+    carthage(
+      command: "bootstrap",
+      platform: "iOS",
+      cache_builds: true
+    )
   end
 
   desc "Run library tests"
