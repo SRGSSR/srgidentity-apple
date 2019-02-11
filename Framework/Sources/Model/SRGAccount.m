@@ -90,4 +90,21 @@ NSString *SRGDescriptionForGender(SRGGender SRGGender)
     return s_transformer;
 }
 
+#pragma mark Equality
+
+- (BOOL)isEqual:(id)object
+{
+    if (! [object isKindOfClass:self.class]) {
+        return NO;
+    }
+    
+    SRGAccount *otherAccount = object;
+    return [self.uid isEqualToString:otherAccount.uid];
+}
+
+- (NSUInteger)hash
+{
+    return self.uid.hash;
+}
+
 @end
