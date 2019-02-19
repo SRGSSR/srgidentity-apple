@@ -68,6 +68,8 @@
 		6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */; };
 		6FF846A4221BED95006FC3FC /* SRGIdentityWebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */; };
 		6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */; };
+		6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */; };
+		6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +193,8 @@
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityWebViewController.m; sourceTree = "<group>"; };
 		6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGIdentityWebViewController.storyboard; sourceTree = "<group>"; };
 		6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityWebViewController.h; sourceTree = "<group>"; };
+		6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityModalTransition.h; sourceTree = "<group>"; };
+		6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityModalTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +430,8 @@
 		6FF8469F221BED95006FC3FC /* Browser */ = {
 			isa = PBXGroup;
 			children = (
+				6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */,
+				6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */,
 				6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */,
 				6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */,
 				6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */,
@@ -440,6 +446,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */,
 				6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
@@ -667,6 +674,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */,
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
 				6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
