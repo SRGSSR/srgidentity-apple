@@ -132,7 +132,7 @@ static void *s_kvoContext = &s_kvoContext;
     [self updateContentInsets];
 }
 
-#pragma mark WKNavigationDelegate
+#pragma mark WKNavigationDelegate protocol
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
@@ -178,7 +178,7 @@ static void *s_kvoContext = &s_kvoContext;
     }
 }
 
-- (void)webView:(WKWebView *)webView decisionHandlerForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     if (self.decisionHandler) {
         decisionHandler(self.decisionHandler(navigationAction.request.URL));
