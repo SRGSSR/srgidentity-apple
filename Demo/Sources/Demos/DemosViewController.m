@@ -84,8 +84,8 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (IBAction)showAccount:(id)sender
 {
-    [SRGIdentityService.currentIdentityService showAccountViewWithPresentation:^(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        WebViewController *webViewController = [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+    [SRGIdentityService.currentIdentityService presentAccountViewWithBlock:^UIViewController * _Nonnull(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
+        return [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
             switch (URLHandler(URL)) {
                 case SRGIdentityNavigationActionAllow:
                     return WKNavigationActionPolicyAllow;
@@ -96,21 +96,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                     break;
             }
         }];
-        webViewController.title = NSLocalizedString(@"Account", nil);
-        webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
-                                                                                              style:UIBarButtonItemStyleDone
-                                                                                             target:self
-                                                                                             action:@selector(closeAccount:)];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        [self presentViewController:navigationController animated:YES completion:nil];
-    } dismissal:^{
-        [self dismissViewControllerAnimated:YES completion:nil];
     }];
-}
-
-- (void)closeAccount:(id)sender
-{
-    [SRGIdentityService.currentIdentityService hideAccountView];
 }
 
 - (void)login:(id)sender
