@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "WebViewController.h"
+#import "SRGIdentityWebViewController.h"
 
 #import "NSBundle+SRGIdentity.h"
 
@@ -14,7 +14,7 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-@interface WebViewController ()
+@interface SRGIdentityWebViewController ()
 
 @property (nonatomic) NSURLRequest *request;
 @property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *);
@@ -26,14 +26,14 @@ static void *s_kvoContext = &s_kvoContext;
 
 @end
 
-@implementation WebViewController
+@implementation SRGIdentityWebViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithRequest:(NSURLRequest *)request decisionHandler:(WKNavigationActionPolicy (^)(NSURL *URL))decisionHandler
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    WebViewController *webViewController = [storyboard instantiateInitialViewController];
+    SRGIdentityWebViewController *webViewController = [storyboard instantiateInitialViewController];
     webViewController.request = request;
     webViewController.decisionHandler = decisionHandler;
     return webViewController;

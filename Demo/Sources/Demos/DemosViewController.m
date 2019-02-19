@@ -7,7 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
-#import "WebViewController.h"
+#import "SRGIdentityWebViewController.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -85,7 +85,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 - (IBAction)showAccount:(id)sender
 {
     [SRGIdentityService.currentIdentityService presentAccountViewWithBlock:^UIViewController * _Nonnull(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        return [[WebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+        return [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
             switch (URLHandler(URL)) {
                 case SRGIdentityNavigationActionAllow:
                     return WKNavigationActionPolicyAllow;

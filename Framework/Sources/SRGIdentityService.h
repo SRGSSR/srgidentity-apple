@@ -166,7 +166,8 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 
 /**
  *  Present the account view (a web page), using a view controller instantiated from the provided block. The application
- *  is responsible of providing a web browser implementation able to load and handle the request.
+ *  can provide a web browser implementation able to load and handle the request. If `nil` is returned, a default browser
+ *  is used.
  *
  *  Your implementation is responsible of calling the supplied URL handler whenever a navigation attempt is detected within
  *  the web browser. This handler ensures proper detection of actions made within the web page (e.g. deletion of the account),
@@ -182,7 +183,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing. Note
  *              that only one account view can be presented at any given time.
  */
-- (void)presentAccountViewWithBlock:(UIViewController * (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))block;
+- (void)presentAccountViewWithBlock:(nullable UIViewController * (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))block;
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this

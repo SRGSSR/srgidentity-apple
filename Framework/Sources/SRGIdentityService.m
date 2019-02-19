@@ -8,6 +8,7 @@
 
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityLogger.h"
+#import "SRGIdentityWebViewController.h"
 #import "UIWindow+SRGIdentity.h"
 
 #import <AuthenticationServices/AuthenticationServices.h>
@@ -478,8 +479,23 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
     };
     
-    // FIXME: Localization!
     UIViewController *accountViewController = block(request, URLHandler);
+    if (! accountViewController) {
+        accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+            switch (URLHandler(URL)) {
+                case SRGIdentityNavigationActionAllow: {
+                    return WKNavigationActionPolicyAllow;
+                    break;
+                }
+                    
+                case SRGIdentityNavigationActionCancel: {
+                    return WKNavigationActionPolicyCancel;
+                    break;
+                }
+            }
+        }];
+    }
+    // FIXME: Localization!
     accountViewController.title = NSLocalizedString(@"Account", nil);
     accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
                                                                                               style:UIBarButtonItemStyleDone
