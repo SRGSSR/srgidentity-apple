@@ -10,7 +10,6 @@
 #import "SRGIdentityModalTransition.h"
 
 #import <libextobjc/libextobjc.h>
-#import <Masonry/Masonry.h>
 #import <SRGNetwork/SRGNetwork.h>
 
 static void *s_kvoContext = &s_kvoContext;
@@ -67,18 +66,55 @@ static void *s_kvoContext = &s_kvoContext;
     webView.navigationDelegate = self;
     webView.scrollView.delegate = self;
     [self.view insertSubview:webView atIndex:0];
-    [webView mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (@available(iOS 11, *)) {
-            make.top.equalTo(self.view);
-            make.bottom.equalTo(self.view);
-            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-        }
-        else {
-            make.edges.equalTo(self.view);
-        }
-    }];
     self.webView = webView;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTop
+                                                         multiplier:1.f
+                                                           constant:0.f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.f
+                                                           constant:0.f]];
+    
+    if (@available(iOS 11, *)) {
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view.safeAreaLayoutGuide
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1.f
+                                                               constant:0.f]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view.safeAreaLayoutGuide
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.f
+                                                               constant:0.f]];
+    }
+    else {
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                              attribute:NSLayoutAttributeLeft
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeLeft
+                                                             multiplier:1.f
+                                                               constant:0.f]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:webView
+                                                              attribute:NSLayoutAttributeRight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeRight
+                                                             multiplier:1.f
+                                                               constant:0.f]];
+    }
     
     self.errorLabel.text = nil;
     
