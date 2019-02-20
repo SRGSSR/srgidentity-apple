@@ -65,8 +65,8 @@
 		6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */; };
+		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */; };
 		6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */; };
-		6FF846A4221BED95006FC3FC /* SRGIdentityWebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */; };
 		6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */; };
 		6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */; };
 		6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */; };
@@ -432,9 +432,9 @@
 			children = (
 				6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */,
 				6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */,
+				6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */,
 				6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */,
 				6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */,
-				6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -623,6 +623,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,7 +631,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FF846A4221BED95006FC3FC /* SRGIdentityWebViewController.storyboard in Resources */,
 				6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

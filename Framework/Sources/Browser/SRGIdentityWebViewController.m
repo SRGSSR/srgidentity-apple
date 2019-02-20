@@ -32,7 +32,7 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (instancetype)initWithRequest:(NSURLRequest *)request decisionHandler:(WKNavigationActionPolicy (^)(NSURL *URL))decisionHandler
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:NSBundle.srg_identityBundle];
     SRGIdentityWebViewController *webViewController = [storyboard instantiateInitialViewController];
     webViewController.request = request;
     webViewController.decisionHandler = decisionHandler;
