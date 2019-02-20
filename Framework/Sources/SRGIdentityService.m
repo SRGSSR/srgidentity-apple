@@ -496,9 +496,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             }
         }];
     }
-    // FIXME: Localization!
-    accountViewController.title = NSLocalizedString(@"Account", nil);
-    accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", nil)
+    accountViewController.title = SRGIdentityLocalizedString(@"Account", @"Title displayed at the top of the account view");
+    accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SRGIdentityLocalizedString(@"Close", @"Close button title")
                                                                                               style:UIBarButtonItemStyleDone
                                                                                              target:self
                                                                                              action:@selector(dismissAccountView:)];

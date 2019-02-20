@@ -28,8 +28,6 @@
 
 #pragma mark View lifecycle
 
-// TODO: Only enable gesture at root + test
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
