@@ -22,7 +22,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
-@property (nonatomic, weak) UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
 
 @end
@@ -81,15 +80,6 @@ static void *s_kvoContext = &s_kvoContext;
     }];
     self.webView = webView;
     
-    UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [loadingView startAnimating];
-    loadingView.hidden = YES;
-    [self.view insertSubview:loadingView atIndex:0];
-    [loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.errorLabel);
-    }];
-    self.loadingView = loadingView;
-    
     self.errorLabel.text = nil;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -142,7 +132,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
-    self.loadingView.hidden = NO;
     self.errorLabel.text = nil;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -152,7 +141,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    self.loadingView.hidden = YES;
     self.errorLabel.text = nil;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -163,8 +151,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    self.loadingView.hidden = YES;
-
     if ([error.domain isEqualToString:NSURLErrorDomain]) {
         self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForURLErrorCode:error.code];
         
