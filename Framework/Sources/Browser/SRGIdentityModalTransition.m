@@ -43,22 +43,26 @@
 {
     NSParameterAssert(transitionContext);
     
+    // Warning: Do not set the presentation style to custom, otherwise the from / to values will be missing
+    //          when presenting / dismissing. See https://stackoverflow.com/a/36124432/760435.
     UIView *containerView = [transitionContext containerView];
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    NSAssert(fromView && toView, @"Do not use UIModalPresentationCustom for presentation");
     
     UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
     dimmingView.frame = containerView.bounds;
     dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5f];
+    dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.3f];
     self.dimmingView = dimmingView;
     
     if (self.presentation) {
-        UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
         [containerView addSubview:toView];
-        [containerView insertSubview:dimmingView belowSubview:toView];
+        [containerView insertSubview:dimmingView aboveSubview:fromView];
     }
     else {
-        UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        [containerView insertSubview:dimmingView belowSubview:fromView];
+        [containerView insertSubview:toView belowSubview:fromView];
+        [containerView insertSubview:dimmingView aboveSubview:toView];
     }
     
     [self updateTransition:transitionContext withProgress:0.f];
@@ -75,7 +79,10 @@
     
     if (self.presentation) {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.frame = containerView.bounds;
+        fromView.frame = CGRectMake(-progress * CGRectGetWidth(containerView.bounds) / 4.f,
+                                    0.f,
+                                    CGRectGetWidth(containerView.bounds),
+                                    CGRectGetHeight(containerView.bounds));
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
         toView.frame = CGRectMake((1.f - progress) * CGRectGetMaxX(containerView.bounds),
@@ -93,7 +100,10 @@
                                     CGRectGetHeight(containerView.bounds));
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.frame = containerView.bounds;
+        toView.frame = CGRectMake((-1.f + progress) * CGRectGetWidth(containerView.bounds) / 4.f,
+                                  0.f,
+                                  CGRectGetWidth(containerView.bounds),
+                                  CGRectGetHeight(containerView.bounds));
         
         self.dimmingView.alpha = 1.f - progress;
     }
@@ -191,7 +201,7 @@
 
 - (UIViewAnimationCurve)completionCurve
 {
-    return UIViewAnimationCurveLinear;
+    return UIViewAnimationCurveEaseInOut;
 }
 
 @end

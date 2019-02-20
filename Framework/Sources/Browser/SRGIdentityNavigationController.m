@@ -22,7 +22,6 @@
 {
     if (self = [super initWithRootViewController:rootViewController]) {
         self.transitioningDelegate = self;
-        self.modalPresentationStyle = UIModalPresentationCustom;
     }
     return self;
 }
