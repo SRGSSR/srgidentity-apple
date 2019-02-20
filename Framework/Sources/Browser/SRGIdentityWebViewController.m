@@ -82,6 +82,7 @@ static void *s_kvoContext = &s_kvoContext;
     self.webView = webView;
     
     UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [loadingView startAnimating];
     loadingView.hidden = YES;
     [self.view insertSubview:loadingView atIndex:0];
     [loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
