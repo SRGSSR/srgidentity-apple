@@ -60,7 +60,7 @@
 
 - (void)pullBack:(UIPanGestureRecognizer *)panGestureRecognizer
 {
-    CGFloat progress = [panGestureRecognizer translationInView:self.view].x / CGRectGetHeight(self.view.frame);
+    CGFloat progress = [panGestureRecognizer translationInView:self.view].x / CGRectGetWidth(self.view.frame);
     switch (panGestureRecognizer.state) {
         case UIGestureRecognizerStateBegan: {
             // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
