@@ -91,6 +91,10 @@ static void *s_kvoContext = &s_kvoContext;
     
     self.errorLabel.text = nil;
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refresh:)];
+    
     [self.webView loadRequest:self.request];
 }
 
@@ -187,6 +191,13 @@ static void *s_kvoContext = &s_kvoContext;
     else {
         decisionHandler(WKNavigationActionPolicyAllow);
     }
+}
+
+#pragma mark Actions
+
+- (void)refresh:(id)sender
+{
+    [self.webView loadRequest:self.request];
 }
 
 #pragma mark KVO
