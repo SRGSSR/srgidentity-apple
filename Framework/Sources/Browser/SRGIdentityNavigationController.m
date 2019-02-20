@@ -91,7 +91,7 @@
             
         case UIGestureRecognizerStateEnded: {
             CGFloat velocity = [panGestureRecognizer velocityInView:self.view].x;
-            if (progress > 0.5f && velocity >= 0.f) {
+            if ((progress >= 0.5f && velocity >= -10.f) || (progress < 0.5f && velocity >= 10.f)) {
                 [self.interactiveTransition finishInteractiveTransition];
             }
             else {
