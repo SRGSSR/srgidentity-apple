@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A basic web view controller class for in-app display.
  */
-@interface SRGIdentityWebViewController : UIViewController <WKNavigationDelegate, UIScrollViewDelegate>
+@interface SRGIdentityWebViewController : UIViewController <WKNavigationDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate>
 
 /**
  *  Create an instance loading the specified URL request. The optional decision handler is called whenever navigation

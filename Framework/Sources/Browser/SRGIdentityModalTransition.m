@@ -66,26 +66,24 @@
     
     if (self.presentation) {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.alpha = 1.f;
+        fromView.alpha = 1.f - (1.f - progress) * 0.5f;
         fromView.frame = containerView.bounds;
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.alpha = 1.f;
-        toView.frame = CGRectMake(0.f,
-                                  (1.f - progress) * CGRectGetMaxY(containerView.bounds),
+        toView.frame = CGRectMake((1.f - progress) * CGRectGetMaxX(containerView.bounds),
+                                  0.f,
                                   CGRectGetWidth(containerView.bounds),
                                   CGRectGetHeight(containerView.bounds));
     }
     else {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.alpha = 1.f;
-        fromView.frame = CGRectMake(0.f,
-                                    progress * CGRectGetMaxY(containerView.bounds),
+        fromView.frame = CGRectMake(progress * CGRectGetMaxX(containerView.bounds),
+                                    0.f,
                                     CGRectGetWidth(containerView.bounds),
                                     CGRectGetHeight(containerView.bounds));
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.alpha = 1.f;
+        toView.alpha = 0.5f + progress * 0.5f;
         toView.frame = containerView.bounds;
     }
 }

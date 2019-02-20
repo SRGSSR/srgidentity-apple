@@ -7,6 +7,7 @@
 #import "SRGIdentityWebViewController.h"
 
 #import "NSBundle+SRGIdentity.h"
+#import "SRGIdentityModalTransition.h"
 
 #import <libextobjc/libextobjc.h>
 #import <Masonry/Masonry.h>
@@ -23,6 +24,8 @@ static void *s_kvoContext = &s_kvoContext;
 @property (nonatomic, weak) WKWebView *webView;
 @property (nonatomic, weak) UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
+
+@property (nonatomic) SRGIdentityModalTransition *interactiveTransition;
 
 @end
 
@@ -61,6 +64,8 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationController.transitioningDelegate = self;
     
     // WKWebView cannot be instantiated in storyboards, do it programmatically
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
@@ -132,6 +137,23 @@ static void *s_kvoContext = &s_kvoContext;
     [self updateContentInsets];
 }
 
+#pragma mark UIViewControllerTransitioningDelegate protocol
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[SRGIdentityModalTransition alloc] initForPresentation:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[SRGIdentityModalTransition alloc] initForPresentation:NO];
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    return self.interactiveTransition;
+}
+
 #pragma mark WKNavigationDelegate protocol
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
@@ -185,6 +207,56 @@ static void *s_kvoContext = &s_kvoContext;
     }
     else {
         decisionHandler(WKNavigationActionPolicyAllow);
+    }
+}
+
+#pragma mark Gesture recognizers
+
+- (IBAction)pullBack:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGFloat progress = [panGestureRecognizer translationInView:self.view].x / CGRectGetHeight(self.view.frame);
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
+            if (self.interactiveTransition) {
+                return;
+            }
+            
+            // Install the interactive transition animation before triggering it
+            self.interactiveTransition = [[SRGIdentityModalTransition alloc] initForPresentation:NO];
+            [self dismissViewControllerAnimated:YES completion:^{
+                // Only stop tracking the interactive transition at the very end. The completion block is called
+                // whether the transition ended or was cancelled
+                self.interactiveTransition = nil;
+            }];
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged: {
+            [self.interactiveTransition updateInteractiveTransitionWithProgress:progress];
+            break;
+        }
+            
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            [self.interactiveTransition cancelInteractiveTransition];
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded: {
+            CGFloat velocity = [panGestureRecognizer velocityInView:self.view].x;
+            if (progress > 0.2f && velocity >= 0.f) {
+                [self.interactiveTransition finishInteractiveTransition];
+            }
+            else {
+                [self.interactiveTransition cancelInteractiveTransition];
+            }
+            break;
+        }
+            
+        default: {
+            break;
+        }
     }
 }
 
