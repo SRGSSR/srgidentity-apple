@@ -8,6 +8,7 @@
 
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityLogger.h"
+#import "SRGIdentityNavigationController.h"
 #import "SRGIdentityWebViewController.h"
 #import "UIWindow+SRGIdentity.h"
 
@@ -501,7 +502,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                                                               style:UIBarButtonItemStyleDone
                                                                                              target:self
                                                                                              action:@selector(dismissAccountView:)];
-    UINavigationController *accountNavigationController = [[UINavigationController alloc] initWithRootViewController:accountViewController];
+    SRGIdentityNavigationController *accountNavigationController = [[SRGIdentityNavigationController alloc] initWithRootViewController:accountViewController];
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     

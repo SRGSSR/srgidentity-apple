@@ -66,6 +66,8 @@
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */; };
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */; };
+		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
+		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */; };
 		6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */; };
 		6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */; };
 		6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */; };
@@ -188,6 +190,8 @@
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
+		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityNavigationController.m; sourceTree = "<group>"; };
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityWebViewController.m; sourceTree = "<group>"; };
 		6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGIdentityWebViewController.storyboard; sourceTree = "<group>"; };
 		6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityWebViewController.h; sourceTree = "<group>"; };
@@ -428,6 +432,8 @@
 			children = (
 				6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */,
 				6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */,
+				6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */,
+				6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */,
 				6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */,
 				6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */,
 				6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */,
@@ -442,6 +448,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */,
 				6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */,
 				6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
@@ -672,6 +679,7 @@
 			files = (
 				6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */,
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
+				6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController.m in Sources */,
 				6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
 				6F979F3221F72A18002A2495 /* UIWindow+SRGIdentity.m in Sources */,

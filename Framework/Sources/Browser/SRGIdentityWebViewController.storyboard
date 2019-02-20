@@ -40,9 +40,6 @@
                             <constraint firstItem="z6m-lg-Z2j" firstAttribute="top" secondItem="mSX-iW-3vb" secondAttribute="top" id="cBa-xs-q17"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mSX-iW-3vb"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="m5W-GP-vJD" appends="YES" id="JlS-RE-cVr"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="errorLabel" destination="0zR-iV-atX" id="kt2-hu-2k4"/>
@@ -50,12 +47,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZMv-tZ-03C" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="m5W-GP-vJD">
-                    <rectEdge key="edges" left="YES"/>
-                    <connections>
-                        <action selector="pullBack:" destination="sg3-Kc-EVt" id="HA1-P3-nW8"/>
-                    </connections>
-                </screenEdgePanGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="565" y="-89"/>
         </scene>

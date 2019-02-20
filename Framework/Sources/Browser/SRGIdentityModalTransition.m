@@ -15,6 +15,8 @@
 @property (nonatomic) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic) CGFloat progress;
 
+@property (nonatomic, weak) UIView *dimmingView;
+
 @end
 
 @implementation SRGIdentityModalTransition
@@ -41,15 +43,22 @@
 {
     NSParameterAssert(transitionContext);
     
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     UIView *containerView = [transitionContext containerView];
     
+    UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
+    dimmingView.frame = containerView.bounds;
+    dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5f];
+    self.dimmingView = dimmingView;
+    
     if (self.presentation) {
+        UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
         [containerView addSubview:toView];
+        [containerView insertSubview:dimmingView belowSubview:toView];
     }
     else {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        [containerView insertSubview:toView belowSubview:fromView];
+        [containerView insertSubview:dimmingView belowSubview:fromView];
     }
     
     [self updateTransition:transitionContext withProgress:0.f];
@@ -66,7 +75,6 @@
     
     if (self.presentation) {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.alpha = 1.f - (1.f - progress) * 0.5f;
         fromView.frame = containerView.bounds;
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
@@ -74,6 +82,8 @@
                                   0.f,
                                   CGRectGetWidth(containerView.bounds),
                                   CGRectGetHeight(containerView.bounds));
+        
+        self.dimmingView.alpha = progress;
     }
     else {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
@@ -83,8 +93,9 @@
                                     CGRectGetHeight(containerView.bounds));
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.alpha = 0.5f + progress * 0.5f;
         toView.frame = containerView.bounds;
+        
+        self.dimmingView.alpha = 1.f - progress;
     }
 }
 
@@ -97,6 +108,8 @@
     if (! success) {
         [toView removeFromSuperview];
     }
+    
+    [self.dimmingView removeFromSuperview];
     
     [transitionContext completeTransition:success];
 }
