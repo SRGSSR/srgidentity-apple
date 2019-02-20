@@ -152,7 +152,6 @@
 		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
 		080D0BEE2135A6DD00AA519A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		08266627216E2B1700FD8E84 /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
 		08266628216E2B1700FD8E84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		08266629216E2B1700FD8E84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0826662E216E2B7200FD8E84 /* SRGIdentity-testapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-testapp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,7 +167,6 @@
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -260,7 +258,6 @@
 			children = (
 				08266629216E2B1700FD8E84 /* Info.plist */,
 				08266628216E2B1700FD8E84 /* main.m */,
-				08266627216E2B1700FD8E84 /* TestApp.entitlements */,
 				6F3B1BC721708013008D8823 /* Launch Screen.storyboard */,
 			);
 			path = TestApp;
@@ -340,7 +337,6 @@
 				6F8A93F220FDCAA800AA6434 /* Sources */,
 				6F8A93EF20FDCAA800AA6434 /* Resources */,
 				086FB33521380D9300DE4CF2 /* Info.plist */,
-				086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -733,7 +729,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -754,7 +749,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -775,7 +769,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -795,7 +788,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -905,7 +897,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1032,7 +1023,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1300,7 +1290,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1321,7 +1310,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
