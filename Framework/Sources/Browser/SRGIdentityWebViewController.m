@@ -165,7 +165,7 @@ static void *s_kvoContext = &s_kvoContext;
     self.loadingView.hidden = YES;
 
     if ([error.domain isEqualToString:NSURLErrorDomain]) {
-        self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForStatusCode:error.code];
+        self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForURLErrorCode:error.code];
         
         [UIView animateWithDuration:0.3 animations:^{
             self.progressView.alpha = 0.f;
