@@ -479,7 +479,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     SRGIdentityWebViewController *accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
         return [self handleCallbackURL:URL] ? WKNavigationActionPolicyCancel : WKNavigationActionPolicyAllow;
     }];
-    accountViewController.title = SRGIdentityLocalizedString(@"Account", @"Title displayed at the top of the account view");
+    accountViewController.title = SRGIdentityLocalizedString(@"My account", @"Title displayed at the top of the account view");
     accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SRGIdentityLocalizedString(@"Close", @"Close button title")
                                                                                               style:UIBarButtonItemStyleDone
                                                                                              target:self
