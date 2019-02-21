@@ -10,9 +10,8 @@
 #import "SRGIdentityModalTransition.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGNetwork/SRGNetwork.h>
-
-static void *s_kvoContext = &s_kvoContext;
 
 @interface SRGIdentityWebViewController ()
 
@@ -50,9 +49,17 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)setWebView:(WKWebView *)webView
 {
-    [_webView removeObserver:self forKeyPath:@keypath(WKWebView.new, estimatedProgress) context:s_kvoContext];
+    [_webView removeObserver:self keyPath:@keypath(_webView.estimatedProgress)];
+    
     _webView = webView;
-    [_webView addObserver:self forKeyPath:@keypath(WKWebView.new, estimatedProgress) options:NSKeyValueObservingOptionNew context:s_kvoContext];
+    
+    if (_webView) {
+        @weakify(self)
+        [_webView addObserver:self keyPath:@keypath(webView.estimatedProgress) options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+            @strongify(self)
+            self.progressView.progress = self.webView.estimatedProgress;
+        }];
+    }
 }
 
 #pragma mark View lifecycle
@@ -221,20 +228,6 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)refresh:(id)sender
 {
     [self.webView loadRequest:self.request];
-}
-
-#pragma mark KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if (context == s_kvoContext) {
-        if ([keyPath isEqualToString:@keypath(WKWebView.new, estimatedProgress)]) {
-            self.progressView.progress = self.webView.estimatedProgress;
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 @end
