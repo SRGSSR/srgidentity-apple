@@ -32,20 +32,6 @@ typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
 };
 
 /**
- *  Recommended actions when navigating within the account page in a web browser.
- */
-typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
-    /**
-     *  Navigation should occur normally.
-     */
-    SRGIdentityNavigationActionAllow = 0,
-    /**
-     *  Navigation should be cancelled.
-     */
-    SRGIdentityNavigationActionCancel
-};
-
-/**
  *  Notification sent when a user successfully logged in.
  */
 OBJC_EXPORT NSString * const SRGIdentityServiceUserDidLoginNotification;
@@ -165,25 +151,12 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 /**
- *  Present the account view (a web page), using a view controller instantiated from the provided block. The application
- *  can provide a web browser implementation able to load and handle the request. If `nil` is returned, a default browser
- *  is used.
+ *  Show the account view.
  *
- *  Your implementation is responsible of calling the supplied URL handler whenever a navigation attempt is detected within
- *  the web browser. This handler ensures proper detection of actions made within the web page (e.g. deletion of the account),
- *  informing the identity service accordingly. Failing to call the handler results in undefined behavior.
- *
- *  For each URL, the handler returns a recommended navigation action, either `SRGIdentityNavigationActionAllow` (the browser
- *  must navigate to the URL) or `SRGIdentityNavigationActionCancel` (the browser should cancel the navigation and be closed).
- *
- *  If you are using `WKWebView`, the handler must be called from its `-webView:decisionHandlerForNavigationAction:decisionHandler:`
- *  delegate method implementation. Navigation actions map to `WKNavigationActionPolicyAllow` and `WKNavigationActionPolicyCancel`
- *  respectively.
- *
- *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing. Note
- *              that only one account view can be presented at any given time.
+ *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
+ *              Note that only one account view can be presented at any given time.
  */
-- (void)presentAccountViewWithBlock:(nullable UIViewController * (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))block;
+- (void)showAccountView;
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this

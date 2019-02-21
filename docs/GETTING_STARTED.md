@@ -49,15 +49,11 @@ Once a user has successfully logged in, a corresponding session token is availab
 
 ### Account page
 
-When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. Displaying this page requires the use of a custom web browser supporting `NSURLRequest` as input. `SFSafariViewController` is therefore not natively supported at the moment, as it requires a simple `NSURL`.
+When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. To display this page, call `-showAccountView`:
 
-Your application must call `-[SRGIdentityService presentAccountViewWithBlock:]` to initiate the account display process. This generates the required URL request for displaying the account page and calls a block, responsible of instantiating the browser required to display the page.
-
-As the user interacts with the account page in the displayed web browser, URLs to which the browser navigates must be handed over to a URL handler (provided to the same block as a parameter). This handler will process each URL supplied to it, recognize supported operations (e.g. account deletion) and return a recommended action your browser implementation should follow (either continue or cancel navigation).
-
-Presentation and dismissal of the web browser is handled by the SRG Identity framework itself. The browser will itself be embedded into a navigation controller, with a close button a dedicated title.
-
-For concrete implementation details, please have a look at the demo project.
+```objective-c
+[SRGIdentityService.currentIdentityService showAccountView];
+```
 
 ### Logout
 

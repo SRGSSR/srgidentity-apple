@@ -463,7 +463,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 #pragma mark Account view
 
-- (void)presentAccountViewWithBlock:(UIViewController * _Nonnull (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))block
+- (void)showAccountView
 {
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
@@ -476,26 +476,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
-        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
-    };
-    
-    UIViewController *accountViewController = block(request, URLHandler);
-    if (! accountViewController) {
-        accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
-            switch (URLHandler(URL)) {
-                case SRGIdentityNavigationActionAllow: {
-                    return WKNavigationActionPolicyAllow;
-                    break;
-                }
-                    
-                case SRGIdentityNavigationActionCancel: {
-                    return WKNavigationActionPolicyCancel;
-                    break;
-                }
-            }
-        }];
-    }
+    SRGIdentityWebViewController *accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+        return [self handleCallbackURL:URL] ? WKNavigationActionPolicyCancel : WKNavigationActionPolicyAllow;
+    }];
     accountViewController.title = SRGIdentityLocalizedString(@"Account", @"Title displayed at the top of the account view");
     accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SRGIdentityLocalizedString(@"Close", @"Close button title")
                                                                                               style:UIBarButtonItemStyleDone

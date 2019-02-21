@@ -84,19 +84,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (IBAction)showAccount:(id)sender
 {
-    [SRGIdentityService.currentIdentityService presentAccountViewWithBlock:^UIViewController * _Nonnull(NSURLRequest * _Nonnull request, SRGIdentityNavigationAction (^ _Nonnull URLHandler)(NSURL * _Nonnull)) {
-        return [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
-            switch (URLHandler(URL)) {
-                case SRGIdentityNavigationActionAllow:
-                    return WKNavigationActionPolicyAllow;
-                    break;
-                    
-                case SRGIdentityNavigationActionCancel:
-                    return WKNavigationActionPolicyCancel;
-                    break;
-            }
-        }];
-    }];
+    [SRGIdentityService.currentIdentityService showAccountView];
 }
 
 - (void)login:(id)sender
