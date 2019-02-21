@@ -132,11 +132,13 @@
     [self.webView loadRequest:self.request];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
     
-    [self.webView stopLoading];
+    if (self.movingFromParentViewController || self.beingDismissed) {
+        [self.webView stopLoading];
+    }
 }
 
 - (void)viewWillLayoutSubviews
