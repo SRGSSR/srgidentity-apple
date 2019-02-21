@@ -493,6 +493,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)dismissAccountView
 {
+    if (! self.accountNavigationController) {
+        return;
+    }
+    
     [self updateAccount];
     [self.accountNavigationController dismissViewControllerAnimated:YES completion:nil];
 }
