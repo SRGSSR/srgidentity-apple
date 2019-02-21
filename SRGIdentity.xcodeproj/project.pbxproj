@@ -45,6 +45,8 @@
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F19DA7D221DF6E100085C7D /* Localizable.strings */; };
+		6F19DA84221E853200085C7D /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; };
+		6F19DA85221E85D300085C7D /* Masonry.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B1BC721708013008D8823 /* Launch Screen.storyboard */; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
@@ -132,6 +134,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6F19DA85221E85D300085C7D /* Masonry.framework in Copy Files */,
 				08266653216E354A00FD8E84 /* OHHTTPStubs.framework in Copy Files */,
 				0826664B216E34FC00FD8E84 /* libextobjc.framework in Copy Files */,
 				0826664C216E34FC00FD8E84 /* MAKVONotificationCenter.framework in Copy Files */,
@@ -224,6 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F19DA84221E853200085C7D /* Masonry.framework in Frameworks */,
 				6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */,
 				6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */,
 				086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */,
