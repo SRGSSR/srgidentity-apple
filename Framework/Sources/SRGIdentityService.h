@@ -6,6 +6,8 @@
 
 #import "SRGAccount.h"
 
+#import <UIKit/UIKit.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -27,20 +29,6 @@ typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
      *  about credentials sharing first.
      */
     SRGIdentityLoginMethodAuthenticationSession
-};
-
-/**
- *  Recommended actions when navigating within the account page in a web browser.
- */
-typedef NS_ENUM(NSInteger, SRGIdentityNavigationAction) {
-    /**
-     *  Navigation should occur normally.
-     */
-    SRGIdentityNavigationActionAllow = 0,
-    /**
-     *  Navigation should be cancelled.
-     */
-    SRGIdentityNavigationActionCancel
 };
 
 /**
@@ -163,38 +151,12 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 /**
- *  Show the account view (a web page) using the specified presentation and dismissal blocks. The application is responsible
- *  of providing a web browser implementation able to load and handle the request. The presentation block must implement
- *  how the browser is displayed (e.g. presented modally or pushed within a navigation controller), whereas the dismissal block
- *  must implement how the browser is removed from view (e.g. dismissed modally or popped from the navigation controller).
+ *  Show the account view.
  *
- *  Your implementation is responsible of calling the supplied URL handler whenever a navigation attempt is detected within
- *  the web browser. This handler ensures proper detection of actions made within the web page (e.g. deletion of the account),
- *  informing the identity service accordingly. Failing to call the handler results in undefined behavior.
- *
- *  For each URL, the handler returns a recommended navigation action, either `SRGIdentityNavigationActionAllow` (your browser
- *  should navigate to the URL) or `SRGIdentityNavigationActionCancel` (the browser should cancel the navigation).
- *
- *  If you are using `WKWebView`, the handler must be called from its `-webView:decisionHandlerForNavigationAction:decisionHandler:`
- *  delegate method implementation. Navigation actions map to `WKNavigationActionPolicyAllow` and `WKNavigationActionPolicyCancel`
- *  respectively.
- *
- *  If you want to dismiss the account view, call `-hideAccountView`. Direct view removal leads to undefined behavior, as
- *  the identity service would not be correctly notified of the dismissal.
- *
- *  @discussion This method must be called from the main thread (presentation and dismissal blocks will be called on the main
- *              thread as well). If no user is logged in, calling the method does nothing. Note that only one account view can
- *              be presented at any given time.
+ *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
+ *              Note that only one account view can be presented at any given time.
  */
-- (void)showAccountViewWithPresentation:(void (^)(NSURLRequest *request, SRGIdentityNavigationAction (^URLHandler)(NSURL *URL)))presentation
-                              dismissal:(void (^)(void))dismissal;
-
-/**
- *  Hide the account view, calling the dismissal block registered when it was shown.
- *
- *  @discussion This method must be called from the main thread. If no account view is shown, the method does nothing.
- */
-- (void)hideAccountView;
+- (void)showAccountView;
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this

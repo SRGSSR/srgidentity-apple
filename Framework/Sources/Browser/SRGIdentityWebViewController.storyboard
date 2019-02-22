@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Web View Controller-->
+        <!--Identity Web View Controller-->
         <scene sceneID="oeM-2s-aPF">
             <objects>
-                <viewController id="sg3-Kc-EVt" customClass="WebViewController" sceneMemberID="viewController">
+                <viewController id="sg3-Kc-EVt" customClass="SRGIdentityWebViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7SV-r1-F0P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -30,6 +30,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="z6m-lg-Z2j" secondAttribute="trailing" id="2Tc-5a-7lG"/>
                             <constraint firstItem="0zR-iV-atX" firstAttribute="centerY" secondItem="mSX-iW-3vb" secondAttribute="centerY" id="73Q-B6-n50"/>

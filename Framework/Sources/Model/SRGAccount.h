@@ -31,11 +31,6 @@ typedef NS_ENUM(NSInteger, SRGGender) {
 };
 
 /**
- *  Return a description for the specified gender.
- */
-OBJC_EXPORT NSString *SRGDescriptionForGender(SRGGender SRGGender);
-
-/**
  *  Account information.
  */
 @interface SRGAccount : MTLModel <MTLJSONSerializing>

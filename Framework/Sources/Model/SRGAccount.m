@@ -8,19 +8,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-NSString *SRGDescriptionForGender(SRGGender SRGGender)
-{
-    static dispatch_once_t s_onceToken;
-    static NSDictionary<NSNumber *, NSString *> *s_descriptions;
-    dispatch_once(&s_onceToken, ^{
-        s_descriptions = @{ @(SRGGenderNone) : NSLocalizedString(@"Not specified", @"Unspecified gender"),
-                            @(SRGGenderFemale) : NSLocalizedString(@"Female", "Female"),
-                            @(SRGGenderMale) : NSLocalizedString(@"Male", @"Male"),
-                            @(SRGGenderOther) : NSLocalizedString(@"Other", @"Other gender") };
-    });
-    return s_descriptions[@(SRGGender)];
-}
-
 @interface SRGAccount ()
 
 @property (nonatomic, copy) NSString *uid;

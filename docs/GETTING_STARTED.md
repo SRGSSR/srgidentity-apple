@@ -49,15 +49,11 @@ Once a user has successfully logged in, a corresponding session token is availab
 
 ### Account page
 
-When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. Display this page requires the use of a custom web browser supporting `NSURLRequest` as input. `SFSafariViewController` is therefore not natively supported at the moment, as it requires a simple `NSURL`.
+When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. To display this page, call `-showAccountView`:
 
-When a user is logged in, your application can call `-[SRGIdentityService showAccountViewWithPresentation:dismissal:]` to initiate the account display process. This generates the required URL request for displaying the account page and calls a presentation block, within which your application can instantiate the web browser and install it within its view controller hierarchy.
-
-As the user interacts with the account page in the displayed web browser, URLs to which the browser navigates must be handed over to a URL handler block (provided to the presentation block as a parameter). This block will process each URL supplied to it, process identified actions (e.g. account deletion) and return a recommended action your browser implementation should follow (either continue or cancel navigation).
-
-When calling the account display method above, you must also provide a dismissal block, which must implement how the web browser must be removed from view. You can manually trigger this block by calling `-[SRGIdentityService hideAccountView]`, but it will usually be triggered by identified account web page actions, for example when the account is deleted.
-
-For concrete implementation details, please have a look at the demo project.
+```objective-c
+[SRGIdentityService.currentIdentityService showAccountView];
+```
 
 ### Logout
 
@@ -78,8 +74,8 @@ Instead, if you receive an unauthorization error from a third-party service, cal
 * If still authorized, nothing happens beside an account update. 
 * If confirmed to be unauthorized, the user is automatically logged out. In such cases, the `SRGIdentityServiceUserDidLogoutNotification` notification is sent with `SRGIdentityServiceUnauthorizedKey` set to `@YES` in its `userInfo` dictionary. You can for example use this information to display a corresponding information message to the user.
 
-### iOS 9 and 10 support
+### Sandboxed Safari browser support
 
-iOS 9 and 10 support requires your application to declare at least one [custom URL scheme](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), which is then used by the framework to transfer control back from Safari to your application after successful login.
+Using `SRGIdentityLoginMethodDefault` or `SRGIdentityLoginMethodSafari` login methods, or any login methods with the iOS 9 or iOS 10 support, your application must declares at least one [custom URL scheme](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), which is then used by the framework to transfer control back from Safari to your application after successful login.
 
 If your application uses custom schemes for other purposes, implement the `-application:openURL:options:` application delegate method as usual. If no explicit URL handling is required, implementing this method is not required, as the framework will take care of injecting an implementation at runtime so that URL handling works.

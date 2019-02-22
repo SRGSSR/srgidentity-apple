@@ -4,36 +4,35 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "WebViewController.h"
+#import "SRGIdentityWebViewController.h"
 
 #import "NSBundle+SRGIdentity.h"
+#import "SRGIdentityModalTransition.h"
 
 #import <libextobjc/libextobjc.h>
 #import <Masonry/Masonry.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGNetwork/SRGNetwork.h>
 
-static void *s_kvoContext = &s_kvoContext;
-
-@interface WebViewController ()
+@interface SRGIdentityWebViewController ()
 
 @property (nonatomic) NSURLRequest *request;
 @property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *);
 
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
-@property (nonatomic, weak) UIActivityIndicatorView *loadingView;
 @property (nonatomic, weak) IBOutlet UILabel *errorLabel;
 
 @end
 
-@implementation WebViewController
+@implementation SRGIdentityWebViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithRequest:(NSURLRequest *)request decisionHandler:(WKNavigationActionPolicy (^)(NSURL *URL))decisionHandler
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    WebViewController *webViewController = [storyboard instantiateInitialViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:NSBundle.srg_identityBundle];
+    SRGIdentityWebViewController *webViewController = [storyboard instantiateInitialViewController];
     webViewController.request = request;
     webViewController.decisionHandler = decisionHandler;
     return webViewController;
@@ -51,9 +50,17 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)setWebView:(WKWebView *)webView
 {
-    [_webView removeObserver:self forKeyPath:@keypath(WKWebView.new, estimatedProgress) context:s_kvoContext];
+    [_webView removeObserver:self keyPath:@keypath(_webView.estimatedProgress)];
+    
     _webView = webView;
-    [_webView addObserver:self forKeyPath:@keypath(WKWebView.new, estimatedProgress) options:NSKeyValueObservingOptionNew context:s_kvoContext];
+    
+    if (_webView) {
+        @weakify(self)
+        [_webView addObserver:self keyPath:@keypath(webView.estimatedProgress) options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+            @strongify(self)
+            self.progressView.progress = self.webView.estimatedProgress;
+        }];
+    }
 }
 
 #pragma mark View lifecycle
@@ -61,7 +68,7 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     // WKWebView cannot be instantiated in storyboards, do it programmatically
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.navigationDelegate = self;
@@ -80,24 +87,22 @@ static void *s_kvoContext = &s_kvoContext;
     }];
     self.webView = webView;
     
-    UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    loadingView.hidden = YES;
-    [self.view insertSubview:loadingView atIndex:0];
-    [loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.errorLabel);
-    }];
-    self.loadingView = loadingView;
-    
     self.errorLabel.text = nil;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refresh:)];
     
     [self.webView loadRequest:self.request];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
     
-    [self.webView stopLoading];
+    if (self.movingFromParentViewController || self.beingDismissed) {
+        [self.webView stopLoading];
+    }
 }
 
 - (void)viewWillLayoutSubviews
@@ -132,11 +137,10 @@ static void *s_kvoContext = &s_kvoContext;
     [self updateContentInsets];
 }
 
-#pragma mark WKNavigationDelegate
+#pragma mark WKNavigationDelegate protocol
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
 {
-    self.loadingView.hidden = NO;
     self.errorLabel.text = nil;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -146,7 +150,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    self.loadingView.hidden = YES;
     self.errorLabel.text = nil;
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -157,10 +160,8 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-    self.loadingView.hidden = YES;
-
     if ([error.domain isEqualToString:NSURLErrorDomain]) {
-        self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForStatusCode:error.code];
+        self.errorLabel.text = [NSHTTPURLResponse srg_localizedStringForURLErrorCode:error.code];
         
         [UIView animateWithDuration:0.3 animations:^{
             self.progressView.alpha = 0.f;
@@ -178,7 +179,7 @@ static void *s_kvoContext = &s_kvoContext;
     }
 }
 
-- (void)webView:(WKWebView *)webView decisionHandlerForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
     if (self.decisionHandler) {
         decisionHandler(self.decisionHandler(navigationAction.request.URL));
@@ -188,18 +189,11 @@ static void *s_kvoContext = &s_kvoContext;
     }
 }
 
-#pragma mark KVO
+#pragma mark Actions
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+- (void)refresh:(id)sender
 {
-    if (context == s_kvoContext) {
-        if ([keyPath isEqualToString:@keypath(WKWebView.new, estimatedProgress)]) {
-            self.progressView.progress = self.webView.estimatedProgress;
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
+    [self.webView loadRequest:self.request];
 }
 
 @end

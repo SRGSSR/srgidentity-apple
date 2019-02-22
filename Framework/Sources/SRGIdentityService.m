@@ -8,6 +8,8 @@
 
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityLogger.h"
+#import "SRGIdentityNavigationController.h"
+#import "SRGIdentityWebViewController.h"
 #import "UIWindow+SRGIdentity.h"
 
 #import <AuthenticationServices/AuthenticationServices.h>
@@ -74,7 +76,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 @property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
 
 @property (nonatomic, weak) SRGRequest *accountRequest;
-@property (nonatomic, copy) void (^dismissal)(void);
+@property (nonatomic, weak) UIViewController *accountNavigationController;
 
 @end
 
@@ -327,8 +329,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     void (^loginWithSafari)(void) = ^{
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         safariViewController.delegate = self;
-        UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-        [presentingViewController presentViewController:safariViewController animated:YES completion:nil];
+        UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+        [topViewController presentViewController:safariViewController animated:YES completion:nil];
     };
     
     if (self.loginMethod == SRGIdentityLoginMethodAuthenticationSession) {
@@ -459,10 +461,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.accountRequest = accountRequest;
 }
 
-#pragma mark Account request
+#pragma mark Account view
 
-- (void)showAccountViewWithPresentation:(void (^)(NSURLRequest * _Nonnull, SRGIdentityNavigationAction (^ _Nonnull)(NSURL * _Nonnull)))presentation
-                              dismissal:(void (^)(void))dismissal
+- (void)showAccountView
 {
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
@@ -471,31 +472,33 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    if (self.dismissal) {
+    if (self.accountNavigationController) {
         return;
     }
     
-    self.dismissal = dismissal;
+    SRGIdentityWebViewController *accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+        return [self handleCallbackURL:URL] ? WKNavigationActionPolicyCancel : WKNavigationActionPolicyAllow;
+    }];
+    accountViewController.title = SRGIdentityLocalizedString(@"My account", @"Title displayed at the top of the account view");
+    accountViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SRGIdentityLocalizedString(@"Close", @"Close button title")
+                                                                                              style:UIBarButtonItemStyleDone
+                                                                                             target:self
+                                                                                             action:@selector(dismissAccountView:)];
+    SRGIdentityNavigationController *accountNavigationController = [[SRGIdentityNavigationController alloc] initWithRootViewController:accountViewController];
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+    [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     
-    SRGIdentityNavigationAction (^URLHandler)(NSURL *) = ^(NSURL *URL) {
-        return [self handleCallbackURL:URL] ? SRGIdentityNavigationActionCancel : SRGIdentityNavigationActionAllow;
-    };
-    
-    presentation(request, URLHandler);
-}
-
-- (void)hideAccountView
-{
-    NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
-    
-    [self dismissAccountView];
-    [self updateAccount];
+    self.accountNavigationController = accountNavigationController;
 }
 
 - (void)dismissAccountView
 {
-    self.dismissal ? self.dismissal() : nil;
-    self.dismissal = nil;
+    if (! self.accountNavigationController) {
+        return;
+    }
+    
+    [self updateAccount];
+    [self.accountNavigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (NSURLRequest *)accountPresentationRequest
@@ -585,8 +588,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             self.authenticationSession = nil;
         }
         else {
-            UIViewController *presentingViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-            [presentingViewController dismissViewControllerAnimated:YES completion:^{
+            UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+            [topViewController dismissViewControllerAnimated:YES completion:^{
                 s_loggingIn = NO;
             }];
         }
@@ -605,6 +608,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                         object:self
                                                       userInfo:nil];
+}
+
+#pragma mark Actions
+
+- (void)dismissAccountView:(id)sender
+{
+    [self dismissAccountView];
 }
 
 #pragma mark Notifications
