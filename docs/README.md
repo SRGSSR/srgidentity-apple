@@ -32,6 +32,7 @@ The library requires the following frameworks to be added to any target requirin
 * `libextobjc`: An utility framework.
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `Mantle`: The framework used to parse the data.
+* `Masonry`: An autolayout framework.
 * `SRGIdentity`: The identity library framework.
 * `SRGLogger`: The framework used for internal logging.
 * `SRGNetwork`: A networking framework.
