@@ -75,7 +75,7 @@ static NSURL *TestIgnored3CallbackURL()
 @interface SRGIdentityTestCase : XCTestCase
 
 @property (nonatomic) SRGIdentityService *identityService;
-@property (nonatomic, weak) id<OHHTTPStubsDescriptor> loginRequestStub;
+@property (nonatomic, weak) id<OHHTTPStubsDescriptor> requestStub;
 
 @end
 
@@ -100,7 +100,7 @@ static NSURL *TestIgnored3CallbackURL()
     self.identityService = [[SRGIdentityService alloc] initWithWebserviceURL:TestWebserviceURL() websiteURL:TestWebsiteURL()];
     [self.identityService logout];
     
-    self.loginRequestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    self.requestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.host isEqual:TestWebserviceURL().host];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         if ([request.URL.host isEqualToString:TestWebsiteURL().host]) {
@@ -112,7 +112,7 @@ static NSURL *TestIgnored3CallbackURL()
                 NSURL *redirectURL = [NSURL URLWithString:queryItem.value];
                 NSURLComponents *redirectURLComponents = [[NSURLComponents alloc] initWithURL:redirectURL resolvingAgainstBaseURL:NO];
                 NSArray<NSURLQueryItem *> *queryItems = redirectURLComponents.queryItems ?: @[];
-                queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"token" value:@"0123456789"]];
+                queryItems = [queryItems arrayByAddingObject:[[NSURLQueryItem alloc] initWithName:@"token" value:TestValidToken]];
                 redirectURLComponents.queryItems = queryItems;
                 
                 return [[OHHTTPStubsResponse responseWithData:[NSData data]
@@ -127,7 +127,7 @@ static NSURL *TestIgnored3CallbackURL()
                                                       headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
             }
             else if ([request.URL.path containsString:@"userinfo"]) {
-                NSString *validAuthorizationHeader = [NSString stringWithFormat:@"sessionToken %@", @"0123456789"];
+                NSString *validAuthorizationHeader = [NSString stringWithFormat:@"sessionToken %@", TestValidToken];
                 if ([[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:validAuthorizationHeader]) {
                     NSDictionary<NSString *, id> *account = @{ @"id" : @"1234",
                                                                @"publicUid" : @"4321",
@@ -154,7 +154,7 @@ static NSURL *TestIgnored3CallbackURL()
                                            statusCode:404
                                               headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
-    self.loginRequestStub.name = @"Login request";
+    self.requestStub.name = @"Identity requests";
 }
 
 - (void)tearDown
@@ -162,7 +162,7 @@ static NSURL *TestIgnored3CallbackURL()
     [self.identityService logout];
     self.identityService = nil;
     
-    [OHHTTPStubs removeStub:self.loginRequestStub];
+    [OHHTTPStubs removeStub:self.requestStub];
 }
 
 #pragma mark Tests
