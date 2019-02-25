@@ -37,7 +37,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didLogin:)
+                                             selector:@selector(userDidLogin:)
                                                  name:SRGIdentityServiceUserDidLoginNotification
                                                object:nil];
     
@@ -100,7 +100,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 #pragma mark Notifications
 
-- (void)didLogin:(NSNotification *)notification
+- (void)userDidLogin:(NSNotification *)notification
 {
     [self reloadData];
 }
