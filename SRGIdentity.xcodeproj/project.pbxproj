@@ -50,6 +50,7 @@
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F75EA3C222523870014B6DF /* XCTestCase+IdentityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F75EA3A222523870014B6DF /* XCTestCase+IdentityTests.m */; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
@@ -181,6 +182,8 @@
 		6F19DA82221DF71A00085C7D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F19DA83221DF72000085C7D /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
+		6F75EA3A222523870014B6DF /* XCTestCase+IdentityTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+IdentityTests.m"; sourceTree = "<group>"; };
+		6F75EA3B222523870014B6DF /* XCTestCase+IdentityTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+IdentityTests.h"; sourceTree = "<group>"; };
 		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -342,6 +345,15 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		6F75EA39222523870014B6DF /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6F75EA3A222523870014B6DF /* XCTestCase+IdentityTests.m */,
+				6F75EA3B222523870014B6DF /* XCTestCase+IdentityTests.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		6F8A93EE20FDCAA800AA6434 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +433,7 @@
 		6FB74D732101D5D600E2D365 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6F75EA39222523870014B6DF /* Helpers */,
 				6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */,
 			);
 			path = Sources;
@@ -710,6 +723,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F75EA3C222523870014B6DF /* XCTestCase+IdentityTests.m in Sources */,
 				6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
