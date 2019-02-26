@@ -413,7 +413,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)updateAccount
 {
-    if (self.accountRequest) {
+    if (self.accountRequest.running) {
         return;
     }
     

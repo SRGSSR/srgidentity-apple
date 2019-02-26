@@ -348,8 +348,8 @@
 		6F75EA39222523870014B6DF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */,
 				6F75EA3B222523870014B6DF /* IdentityBaseTestCase.h */,
+				6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
