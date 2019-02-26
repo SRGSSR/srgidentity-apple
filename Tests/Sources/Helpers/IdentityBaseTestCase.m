@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "XCTestCase+IdentityTests.h"
+#import "IdentityBaseTestCase.h"
 
-@implementation XCTestCase (IdentityTests)
+@implementation IdentityBaseTestCase
 
-- (XCTestExpectation *)idt_expectationForNotification:(NSNotificationName)notificationName object:(id)objectToObserve handler:(XCNotificationExpectationHandler)handler
+- (XCTestExpectation *)expectationForSingleNotification:(NSNotificationName)notificationName object:(id)objectToObserve handler:(XCNotificationExpectationHandler)handler
 {
     NSString *description = [NSString stringWithFormat:@"Expectation for notification '%@' from object %@", notificationName, objectToObserve];
     XCTestExpectation *expectation = [self expectationWithDescription:description];
@@ -27,6 +27,16 @@
             fulfill();
         }
     }];
+    return expectation;
+}
+
+- (XCTestExpectation *)expectationForElapsedTimeInterval:(NSTimeInterval)timeInterval withHandler:(void (^)(void))handler
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Wait for %@ seconds", @(timeInterval)]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+        handler ? handler() : nil;
+    });
     return expectation;
 }
 
