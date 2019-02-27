@@ -37,6 +37,14 @@
     [self.view addGestureRecognizer:panGestureRecognizer];
 }
 
+#pragma mark Accessibility
+
+- (BOOL)accessibilityPerformEscape
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    return YES;
+}
+
 #pragma mark UIViewControllerTransitioningDelegate protocol
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
