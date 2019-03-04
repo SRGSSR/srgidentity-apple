@@ -664,9 +664,21 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
         }
     }
     
-    // Use -class method to be compatible with dynamic subclassing if KVO registrations are made for self
-    // (object_getClass would return the KVO subclass, while -class returns a proper lie about the true class)
-    NSValue *key = [NSValue valueWithNonretainedObject:[self class]];
-    BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
-    return originalImplementation(self, _cmd, application, URL, options);
+    // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
+    // subclassed, either with a lie (e.g. KVO, for which [self class] lies about the true class nature) or not.
+    Class cls = object_getClass(self);
+    while (cls != Nil) {
+        NSValue *key = [NSValue valueWithNonretainedObject:cls];
+        BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
+        if (originalImplementation) {
+            return originalImplementation(self, _cmd, application, URL, options);
+            break;
+        }
+        else {
+            cls = class_getSuperclass(cls);
+        }
+    }
+    
+    SRGIdentityLogError(@"service", @"Could not call open URL app delegate original implementation for %@", self);
+    return NO;
 }
