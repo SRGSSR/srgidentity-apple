@@ -151,7 +151,8 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 /**
- *  Show the account view.
+ *  Show the account view. The account view has a similar look & feel as the login view, and cannot be customized
+ *  through `UIAppearance`.
  *
  *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
  *              Note that only one account view can be presented at any given time.

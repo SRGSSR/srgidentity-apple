@@ -68,6 +68,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Force properties to avoid overrides with UIAppearance
+    UIProgressView *progressViewAppearance = [UIProgressView appearanceWhenContainedInInstancesOfClasses:@[self.class]];
+    progressViewAppearance.progressTintColor = nil;
+    progressViewAppearance.trackTintColor = nil;
+    progressViewAppearance.progressImage = nil;
+    progressViewAppearance.trackImage = nil;
+    
+    self.errorLabel.textColor = UIColor.grayColor;
+    self.errorLabel.text = nil;
         
     // WKWebView cannot be instantiated in storyboards, do it programmatically
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
@@ -86,8 +96,6 @@
         }
     }];
     self.webView = webView;
-    
-    self.errorLabel.text = nil;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                            target:self
