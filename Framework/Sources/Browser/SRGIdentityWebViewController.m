@@ -70,8 +70,6 @@
     [super viewDidLoad];
     
     // Force properties to avoid overrides with UIAppearance
-    [UIView appearanceWhenContainedInInstancesOfClasses:@[self.class]].backgroundColor = nil;
-    
     UIProgressView *progressViewAppearance = [UIProgressView appearanceWhenContainedInInstancesOfClasses:@[self.class]];
     progressViewAppearance.progressTintColor = nil;
     progressViewAppearance.trackTintColor = nil;

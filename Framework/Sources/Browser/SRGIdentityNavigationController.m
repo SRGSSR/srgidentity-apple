@@ -32,10 +32,7 @@
 {
     [super viewDidLoad];
     
-    // Force properties to avoid overrides with UIAppearance
-    [UIView appearanceWhenContainedInInstancesOfClasses:@[self.class]].backgroundColor = nil;
-    self.view.backgroundColor = UIColor.whiteColor;         // Ensure proper background for the navigation
-    
+    // Force properties to avoid overrides with UIAppearance    
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
     navigationBarAppearance.barStyle = UIBarStyleDefault;
     navigationBarAppearance.barTintColor = nil;
