@@ -32,6 +32,27 @@
 {
     [super viewDidLoad];
     
+    // Force properties to avoid overrides with UIAppearance
+    [UIView appearanceWhenContainedInInstancesOfClasses:@[self.class]].backgroundColor = nil;
+    self.view.backgroundColor = UIColor.whiteColor;         // Ensure proper background for the navigation
+    
+    UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
+    navigationBarAppearance.barStyle = UIBarStyleDefault;
+    navigationBarAppearance.barTintColor = nil;
+    navigationBarAppearance.tintColor = nil;
+    navigationBarAppearance.titleTextAttributes = nil;
+    navigationBarAppearance.translucent = YES;
+    navigationBarAppearance.shadowImage = nil;
+    navigationBarAppearance.backIndicatorImage = nil;
+    navigationBarAppearance.backIndicatorTransitionMaskImage = nil;
+    [navigationBarAppearance setTitleVerticalPositionAdjustment:0.f forBarMetrics:UIBarMetricsDefault];
+    [navigationBarAppearance setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    
+    if (@available(iOS 11, *)) {
+        navigationBarAppearance.prefersLargeTitles = NO;
+        navigationBarAppearance.largeTitleTextAttributes = nil;
+    }
+    
     UIScreenEdgePanGestureRecognizer *panGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pullBack:)];
     panGestureRecognizer.edges = UIRectEdgeLeft;
     [self.view addGestureRecognizer:panGestureRecognizer];
