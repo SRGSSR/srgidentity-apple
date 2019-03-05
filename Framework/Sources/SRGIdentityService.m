@@ -396,7 +396,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         if (error) {
             SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
         }
-    }] requestWithOptions:SRGNetworkRequestBackgroundThreadCompletionEnabled] resume];
+    }] requestWithOptions:SRGRequestOptionBackgroundCompletionEnabled] resume];
     
     return YES;
 }
