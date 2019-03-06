@@ -303,8 +303,8 @@
 				6F0EB53C20FC7FA9009C02CF /* Framework */,
 				6FB74D722101D5D600E2D365 /* Tests */,
 				6F8A93EE20FDCAA800AA6434 /* Demo */,
-				6F0EB53220FC7F58009C02CF /* Products */,
 				6F8A945521006A9E00AA6434 /* Frameworks */,
+				6F0EB53220FC7F58009C02CF /* Products */,
 			);
 			sourceTree = "<group>";
 		};
