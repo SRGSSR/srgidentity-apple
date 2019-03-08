@@ -75,7 +75,6 @@ static NSURL *TestIgnored3CallbackURL()
 @interface IdentityServiceTestCase : IdentityBaseTestCase
 
 @property (nonatomic) SRGIdentityService *identityService;
-@property (nonatomic, weak) id<OHHTTPStubsDescriptor> requestStub;
 
 @end
 
@@ -88,7 +87,7 @@ static NSURL *TestIgnored3CallbackURL()
     self.identityService = [[SRGIdentityService alloc] initWithWebserviceURL:TestWebserviceURL() websiteURL:TestWebsiteURL()];
     [self.identityService logout];
     
-    self.requestStub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.host isEqual:TestWebserviceURL().host];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         if ([request.URL.host isEqualToString:TestWebsiteURL().host]) {
@@ -142,7 +141,6 @@ static NSURL *TestIgnored3CallbackURL()
                                            statusCode:404
                                               headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
-    self.requestStub.name = @"Identity requests";
 }
 
 - (void)tearDown
@@ -150,7 +148,7 @@ static NSURL *TestIgnored3CallbackURL()
     [self.identityService logout];
     self.identityService = nil;
     
-    [OHHTTPStubs removeStub:self.requestStub];
+    [OHHTTPStubs removeAllStubs];
 }
 
 #pragma mark Tests
