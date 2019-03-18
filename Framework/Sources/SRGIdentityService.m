@@ -36,7 +36,7 @@ NSString * const SRGIdentityServiceAccountKey = @"SRGIdentityServiceAccount";
 NSString * const SRGIdentityServicePreviousAccountKey = @"SRGIdentityServicePreviousAccount";
 
 NSString * const SRGIdentityServiceUnauthorizedKey = @"SRGIdentityServiceUnauthorized";
-NSString * const SRGIdentityServiceDeletedKey = @"SRGIdentityServiceDeletedKey";
+NSString * const SRGIdentityServiceDeletedKey = @"SRGIdentityServiceDeleted";
 
 static NSString * const SRGIdentityServiceQueryItemName = @"identity_service";
 
