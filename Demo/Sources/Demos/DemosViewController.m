@@ -7,6 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
+#import "SRGIdentityWebViewController.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -15,6 +16,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 @interface DemosViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *displayNameLabel;
+@property (nonatomic, weak) IBOutlet UIButton *accountButton;
 
 @end
 
@@ -35,7 +37,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didLogin:)
+                                             selector:@selector(userDidLogin:)
                                                  name:SRGIdentityServiceUserDidLoginNotification
                                                object:nil];
     
@@ -74,24 +76,31 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
                                                                                  target:self
                                                                                  action:@selector(login:)];
     }
+    
+    self.accountButton.hidden = ! identityService.loggedIn;
 }
 
 #pragma mark Actions
 
-- (IBAction)login:(id)sender
+- (IBAction)showAccount:(id)sender
+{
+    [SRGIdentityService.currentIdentityService showAccountView];
+}
+
+- (void)login:(id)sender
 {
     NSString *lastEmailAddress = [NSUserDefaults.standardUserDefaults stringForKey:LastLoggedInEmailAddress];
     [SRGIdentityService.currentIdentityService loginWithEmailAddress:lastEmailAddress];
 }
 
-- (IBAction)logout:(id)sender
+- (void)logout:(id)sender
 {
     [SRGIdentityService.currentIdentityService logout];
 }
 
 #pragma mark Notifications
 
-- (void)didLogin:(NSNotification *)notification
+- (void)userDidLogin:(NSNotification *)notification
 {
     [self reloadData];
 }

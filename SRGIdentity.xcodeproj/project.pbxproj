@@ -44,12 +44,13 @@
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
-		6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F3B1BC721708013008D8823 /* Launch Screen.storyboard */; };
-		6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */; };
-		6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */; };
+		6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F19DA7D221DF6E100085C7D /* Localizable.strings */; };
+		6F19DA84221E853200085C7D /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; };
+		6F19DA85221E85D300085C7D /* Masonry.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F75EA3C222523870014B6DF /* IdentityBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */; };
 		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
@@ -58,11 +59,22 @@
 		6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
 		6F8A940320FDD01B00AA6434 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F979F1F21F6056F002A2495 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; };
+		6F979F2021F6056F002A2495 /* Masonry.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F979F1E21F6056F002A2495 /* Masonry.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F979F3221F72A18002A2495 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */; };
+		6F979F3321F72A18002A2495 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */; };
 		6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
-		6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */; };
+		6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */; };
+		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */; };
+		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
+		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */; };
+		6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */; };
+		6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */; };
+		6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */; };
+		6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +120,7 @@
 				080D0BE921359E4800AA519A /* libextobjc.framework in Embed Frameworks */,
 				6F6ED102216BA9F000D7E786 /* FXReachability.framework in Embed Frameworks */,
 				080D0BED21359E4800AA519A /* UICKeyChainStore.framework in Embed Frameworks */,
+				6F979F2021F6056F002A2495 /* Masonry.framework in Embed Frameworks */,
 				6F9FFAAE2167925A00F781A0 /* SRGNetwork.framework in Embed Frameworks */,
 				080D0BE721359E4800AA519A /* Mantle.framework in Embed Frameworks */,
 				084CD70121696C3400905A38 /* SRGLogger.framework in Embed Frameworks */,
@@ -121,6 +134,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6F19DA85221E85D300085C7D /* Masonry.framework in Copy Files */,
 				08266653216E354A00FD8E84 /* OHHTTPStubs.framework in Copy Files */,
 				0826664B216E34FC00FD8E84 /* libextobjc.framework in Copy Files */,
 				0826664C216E34FC00FD8E84 /* MAKVONotificationCenter.framework in Copy Files */,
@@ -144,7 +158,6 @@
 		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
 		080D0BEE2135A6DD00AA519A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		08266627216E2B1700FD8E84 /* TestApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestApp.entitlements; sourceTree = "<group>"; };
 		08266628216E2B1700FD8E84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		08266629216E2B1700FD8E84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0826662E216E2B7200FD8E84 /* SRGIdentity-testapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-testapp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,14 +173,17 @@
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeSigning.entitlements; sourceTree = "<group>"; };
 		6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGIdentity.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGIdentity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0EB53F20FC7FA9009C02CF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6F3B1BC721708013008D8823 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
-		6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
+		6F19DA7E221DF6E100085C7D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F19DA80221DF6E900085C7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F19DA81221DF71300085C7D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F19DA82221DF71A00085C7D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F19DA83221DF72000085C7D /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
+		6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityBaseTestCase.m; sourceTree = "<group>"; };
+		6F75EA3B222523870014B6DF /* IdentityBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityBaseTestCase.h; sourceTree = "<group>"; };
 		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -177,10 +193,20 @@
 		6F8A93F820FDCAA800AA6434 /* DemosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemosViewController.h; sourceTree = "<group>"; };
 		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
 		6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DemosViewController.storyboard; sourceTree = "<group>"; };
+		6F979F1E21F6056F002A2495 /* Masonry.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Masonry.framework; path = Carthage/Build/iOS/Masonry.framework; sourceTree = "<group>"; };
+		6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
+		6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityTestCase.m; sourceTree = "<group>"; };
+		6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
+		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityNavigationController.m; sourceTree = "<group>"; };
+		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityWebViewController.m; sourceTree = "<group>"; };
+		6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGIdentityWebViewController.storyboard; sourceTree = "<group>"; };
+		6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityWebViewController.h; sourceTree = "<group>"; };
+		6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityModalTransition.h; sourceTree = "<group>"; };
+		6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGIdentityModalTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F19DA84221E853200085C7D /* Masonry.framework in Frameworks */,
 				6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */,
 				6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */,
 				086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */,
@@ -222,6 +249,7 @@
 				080D0BE821359E4800AA519A /* libextobjc.framework in Frameworks */,
 				6F6ED101216BA9F000D7E786 /* FXReachability.framework in Frameworks */,
 				080D0BEC21359E4800AA519A /* UICKeyChainStore.framework in Frameworks */,
+				6F979F1F21F6056F002A2495 /* Masonry.framework in Frameworks */,
 				6F9FFAAD2167925A00F781A0 /* SRGNetwork.framework in Frameworks */,
 				080D0BE621359E4800AA519A /* Mantle.framework in Frameworks */,
 				084CD70021696C3400905A38 /* SRGLogger.framework in Frameworks */,
@@ -245,8 +273,6 @@
 			children = (
 				08266629216E2B1700FD8E84 /* Info.plist */,
 				08266628216E2B1700FD8E84 /* main.m */,
-				08266627216E2B1700FD8E84 /* TestApp.entitlements */,
-				6F3B1BC721708013008D8823 /* Launch Screen.storyboard */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -263,6 +289,8 @@
 		0829FA792136853C00FE0A28 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */,
+				6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */,
 				0829FA7A2136853C00FE0A28 /* NSBundle+SRGIdentity.h */,
 				0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */,
 			);
@@ -275,8 +303,8 @@
 				6F0EB53C20FC7FA9009C02CF /* Framework */,
 				6FB74D722101D5D600E2D365 /* Tests */,
 				6F8A93EE20FDCAA800AA6434 /* Demo */,
-				6F0EB53220FC7F58009C02CF /* Products */,
 				6F8A945521006A9E00AA6434 /* Frameworks */,
+				6F0EB53220FC7F58009C02CF /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -305,8 +333,8 @@
 		6F0EB53D20FC7FA9009C02CF /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6FF8469F221BED95006FC3FC /* Browser */,
 				0829FA792136853C00FE0A28 /* Categories */,
-				6F6ED0FA216B9C3E00D7E786 /* Helpers */,
 				0829FA742136853C00FE0A28 /* Model */,
 				0829FA772136853C00FE0A28 /* SRGIdentity.h */,
 				0829FA782136853C00FE0A28 /* SRGIdentity.m */,
@@ -317,11 +345,11 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		6F6ED0FA216B9C3E00D7E786 /* Helpers */ = {
+		6F75EA39222523870014B6DF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				6F6ED0FB216B9C4C00D7E786 /* UIWindow+SRGIdentity.h */,
-				6F6ED0FC216B9C4C00D7E786 /* UIWindow+SRGIdentity.m */,
+				6F75EA3B222523870014B6DF /* IdentityBaseTestCase.h */,
+				6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -332,7 +360,6 @@
 				6F8A93F220FDCAA800AA6434 /* Sources */,
 				6F8A93EF20FDCAA800AA6434 /* Resources */,
 				086FB33521380D9300DE4CF2 /* Info.plist */,
-				086FB33C2138170500DE4CF2 /* CodeSigning.entitlements */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -378,11 +405,12 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
 				080D0BE021356CB500AA519A /* libextobjc.framework */,
 				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
 				080D0BE42135776000AA519A /* Mantle.framework */,
+				6F979F1E21F6056F002A2495 /* Masonry.framework */,
+				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
 				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
 				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
@@ -405,7 +433,8 @@
 		6FB74D732101D5D600E2D365 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6FB74D742101D5D600E2D365 /* SRGIdentityTestCase.m */,
+				6F75EA39222523870014B6DF /* Helpers */,
+				6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -413,9 +442,24 @@
 		6FCBFEF6210B571C006BC355 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6F19DA7D221DF6E100085C7D /* Localizable.strings */,
 				083FBD9D217A84D60025253D /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		6FF8469F221BED95006FC3FC /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */,
+				6FF846A7221BF93F006FC3FC /* SRGIdentityModalTransition.m */,
+				6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */,
+				6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController.m */,
+				6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */,
+				6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController.m */,
+				6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController.storyboard */,
+			);
+			path = Browser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -425,9 +469,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */,
+				6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */,
+				6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */,
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
-				6F6ED0FD216B9C4C00D7E786 /* UIWindow+SRGIdentity.h in Headers */,
+				6F979F3321F72A18002A2495 /* UIWindow+SRGIdentity.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,
@@ -592,7 +639,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F3B1BC821708013008D8823 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +646,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController.storyboard in Resources */,
+				6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,9 +698,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition.m in Sources */,
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
+				6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController.m in Sources */,
+				6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController.m in Sources */,
 				0829FA7F2136853C00FE0A28 /* SRGIdentity.m in Sources */,
-				6F6ED0FE216B9C4C00D7E786 /* UIWindow+SRGIdentity.m in Sources */,
+				6F979F3221F72A18002A2495 /* UIWindow+SRGIdentity.m in Sources */,
 				0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */,
 				0829FA7D2136853C00FE0A28 /* SRGAccount.m in Sources */,
 			);
@@ -672,7 +723,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FB74D772101D5D600E2D365 /* SRGIdentityTestCase.m in Sources */,
+				6F75EA3C222523870014B6DF /* IdentityBaseTestCase.m in Sources */,
+				6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -701,13 +753,27 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		6F19DA7D221DF6E100085C7D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F19DA7E221DF6E100085C7D /* de */,
+				6F19DA80221DF6E900085C7D /* en */,
+				6F19DA81221DF71300085C7D /* fr */,
+				6F19DA82221DF71A00085C7D /* it */,
+				6F19DA83221DF72000085C7D /* rm */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		08266642216E2B7400FD8E84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -728,7 +794,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -749,7 +814,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -769,7 +833,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = Tests/TestApp/TestApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				INFOPLIST_FILE = Tests/TestApp/Info.plist;
@@ -839,7 +902,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -879,7 +942,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -966,7 +1028,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1006,7 +1068,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1049,7 +1110,6 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
@@ -1064,7 +1124,6 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
@@ -1079,7 +1138,6 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
@@ -1094,7 +1152,6 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Framework/Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-resources";
@@ -1159,7 +1216,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1216,7 +1273,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1278,7 +1335,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1299,7 +1355,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Demo/CodeSigning.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
