@@ -8,7 +8,6 @@
 
 #import <libextobjc/libextobjc.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import <UICKeyChainStore/UICKeyChainStore.h>
 
 static NSString *TestValidToken = @"0123456789";
 
