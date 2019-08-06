@@ -485,6 +485,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                                                              target:self
                                                                                              action:@selector(dismissAccountView:)];
     SRGIdentityNavigationController *accountNavigationController = [[SRGIdentityNavigationController alloc] initWithRootViewController:accountViewController];
+    accountNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     
