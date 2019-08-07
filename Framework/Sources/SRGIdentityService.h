@@ -105,7 +105,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful
  *  login, an `SRGIdentityServiceUserDidLoginNotification` notification is emitted.
  *
- *  @param An optional email address, with which the form is filled initially. If not specified, the form starts empty.
+ *  @param emailAddress An optional email address, with which the form is filled initially. If not specified, the form starts empty.
  *
  *  @return `YES` if the form could be opened. The method might return `NO` if another attempt is already being made
  *          or if a user is already logged in.
