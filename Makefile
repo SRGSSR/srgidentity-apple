@@ -1,8 +1,5 @@
 #!/usr/bin/xcrun make -f
 
-# Xcode 11 workaround, see https://github.com/Carthage/Carthage/issues/2825#issuecomment-513160923
-export XCODE_XCCONFIG_FILE=../../../xcode11fix.xcconfig
-
 CARTHAGE_FOLDER=Carthage
 CARTHAGE_FLAGS=--platform iOS --cache-builds --new-resolver
 
