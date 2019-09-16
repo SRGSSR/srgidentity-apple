@@ -367,8 +367,8 @@
 		6F8A93EF20FDCAA800AA6434 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */,
 				6F8A93F120FDCAA800AA6434 /* Images.xcassets */,
+				6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
