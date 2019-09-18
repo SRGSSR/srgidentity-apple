@@ -7,7 +7,6 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
-#import "SRGIdentityWebViewController.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 

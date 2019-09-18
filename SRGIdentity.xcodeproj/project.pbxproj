@@ -22,7 +22,6 @@
 		0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */; };
 		084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
-		086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 086FB2CA21368ADE00DE4CF2 /* WebKit.framework */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F19DA7D221DF6E100085C7D /* Localizable.strings */; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
@@ -177,7 +176,6 @@
 			files = (
 				6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */,
 				6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */,
-				086FB2CB21368ADE00DE4CF2 /* WebKit.framework in Frameworks */,
 				080D0BE52135776000AA519A /* Mantle.framework in Frameworks */,
 				080D0BE221356CB600AA519A /* libextobjc.framework in Frameworks */,
 				080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */,
@@ -912,7 +910,7 @@
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1040,7 +1038,7 @@
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1314,7 +1312,7 @@
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1334,7 +1332,7 @@
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
