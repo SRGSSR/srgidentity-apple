@@ -127,7 +127,6 @@
 - (void)updateContentInsets
 {
     UIScrollView *scrollView = self.webView.scrollView;
-    scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
     
     // Must adjust depending on the web page viewport-fit setting, see https://modelessdesign.com/backdrop/283
     if (@available(iOS 11, *)) {
@@ -135,6 +134,13 @@
             scrollView.contentInset = UIEdgeInsetsZero;
             return;
         }
+    }
+    
+    if (@available(iOS 12, *)) {
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }
+    else {
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
     }
     
     scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
