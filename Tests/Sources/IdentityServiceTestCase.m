@@ -9,6 +9,8 @@
 #import <libextobjc/libextobjc.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
+#if TARGET_OS_IOS
+
 static NSString *TestValidToken = @"0123456789";
 
 @interface SRGIdentityService (Private)
@@ -554,3 +556,5 @@ static NSURL *TestIgnored3CallbackURL()
 }
 
 @end
+
+#endif
