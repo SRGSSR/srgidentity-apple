@@ -751,6 +751,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -770,6 +771,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				SDKROOT = iphoneos;
 			};
 			name = "Debug-static";
 		};
@@ -788,6 +790,7 @@
 				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -806,6 +809,7 @@
 				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-testapp";
+				SDKROOT = iphoneos;
 			};
 			name = "Release-static";
 		};
@@ -915,6 +919,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
 			};
 			name = "Debug-static";
 		};
@@ -1040,6 +1045,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
 			};
 			name = "Release-static";
 		};
@@ -1305,6 +1311,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -1324,6 +1331,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
