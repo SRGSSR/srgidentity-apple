@@ -116,6 +116,7 @@
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0895B2E023368DF7009922C6 /* TestApp.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TestApp.xcconfig; sourceTree = "<group>"; };
 		6F0402F22331318700DA4D97 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		6F0402F3233131A000DA4D97 /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		6F0402F4233131AE00DA4D97 /* Demo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Demo.xcconfig; sourceTree = "<group>"; };
@@ -208,6 +209,7 @@
 			children = (
 				08266629216E2B1700FD8E84 /* Info.plist */,
 				08266628216E2B1700FD8E84 /* main.m */,
+				0895B2E023368DF7009922C6 /* TestApp.xcconfig */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -737,7 +739,7 @@
 /* Begin XCBuildConfiguration section */
 		08266642216E2B7400FD8E84 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F0402F5233131C600DA4D97 /* Tests.xcconfig */;
+			baseConfigurationReference = 0895B2E023368DF7009922C6 /* TestApp.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -757,7 +759,7 @@
 		};
 		08266643216E2B7400FD8E84 /* Debug-static */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F0402F5233131C600DA4D97 /* Tests.xcconfig */;
+			baseConfigurationReference = 0895B2E023368DF7009922C6 /* TestApp.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -777,7 +779,7 @@
 		};
 		08266644216E2B7400FD8E84 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F0402F5233131C600DA4D97 /* Tests.xcconfig */;
+			baseConfigurationReference = 0895B2E023368DF7009922C6 /* TestApp.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -796,7 +798,7 @@
 		};
 		08266645216E2B7400FD8E84 /* Release-static */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F0402F5233131C600DA4D97 /* Tests.xcconfig */;
+			baseConfigurationReference = 0895B2E023368DF7009922C6 /* TestApp.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
