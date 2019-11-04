@@ -664,7 +664,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; keyChainStore = %@>",
-            [self class],
+            self.class,
             self,
             self.keyChainStore];
 }
@@ -693,7 +693,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
     }
     
     // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
-    // subclassed, either with a lie (e.g. KVO, for which [self class] lies about the true class nature) or not.
+    // subclassed, either with a lie (e.g. KVO, for which self.class lies about the true class nature) or not.
     Class cls = object_getClass(self);
     while (cls != Nil) {
         NSValue *key = [NSValue valueWithNonretainedObject:cls];
