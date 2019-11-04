@@ -114,7 +114,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     free(classList);
     
-    s_originalImplementations = [originalImplementations copy];
+    s_originalImplementations = originalImplementations.copy;
 }
 
 @implementation SRGIdentityService
@@ -238,7 +238,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                         object:self
-                                                      userInfo:[userInfo copy]];
+                                                      userInfo:userInfo.copy];
 }
 
 - (NSString *)sessionToken
@@ -539,7 +539,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URLComponents.URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", self.sessionToken] forHTTPHeaderField:@"Authorization"];
-    return [request copy];
+    return request.copy;
 }
 
 #pragma mark Unauthorization reporting
