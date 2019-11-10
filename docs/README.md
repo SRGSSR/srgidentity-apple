@@ -1,6 +1,6 @@
 ![SRG Media Player logo](README-images/logo.png)
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgidentity-ios)](https://github.com/SRGSSR/srgidentity-ios/releases) [![platform](https://img.shields.io/badge/platfom-ios-blue)](https://github.com/SRGSSR/srgidentity-ios) [![Build Status](https://travis-ci.org/SRGSSR/srgidentity-ios.svg?branch=master)](https://travis-ci.org/SRGSSR/srgidentity-ios/branches) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgidentity-ios)](https://github.com/SRGSSR/srgidentity-ios/blob/master/LICENSE)
 
 ## About
 
