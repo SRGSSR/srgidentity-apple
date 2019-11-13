@@ -7,6 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
+#import "Resources.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -25,7 +26,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (instancetype)init
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 

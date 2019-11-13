@@ -24,14 +24,16 @@
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F19DA7D221DF6E100085C7D /* Localizable.strings */; };
+		6F55003C237BCB02003476E2 /* DemosViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */; };
+		6F550040237BCC04003476E2 /* Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F55003F237BCC04003476E2 /* Resources.m */; };
 		6F6ED100216BA9D800D7E786 /* FXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */; };
 		6F75EA3C222523870014B6DF /* IdentityBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */; };
-		6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */; };
+		6F8A93FB20FDCAA800AA6434 /* LaunchScreen~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */; };
 		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
 		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
 		6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
 		6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
-		6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */; };
+		6F8A940220FDCBA600AA6434 /* DemosViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */; };
 		6F8A940320FDD01B00AA6434 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F979F3221F72A18002A2495 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */; };
@@ -129,18 +131,21 @@
 		6F19DA81221DF71300085C7D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F19DA82221DF71A00085C7D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F19DA83221DF72000085C7D /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "DemosViewController~tvos.storyboard"; sourceTree = "<group>"; };
+		6F55003E237BCC04003476E2 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		6F55003F237BCC04003476E2 /* Resources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resources.m; sourceTree = "<group>"; };
 		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
 		6F75EA3A222523870014B6DF /* IdentityBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityBaseTestCase.m; sourceTree = "<group>"; };
 		6F75EA3B222523870014B6DF /* IdentityBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityBaseTestCase.h; sourceTree = "<group>"; };
 		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "LaunchScreen~ios.storyboard"; sourceTree = "<group>"; };
 		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F8A93F420FDCAA800AA6434 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F8A93F520FDCAA800AA6434 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6F8A93F620FDCAA800AA6434 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6F8A93F820FDCAA800AA6434 /* DemosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemosViewController.h; sourceTree = "<group>"; };
 		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
-		6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DemosViewController.storyboard; sourceTree = "<group>"; };
+		6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "DemosViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
 		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
@@ -284,6 +289,15 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		6F55003D237BCC04003476E2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6F55003E237BCC04003476E2 /* Resources.h */,
+				6F55003F237BCC04003476E2 /* Resources.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		6F75EA39222523870014B6DF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,7 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				6F8A93F120FDCAA800AA6434 /* Images.xcassets */,
-				6F8A93F020FDCAA800AA6434 /* LaunchScreen.storyboard */,
+				6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -318,6 +332,7 @@
 			children = (
 				6F8A93F320FDCAA800AA6434 /* Application */,
 				6F8A93F720FDCAA800AA6434 /* Demos */,
+				6F55003D237BCC04003476E2 /* Helpers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -337,7 +352,8 @@
 			children = (
 				6F8A93F820FDCAA800AA6434 /* DemosViewController.h */,
 				6F8A93F920FDCAA800AA6434 /* DemosViewController.m */,
-				6F8A940120FDCBA600AA6434 /* DemosViewController.storyboard */,
+				6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */,
+				6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -603,8 +619,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F8A93FB20FDCAA800AA6434 /* LaunchScreen.storyboard in Resources */,
-				6F8A940220FDCBA600AA6434 /* DemosViewController.storyboard in Resources */,
+				6F8A93FB20FDCAA800AA6434 /* LaunchScreen~ios.storyboard in Resources */,
+				6F55003C237BCB02003476E2 /* DemosViewController~tvos.storyboard in Resources */,
+				6F8A940220FDCBA600AA6434 /* DemosViewController~ios.storyboard in Resources */,
 				6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -682,6 +699,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */,
+				6F550040237BCC04003476E2 /* Resources.m in Sources */,
 				6F8A93FD20FDCAA800AA6434 /* main.m in Sources */,
 				6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */,
 			);
