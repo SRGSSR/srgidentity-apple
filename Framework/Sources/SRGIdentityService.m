@@ -9,17 +9,23 @@
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityLogger.h"
 #import "SRGIdentityNavigationController.h"
-#import "SRGIdentityWebViewController.h"
 #import "UIWindow+SRGIdentity.h"
+
+#if TARGET_OS_IOS
+#import "SRGIdentityWebViewController.h"
+#endif
 
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <FXReachability/FXReachability.h>
 #import <libextobjc/libextobjc.h>
 #import <objc/runtime.h>
-#import <SafariServices/SafariServices.h>
 #import <SRGNetwork/SRGNetwork.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIKit/UIKit.h>
+
+#if TARGET_OS_IOS
+#import <SafariServices/SafariServices.h>
+#endif
 
 static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
@@ -63,7 +69,10 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @end
 
-@interface SRGIdentityService () <SFSafariViewControllerDelegate>
+@interface SRGIdentityService ()
+#if TARGET_OS_IOS
+<SFSafariViewControllerDelegate>
+#endif
 
 @property (nonatomic, copy) NSString *identifier;
 
@@ -105,7 +114,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     free(classList);
     
-    s_originalImplementations = [originalImplementations copy];
+    s_originalImplementations = originalImplementations.copy;
 }
 
 @implementation SRGIdentityService
@@ -229,7 +238,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceDidUpdateAccountNotification
                                                         object:self
-                                                      userInfo:[userInfo copy]];
+                                                      userInfo:userInfo.copy];
 }
 
 - (NSString *)sessionToken
@@ -294,6 +303,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
+#if TARGET_OS_IOS
     if (s_loggingIn || self.loggedIn) {
         return NO;
     }
@@ -365,10 +375,15 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     s_loggingIn = YES;
     return YES;
+#else
+    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
+    return YES;
+#endif
 }
 
 - (BOOL)logout
 {
+#if TARGET_OS_IOS
     if (s_loggingIn) {
         return NO;
     }
@@ -399,6 +414,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }] requestWithOptions:SRGRequestOptionBackgroundCompletionEnabled] resume];
     
     return YES;
+#else
+    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
+    return YES;
+#endif
 }
 
 - (void)cleanup
@@ -465,6 +484,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (void)showAccountView
 {
+#if TARGET_OS_IOS
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
     NSURLRequest *request = [self accountPresentationRequest];
@@ -490,6 +510,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     
     self.accountNavigationController = accountNavigationController;
+#else
+    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
+#endif
 }
 
 - (void)dismissAccountView
@@ -516,7 +539,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URLComponents.URL];
     [request setValue:[NSString stringWithFormat:@"sessionToken %@", self.sessionToken] forHTTPHeaderField:@"Authorization"];
-    return [request copy];
+    return request.copy;
 }
 
 #pragma mark Unauthorization reporting
@@ -600,6 +623,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     return NO;
 }
 
+#if TARGET_OS_IOS
+
 #pragma mark SFSafariViewControllerDelegate delegate
 
 - (void)safariViewControllerDidFinish:(SFSafariViewController *)controller
@@ -610,6 +635,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                         object:self
                                                       userInfo:nil];
 }
+
+#endif
 
 #pragma mark Actions
 
@@ -637,7 +664,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; keyChainStore = %@>",
-            [self class],
+            self.class,
             self,
             self.keyChainStore];
 }
@@ -666,7 +693,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
     }
     
     // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
-    // subclassed, either with a lie (e.g. KVO, for which [self class] lies about the true class nature) or not.
+    // subclassed, either with a lie (e.g. KVO, for which self.class lies about the true class nature) or not.
     Class cls = object_getClass(self);
     while (cls != Nil) {
         NSValue *key = [NSValue valueWithNonretainedObject:cls];

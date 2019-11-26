@@ -10,7 +10,6 @@
 #import "SRGIdentityModalTransition.h"
 
 #import <libextobjc/libextobjc.h>
-#import <Masonry/Masonry.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGNetwork/SRGNetwork.h>
 
@@ -84,17 +83,20 @@
     webView.navigationDelegate = self;
     webView.scrollView.delegate = self;
     [self.view insertSubview:webView atIndex:0];
-    [webView mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (@available(iOS 11, *)) {
-            make.top.equalTo(self.view);
-            make.bottom.equalTo(self.view);
-            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-        }
-        else {
-            make.edges.equalTo(self.view);
-        }
-    }];
+    
+    if (@available(iOS 11, *)) {
+        webView.translatesAutoresizingMaskIntoConstraints = NO;
+        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                                   [webView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+                                                   [webView.leftAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leftAnchor],
+                                                   [webView.rightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.rightAnchor] ]];
+    }
+    else {
+        webView.translatesAutoresizingMaskIntoConstraints = YES;
+        webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        webView.frame = self.view.bounds;
+    }
+    
     self.webView = webView;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -125,7 +127,6 @@
 - (void)updateContentInsets
 {
     UIScrollView *scrollView = self.webView.scrollView;
-    scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
     
     // Must adjust depending on the web page viewport-fit setting, see https://modelessdesign.com/backdrop/283
     if (@available(iOS 11, *)) {
@@ -133,6 +134,13 @@
             scrollView.contentInset = UIEdgeInsetsZero;
             return;
         }
+    }
+    
+    if (@available(iOS 12, *)) {
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }
+    else {
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
     }
     
     scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
