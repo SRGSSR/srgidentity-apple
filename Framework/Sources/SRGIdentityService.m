@@ -378,7 +378,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     s_loggingIn = YES;
     return YES;
 #else
-    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithEmailAddress:emailAddress];
+    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL
+                                                                                                             websiteURL:self.websiteURL
+                                                                                                           emailAddress:emailAddress];
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
     [topViewController presentViewController:loginViewController animated:YES completion:nil];
     return YES;
