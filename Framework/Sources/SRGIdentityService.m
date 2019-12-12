@@ -376,7 +376,23 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     s_loggingIn = YES;
     return YES;
 #else
-    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
+    // TODO: Show login view. When the user validates, proceed with this request
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/login"];
+    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
+    URLRequest.HTTPMethod = @"POST";
+    [URLRequest setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *HTTPBodyString = [NSString stringWithFormat:@"login_email=email@test.com&login_password=my_password"];
+    NSData *HTTPBody = [HTTPBodyString dataUsingEncoding:NSUTF8StringEncoding];
+    [URLRequest setValue:@(HTTPBody.length).stringValue forHTTPHeaderField:@"Content-Length"];
+    URLRequest.HTTPBody = HTTPBody;
+    
+    [[[SRGRequest dataRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        // TODO: Save token
+        s_loggingIn = NO;
+    }] requestWithOptions:SRGRequestOptionCancellationErrorsEnabled] resume];
+    
+    s_loggingIn = YES;
     return YES;
 #endif
 }
@@ -403,15 +419,15 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                       userInfo:nil];
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/logout"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    request.HTTPMethod = @"DELETE";
-    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
+    URLRequest.HTTPMethod = @"DELETE";
+    [URLRequest setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    [[[SRGRequest dataRequestWithURLRequest:request session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    [[SRGRequest dataRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {
             SRGIdentityLogInfo(@"service", @"The logout request failed with error %@", error);
         }
-    }] requestWithOptions:SRGRequestOptionBackgroundCompletionEnabled] resume];
+    }] resume];
     
     return YES;
 #else
@@ -442,10 +458,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/userinfo"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL];
-    [request setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
+    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
+    [URLRequest setValue:[NSString stringWithFormat:@"sessionToken %@", sessionToken] forHTTPHeaderField:@"Authorization"];
     
-    SRGRequest *accountRequest = [SRGRequest objectRequestWithURLRequest:request session:NSURLSession.sharedSession parser:^id _Nullable(NSData * _Nonnull data, NSError * _Nullable __autoreleasing * _Nullable pError) {
+    SRGRequest *accountRequest = [SRGRequest objectRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession parser:^id _Nullable(NSData * _Nonnull data, NSError * _Nullable __autoreleasing * _Nullable pError) {
         NSDictionary *JSONDictionary = SRGNetworkJSONDictionaryParser(data, pError);
         if (! JSONDictionary) {
             return nil;
@@ -487,8 +503,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 #if TARGET_OS_IOS
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
-    NSURLRequest *request = [self accountPresentationRequest];
-    if (! request) {
+    NSURLRequest *URLRequest = [self accountPresentationRequest];
+    if (! URLRequest) {
         return;
     }
     
@@ -496,7 +512,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
         return;
     }
     
-    SRGIdentityWebViewController *accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:request decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
+    SRGIdentityWebViewController *accountViewController = [[SRGIdentityWebViewController alloc] initWithRequest:URLRequest decisionHandler:^WKNavigationActionPolicy(NSURL * _Nonnull URL) {
         return [self handleCallbackURL:URL] ? WKNavigationActionPolicyCancel : WKNavigationActionPolicyAllow;
     }];
     accountViewController.title = SRGIdentityLocalizedString(@"My account", @"Title displayed at the top of the account view");
