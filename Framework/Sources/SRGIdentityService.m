@@ -305,15 +305,11 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
-    if (self.loggedIn) {
+    if (s_loggingIn || self.loggedIn) {
         return NO;
     }
  
 #if TARGET_OS_IOS
-    if (s_loggingIn) {
-        return NO;
-    }
-    
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
         void (^notifyCancel)(void) = ^{
@@ -378,12 +374,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     else {
         loginWithSafari();
     }
-    
-    s_loggingIn = YES;
-    return YES;
 #else
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
-    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL websiteURL:self.websiteURL emailAddress:emailAddress completionBlock:^(NSString * _Nonnull sessionToken) {
+    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL websiteURL:self.websiteURL emailAddress:emailAddress tokenBlock:^(NSString * _Nonnull sessionToken) {
         [topViewController dismissViewControllerAnimated:YES completion:nil];
         
         self.sessionToken = sessionToken;
@@ -391,15 +384,18 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
                                                             object:self
                                                           userInfo:nil];
         [self updateAccount];
+    } dismissalBlock:^{
+        s_loggingIn = NO;
     }];
     [topViewController presentViewController:loginViewController animated:YES completion:nil];
-    return YES;
 #endif
+    
+    s_loggingIn = YES;
+    return YES;
 }
 
 - (BOOL)logout
 {
-#if TARGET_OS_IOS
     if (s_loggingIn) {
         return NO;
     }
@@ -412,7 +408,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     [self cleanup];
+    
+#if TARGET_OS_IOS
     [self dismissAccountView];
+#endif
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                         object:self
@@ -430,10 +429,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }] resume];
     
     return YES;
-#else
-    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
-    return YES;
-#endif
 }
 
 - (void)cleanup
@@ -475,7 +470,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
             if ([error.domain isEqualToString:SRGNetworkErrorDomain] && error.code == SRGNetworkErrorHTTP && [error.userInfo[SRGNetworkHTTPStatusCodeKey] integerValue] == 401) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self cleanup];
+                    
+#if TARGET_OS_IOS
                     [self dismissAccountView];
+#endif
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
                                                                         object:self
@@ -496,11 +494,12 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.accountRequest = accountRequest;
 }
 
+#if TARGET_OS_IOS
+
 #pragma mark Account view
 
 - (void)showAccountView
 {
-#if TARGET_OS_IOS
     NSAssert(NSThread.isMainThread, @"Must be called from the main thread");
     
     NSURLRequest *URLRequest = [self accountPresentationRequest];
@@ -526,9 +525,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     
     self.accountNavigationController = accountNavigationController;
-#else
-    NSAssert(NO, @"TODO: Implement or make it unavailable for tvOS (and add tvOS method if needed)");
-#endif
 }
 
 - (void)dismissAccountView
@@ -558,6 +554,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     return request.copy;
 }
 
+- (void)dismissAccountView:(id)sender
+{
+    [self dismissAccountView];
+}
+
+#endif
+
 #pragma mark Unauthorization reporting
 
 - (void)reportUnauthorization
@@ -579,7 +582,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     if ([action isEqualToString:@"unauthorized"]) {
         [self.accountRequest cancel];
         [self cleanup];
+        
+#if TARGET_OS_IOS
         [self dismissAccountView];
+#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -591,7 +597,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     else if ([action isEqualToString:@"log_out"]) {
         [self.accountRequest cancel];
         [self cleanup];
+        
+#if TARGET_OS_IOS
         [self dismissAccountView];
+#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -603,7 +612,10 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     else if ([action isEqualToString:@"account_deleted"]) {
         [self.accountRequest cancel];
         [self cleanup];
+        
+#if TARGET_OS_IOS
         [self dismissAccountView];
+#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -653,13 +665,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 }
 
 #endif
-
-#pragma mark Actions
-
-- (void)dismissAccountView:(id)sender
-{
-    [self dismissAccountView];
-}
 
 #pragma mark Notifications
 

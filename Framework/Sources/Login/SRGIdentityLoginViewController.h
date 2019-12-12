@@ -14,7 +14,8 @@ API_AVAILABLE(tvos(9.0)) API_UNAVAILABLE(ios)
 - (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL
                            websiteURL:(NSURL *)websiteURL
                          emailAddress:(nullable NSString *)emailAddress
-                      completionBlock:(void (^)(NSString * _Nonnull sessionToken))completionBlock;
+                           tokenBlock:(void (^)(NSString * _Nonnull sessionToken))tokenBlock
+                       dismissalBlock:(void (^)(void))dismissalBlock;
 
 @end
 

@@ -82,10 +82,14 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 #pragma mark Actions
 
+#if TARGET_OS_IOS
+
 - (IBAction)showAccount:(id)sender
 {
     [SRGIdentityService.currentIdentityService showAccountView];
 }
+
+#endif
 
 - (void)login:(id)sender
 {

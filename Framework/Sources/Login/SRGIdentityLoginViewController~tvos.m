@@ -15,7 +15,9 @@
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic) NSURL *webserviceURL;
 @property (nonatomic) NSURL *websiteURL;
-@property (nonatomic, copy) void (^completionBlock)(NSString *sessionToken);
+
+@property (nonatomic, copy) void (^tokenBlock)(NSString *sessionToken);
+@property (nonatomic, copy) void (^dismissalBlock)(void);
 
 @property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
@@ -28,14 +30,19 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL emailAddress:(nullable NSString *)emailAddress completionBlock:(void (^)(NSString * _Nonnull))completionBlock
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL
+                           websiteURL:(NSURL *)websiteURL
+                         emailAddress:(NSString *)emailAddress
+                           tokenBlock:(void (^)(NSString * _Nonnull))tokenBlock
+                       dismissalBlock:(void (^)(void))dismissalBlock
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:NSBundle.srg_identityBundle];
     SRGIdentityLoginViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.emailAddress = emailAddress;
     viewController.webserviceURL = webserviceURL;
     viewController.websiteURL = websiteURL;
-    viewController.completionBlock = completionBlock;
+    viewController.tokenBlock = tokenBlock;
+    viewController.dismissalBlock = dismissalBlock;
     return viewController;
 }
 
@@ -57,6 +64,7 @@
     
     if (self.movingFromParentViewController || self.beingDismissed) {
         [self.loginRequest cancel];
+        self.dismissalBlock();
     }
 }
 
@@ -131,7 +139,7 @@
             return;
         }
         
-        self.completionBlock(sessionToken);
+        self.tokenBlock(sessionToken);
     }];
     [loginRequest resume];
     self.loginRequest = loginRequest;

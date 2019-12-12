@@ -157,7 +157,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
  *              Note that only one account view can be presented at any given time.
  */
-- (void)showAccountView;
+- (void)showAccountView API_UNAVAILABLE(tvos);
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this
