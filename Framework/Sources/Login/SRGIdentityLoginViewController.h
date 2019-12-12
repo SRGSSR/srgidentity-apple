@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 API_AVAILABLE(tvos(9.0)) API_UNAVAILABLE(ios)
 @interface SRGIdentityLoginViewController : UIViewController
 
+- (instancetype)initWithEmailAddress:(nullable NSString *)emailAddress;
+
 @end
 
 NS_ASSUME_NONNULL_END

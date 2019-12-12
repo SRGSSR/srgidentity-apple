@@ -12,10 +12,15 @@
 
 #pragma mark Object lifecycle
 
+- (instancetype)initWithEmailAddress:(nullable NSString *)emailAddress
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:NSBundle.srg_identityBundle];
+    return [storyboard instantiateInitialViewController];
+}
+
 - (instancetype)init
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:nil];
-    return [storyboard instantiateInitialViewController];
+    return [self initWithEmailAddress:nil];
 }
 
 @end

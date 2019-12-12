@@ -11,7 +11,9 @@
 #import "SRGIdentityNavigationController.h"
 #import "UIWindow+SRGIdentity.h"
 
-#if TARGET_OS_IOS
+#if TARGET_OS_TV
+#import "SRGIdentityLoginViewController.h"
+#else
 #import "SRGIdentityWebViewController.h"
 #endif
 
@@ -376,23 +378,9 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     s_loggingIn = YES;
     return YES;
 #else
-    // TODO: Show login view. When the user validates, proceed with this request
-    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/login"];
-    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
-    URLRequest.HTTPMethod = @"POST";
-    [URLRequest setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
-    NSString *HTTPBodyString = [NSString stringWithFormat:@"login_email=email@test.com&login_password=my_password"];
-    NSData *HTTPBody = [HTTPBodyString dataUsingEncoding:NSUTF8StringEncoding];
-    [URLRequest setValue:@(HTTPBody.length).stringValue forHTTPHeaderField:@"Content-Length"];
-    URLRequest.HTTPBody = HTTPBody;
-    
-    [[[SRGRequest dataRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        // TODO: Save token
-        s_loggingIn = NO;
-    }] requestWithOptions:SRGRequestOptionCancellationErrorsEnabled] resume];
-    
-    s_loggingIn = YES;
+    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithEmailAddress:emailAddress];
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+    [topViewController presentViewController:loginViewController animated:YES completion:nil];
     return YES;
 #endif
 }
