@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic) NSURL *webserviceURL;
 @property (nonatomic) NSURL *websiteURL;
+@property (nonatomic, copy) void (^completionBlock)(NSString *sessionToken);
 
 @property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
@@ -27,13 +28,14 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL emailAddress:(NSString *)emailAddress
+- (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL websiteURL:(NSURL *)websiteURL emailAddress:(nullable NSString *)emailAddress completionBlock:(void (^)(NSString * _Nonnull))completionBlock
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:NSBundle.srg_identityBundle];
     SRGIdentityLoginViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.emailAddress = emailAddress;
     viewController.webserviceURL = webserviceURL;
     viewController.websiteURL = websiteURL;
+    viewController.completionBlock = completionBlock;
     return viewController;
 }
 
@@ -109,18 +111,18 @@
             return;
         }
         
-        NSString *token = nil;
+        NSString *sessionToken = nil;
         if ([response isKindOfClass:NSHTTPURLResponse.class]) {
             NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
             NSArray<NSHTTPCookie *> *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:HTTPResponse.allHeaderFields forURL:HTTPResponse.URL];
             for (NSHTTPCookie *cookie in cookies) {
                 if ([cookie.name isEqualToString:@"identity.provider.sid"]) {
-                    token = cookie.value;
+                    sessionToken = cookie.value;
                 }
             }
         }
         
-        if (! token) {
+        if (! sessionToken) {
             // TODO: Proper error
             NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                                  code:401
@@ -129,7 +131,7 @@
             return;
         }
         
-        NSLog(@"Token: %@", token);
+        self.completionBlock(sessionToken);
     }];
     [loginRequest resume];
     self.loginRequest = loginRequest;

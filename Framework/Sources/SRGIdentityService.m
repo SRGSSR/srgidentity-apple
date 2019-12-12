@@ -305,8 +305,12 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
 {
+    if (self.loggedIn) {
+        return NO;
+    }
+ 
 #if TARGET_OS_IOS
-    if (s_loggingIn || self.loggedIn) {
+    if (s_loggingIn) {
         return NO;
     }
     
@@ -378,10 +382,16 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     s_loggingIn = YES;
     return YES;
 #else
-    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL
-                                                                                                             websiteURL:self.websiteURL
-                                                                                                           emailAddress:emailAddress];
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+    SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL websiteURL:self.websiteURL emailAddress:emailAddress completionBlock:^(NSString * _Nonnull sessionToken) {
+        [topViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        self.sessionToken = sessionToken;
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                            object:self
+                                                          userInfo:nil];
+        [self updateAccount];
+    }];
     [topViewController presentViewController:loginViewController animated:YES completion:nil];
     return YES;
 #endif
@@ -604,7 +614,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     }
     
     NSString *sessionToken = [self queryItemValueFromURL:callbackURL withName:@"token"];
-    if (sessionToken) {        
+    if (sessionToken) {
         self.sessionToken = sessionToken;
         
         if (! wasLoggedIn) {
