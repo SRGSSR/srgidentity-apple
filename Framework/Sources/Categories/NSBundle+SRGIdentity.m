@@ -8,6 +8,16 @@
 
 #import "SRGIdentityService.h"
 
+NSString *SRGIdentityResourceNameForUIClass(Class cls)
+{
+    NSString *name = NSStringFromClass(cls);
+#if TARGET_OS_TV
+    return [name stringByAppendingString:@"~tvos"];
+#else
+    return [name stringByAppendingString:@"~ios"];
+#endif
+}
+
 @implementation NSBundle (SRGIdentity)
 
 #pragma mark Class methods
