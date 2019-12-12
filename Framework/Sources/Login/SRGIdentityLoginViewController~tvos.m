@@ -22,6 +22,8 @@
 @property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 
+@property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
+
 @property (nonatomic, weak) SRGRequest *loginRequest;
 
 @end
@@ -56,6 +58,8 @@
     self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder");
     
     self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder");
+    
+    self.instructionsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Visit %@ on another device to sign up", @"Instructions for signup on Apple TV (visit a website on another device)"), self.websiteURL.absoluteString];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

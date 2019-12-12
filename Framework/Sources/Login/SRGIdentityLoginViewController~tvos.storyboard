@@ -45,11 +45,22 @@
                                     <action selector="login:" destination="sos-sA-1JP" eventType="primaryActionTriggered" id="JSL-6y-hTQ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;instructions&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-WR-E42">
+                                <rect key="frame" x="460" y="707" width="1000" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1000" id="Ddm-OE-Ruq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
                             <constraint firstItem="lOk-Yf-oRb" firstAttribute="width" secondItem="mUl-KL-pYW" secondAttribute="width" id="2ay-d1-UQZ"/>
                             <constraint firstItem="mUl-KL-pYW" firstAttribute="centerX" secondItem="U0z-dS-IAa" secondAttribute="centerX" id="67X-qF-Agk"/>
+                            <constraint firstItem="Xpy-WR-E42" firstAttribute="centerX" secondItem="mUl-KL-pYW" secondAttribute="centerX" id="Go7-aG-VgS"/>
                             <constraint firstItem="yxE-1m-7OF" firstAttribute="top" secondItem="lOk-Yf-oRb" secondAttribute="bottom" constant="40" id="Pxi-w4-oUi"/>
+                            <constraint firstItem="Xpy-WR-E42" firstAttribute="top" secondItem="yxE-1m-7OF" secondAttribute="bottom" constant="80" id="TjN-kh-2kP"/>
                             <constraint firstItem="lOk-Yf-oRb" firstAttribute="top" secondItem="mUl-KL-pYW" secondAttribute="bottom" constant="40" id="Uo0-nb-fSB"/>
                             <constraint firstItem="lOk-Yf-oRb" firstAttribute="centerX" secondItem="mUl-KL-pYW" secondAttribute="centerX" id="lIr-RC-uBR"/>
                             <constraint firstItem="mUl-KL-pYW" firstAttribute="top" secondItem="U0z-dS-IAa" secondAttribute="top" constant="321" id="nQw-Aa-9kk"/>
@@ -59,6 +70,7 @@
                     </view>
                     <connections>
                         <outlet property="emailAddressTextField" destination="mUl-KL-pYW" id="fq8-Wm-Wno"/>
+                        <outlet property="instructionsLabel" destination="Xpy-WR-E42" id="Swj-Sb-23t"/>
                         <outlet property="passwordTextField" destination="lOk-Yf-oRb" id="74k-fK-48b"/>
                     </connections>
                 </viewController>
