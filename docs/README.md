@@ -1,4 +1,4 @@
-[![SRG Media Player logo](README-images/logo.png)](https://github.com/SRGSSR/srgidentity-apple)
+[![SRG Identity logo](README-images/logo.png)](https://github.com/SRGSSR/srgidentity-apple)
 
 [![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgidentity-apple)](https://github.com/SRGSSR/srgidentity-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgidentity-apple) [![Build Status](https://travis-ci.org/SRGSSR/srgidentity-apple.svg?branch=master)](https://travis-ci.org/SRGSSR/srgidentity-apple/branches) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgidentity-apple)](https://github.com/SRGSSR/srgidentity-apple/blob/master/LICENSE)
 
