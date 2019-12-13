@@ -8,9 +8,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  A view controller to be presented modally, allowing a user to enter her credentials.
+ */
 API_AVAILABLE(tvos(9.0)) API_UNAVAILABLE(ios)
 @interface SRGIdentityLoginViewController : UIViewController
 
+/**
+ *  Instantiate the view controller. The `tokenBlock` is called when a token has been retrieved, whereas the
+ *  `dismissalBlock` is always called when the view controller is dismissed.
+ */
 - (instancetype)initWithWebserviceURL:(NSURL *)webserviceURL
                            websiteURL:(NSURL *)websiteURL
                          emailAddress:(nullable NSString *)emailAddress

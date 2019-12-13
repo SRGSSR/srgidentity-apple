@@ -8,7 +8,7 @@ The SRG Identity framework is a simple way to authenticate users within SRG SSR 
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version.
+The library is suitable for applications running on iOS 9, tvOS 9 and above. The project is meant to be opened with the latest Xcode version.
 
 ## Contributing
 
