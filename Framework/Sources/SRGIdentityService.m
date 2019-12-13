@@ -63,14 +63,6 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".account"];
 }
 
-static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options);
-
-@interface NSObject (SRGIdentityApplicationDelegateHooks)
-
-- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
-
-@end
-
 @interface SRGIdentityService ()
 #if TARGET_OS_IOS
 <SFSafariViewControllerDelegate>
@@ -91,34 +83,6 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 @end
 
-__attribute__((constructor)) static void SRGIdentityServiceInit(void)
-{    
-    NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
-    
-    // The `-application:openURL:options:` application delegate method must be available at the time the application is
-    // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
-    unsigned int numberOfClasses = 0;
-    Class *classList = objc_copyClassList(&numberOfClasses);
-    for (unsigned int i = 0; i < numberOfClasses; ++i) {
-        Class cls = classList[i];
-        if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
-            Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
-            if (! method) {
-                method = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
-                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(method), method_getTypeEncoding(method));
-            }
-            
-            NSValue *key = [NSValue valueWithNonretainedObject:cls];
-            originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
-            
-            class_replaceMethod(cls, @selector(application:openURL:options:), (IMP)swizzled_application_openURL_options, method_getTypeEncoding(method));
-        }
-    }
-    free(classList);
-    
-    s_originalImplementations = originalImplementations.copy;
-}
-
 @implementation SRGIdentityService
 
 #pragma mark Class methods
@@ -131,23 +95,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 + (void)setCurrentIdentityService:(SRGIdentityService *)currentIdentityService
 {
     s_currentIdentityService = currentIdentityService;
-}
-
-+ (NSString *)applicationURLScheme
-{
-    static NSString *URLScheme;
-    static dispatch_once_t s_onceToken;
-    dispatch_once(&s_onceToken, ^{
-        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
-        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
-        URLScheme = bundleURLSchemes.firstObject;
-        if (! URLScheme) {
-            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
-                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
-                                "to allow a correct authentication workflow.");
-        }
-    });
-    return URLScheme;
 }
 
 #pragma mark Object lifecycle
@@ -253,7 +200,26 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
+#if TARGET_OS_IOS
+
 #pragma mark URL handling
+
++ (NSString *)applicationURLScheme
+{
+    static NSString *URLScheme;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
+        URLScheme = bundleURLSchemes.firstObject;
+        if (! URLScheme) {
+            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
+                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
+                                "to allow a correct authentication workflow.");
+        }
+    });
+    return URLScheme;
+}
 
 - (NSURL *)redirectURL
 {
@@ -300,6 +266,8 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     return queryItem.value;
 }
+
+#endif
 
 #pragma mark Login / logout
 
@@ -494,6 +462,13 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     self.accountRequest = accountRequest;
 }
 
+#pragma mark Unauthorization reporting
+
+- (void)reportUnauthorization
+{
+    [self updateAccount];
+}
+
 #if TARGET_OS_IOS
 
 #pragma mark Account view
@@ -559,15 +534,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     [self dismissAccountView];
 }
 
-#endif
-
-#pragma mark Unauthorization reporting
-
-- (void)reportUnauthorization
-{
-    [self updateAccount];
-}
-
 #pragma mark Callback URL handling
 
 - (BOOL)handleCallbackURL:(NSURL *)callbackURL
@@ -582,10 +548,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     if ([action isEqualToString:@"unauthorized"]) {
         [self.accountRequest cancel];
         [self cleanup];
-        
-#if TARGET_OS_IOS
         [self dismissAccountView];
-#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -597,10 +560,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     else if ([action isEqualToString:@"log_out"]) {
         [self.accountRequest cancel];
         [self cleanup];
-        
-#if TARGET_OS_IOS
         [self dismissAccountView];
-#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -612,10 +572,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     else if ([action isEqualToString:@"account_deleted"]) {
         [self.accountRequest cancel];
         [self cleanup];
-        
-#if TARGET_OS_IOS
         [self dismissAccountView];
-#endif
         
         if (wasLoggedIn) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLogoutNotification
@@ -650,8 +607,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     
     return NO;
 }
-
-#if TARGET_OS_IOS
 
 #pragma mark SFSafariViewControllerDelegate delegate
 
@@ -692,6 +647,45 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 @end
 
+#if TARGET_OS_IOS
+
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options);
+
+@interface NSObject (SRGIdentityApplicationDelegateHooks)
+
+- (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
+@end
+
+__attribute__((constructor)) static void SRGIdentityServiceInit(void)
+{
+    NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
+    
+    // The `-application:openURL:options:` application delegate method must be available at the time the application is
+    // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
+    unsigned int numberOfClasses = 0;
+    Class *classList = objc_copyClassList(&numberOfClasses);
+    for (unsigned int i = 0; i < numberOfClasses; ++i) {
+        Class cls = classList[i];
+        if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
+            Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
+            if (! method) {
+                method = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
+                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(method), method_getTypeEncoding(method));
+            }
+            
+            NSValue *key = [NSValue valueWithNonretainedObject:cls];
+            originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
+            
+            class_replaceMethod(cls, @selector(application:openURL:options:), (IMP)swizzled_application_openURL_options, method_getTypeEncoding(method));
+        }
+    }
+    free(classList);
+    
+    s_originalImplementations = originalImplementations.copy;
+}
+
+
 @implementation NSObject (SRGIdentityApplicationDelegateHooks)
 
 - (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
@@ -731,3 +725,5 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
     SRGIdentityLogError(@"service", @"Could not call open URL app delegate original implementation for %@", self);
     return NO;
 }
+
+#endif
