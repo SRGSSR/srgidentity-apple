@@ -21,6 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet UIButton *loginButton;
 
 @property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
 
@@ -77,6 +78,58 @@
     }
 }
 
+#pragma mark Requests
+
+- (SRGRequest *)loginRequestWithEmailAddress:(NSString *)emailAddress password:(NSString *)password completionHandler:(void (^)(NSString * _Nullable sessionToken, NSError * _Nullable error))completionHandler
+{
+    NSParameterAssert(emailAddress);
+    NSParameterAssert(password);
+    NSParameterAssert(completionHandler);
+    
+    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/login"];
+    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
+    URLRequest.HTTPMethod = @"POST";
+    [URLRequest setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
+    NSString *encodedEmailAddress = [emailAddress stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
+    NSString *encodedPassword = [password stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
+    
+    NSString *HTTPBodyString = [NSString stringWithFormat:@"login_email=%@&login_password=%@", encodedEmailAddress, encodedPassword];
+    NSData *HTTPBody = [HTTPBodyString dataUsingEncoding:NSUTF8StringEncoding];
+    [URLRequest setValue:@(HTTPBody.length).stringValue forHTTPHeaderField:@"Content-Length"];
+    URLRequest.HTTPBody = HTTPBody;
+    
+    return [SRGRequest dataRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            completionHandler(nil, error);
+            return;
+        }
+        
+        // Even if credentials are invalid, the request ends with a 200. Only if credentials are valid, though, we find the session token
+        // in the response cookies.
+        NSString *sessionToken = nil;
+        if ([response isKindOfClass:NSHTTPURLResponse.class]) {
+            NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+            NSArray<NSHTTPCookie *> *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:HTTPResponse.allHeaderFields forURL:HTTPResponse.URL];
+            for (NSHTTPCookie *cookie in cookies) {
+                if ([cookie.name isEqualToString:@"identity.provider.sid"]) {
+                    sessionToken = cookie.value;
+                }
+            }
+        }
+        
+        if (! sessionToken) {
+            NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                 code:401
+                                             userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Wrong email address or password", @"Error message displayed when incorrect user credentials have been supplied") }];
+            completionHandler(nil, error);
+            return;
+        }
+        
+        completionHandler(sessionToken, nil);
+    }];
+}
+
 #pragma mark Actions
 
 - (IBAction)login:(id)sender
@@ -101,55 +154,26 @@
         return;
     }
     
-    NSURL *URL = [self.webserviceURL URLByAppendingPathComponent:@"v1/login"];
-    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:URL];
-    URLRequest.HTTPMethod = @"POST";
-    [URLRequest setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    self.loginButton.enabled = NO;
     
-    NSString *encodedEmailAddress = [emailAddress stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
-    NSString *encodedPassword = [password stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.alphanumericCharacterSet];
-    
-    NSString *HTTPBodyString = [NSString stringWithFormat:@"login_email=%@&login_password=%@", encodedEmailAddress, encodedPassword];
-    NSData *HTTPBody = [HTTPBodyString dataUsingEncoding:NSUTF8StringEncoding];
-    [URLRequest setValue:@(HTTPBody.length).stringValue forHTTPHeaderField:@"Content-Length"];
-    URLRequest.HTTPBody = HTTPBody;
-    
-    SRGRequest *loginRequest = [SRGRequest dataRequestWithURLRequest:URLRequest session:NSURLSession.sharedSession completionBlock:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        void (^showError)(NSError *) = ^(NSError *error) {
+    SRGRequest *loginRequest = [[self loginRequestWithEmailAddress:emailAddress password:password completionHandler:^(NSString * _Nullable sessionToken, NSError * _Nullable error) {
+        self.loginButton.enabled = YES;
+        
+        if (error) {
+            if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+                return;
+            }
+            
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", "Title of a generic error alert")
                                                                                      message:error.localizedDescription
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
-        };
-        
-        if (error) {
-            showError(error);
-            return;
-        }
-        
-        NSString *sessionToken = nil;
-        if ([response isKindOfClass:NSHTTPURLResponse.class]) {
-            NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-            NSArray<NSHTTPCookie *> *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:HTTPResponse.allHeaderFields forURL:HTTPResponse.URL];
-            for (NSHTTPCookie *cookie in cookies) {
-                if ([cookie.name isEqualToString:@"identity.provider.sid"]) {
-                    sessionToken = cookie.value;
-                }
-            }
-        }
-        
-        if (! sessionToken) {
-            // TODO: Proper error
-            NSError *error = [NSError errorWithDomain:NSURLErrorDomain
-                                                 code:401
-                                             userInfo:@{ NSLocalizedDescriptionKey : SRGIdentityLocalizedString(@"Wrong email address or password", @"Error message displayed when incorrect user credentials have been supplied") }];
-            showError(error);
             return;
         }
         
         self.tokenBlock(sessionToken);
-    }];
+    }] requestWithOptions:SRGRequestOptionCancellationErrorsEnabled];
     [loginRequest resume];
     self.loginRequest = loginRequest;
 }
