@@ -21,14 +21,14 @@ typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
     /**
      *  Login is displayed in a dedicated Safari web view.
      */
-    SRGIdentityLoginMethodSafari = SRGIdentityLoginMethodDefault,
+    SRGIdentityLoginMethodSafari API_UNAVAILABLE(tvos) = SRGIdentityLoginMethodDefault,
     /**
      *  Use an authentication session when available (iOS 11 and 12 only). User credentials can be shared between your
      *  app and Safari. This makes it possible for a user to automatically authenticate in another app associated with
      *  the same identity provider (if credentials are still available). Note that a system alert will inform the user
      *  about credentials sharing first.
      */
-    SRGIdentityLoginMethodAuthenticationSession
+    SRGIdentityLoginMethodAuthenticationSession API_UNAVAILABLE(tvos)
 };
 
 /**
