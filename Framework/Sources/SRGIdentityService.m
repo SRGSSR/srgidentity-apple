@@ -63,6 +63,44 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".account"];
 }
 
+// TODO: Use secure unarchiving directly once iOS 11 is the minimum version
+static SRGAccount *SRGIdentityAccountFromData(NSData *data)
+{
+    if (! data) {
+        return nil;
+    }
+    
+#if TARGET_OS_TV
+    return [NSKeyedUnarchiver unarchivedObjectOfClass:SRGAccount.class fromData:data error:NULL];
+#else
+    if (@available(iOS 11, *)) {
+        return [NSKeyedUnarchiver unarchivedObjectOfClass:SRGAccount.class fromData:data error:NULL];
+    }
+    else {
+        return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
+#endif
+}
+
+// TODO: Use secure archiving directly once iOS 11 is the minimum version
+static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
+{
+    if (! account) {
+        return nil;
+    }
+    
+#if TARGET_OS_TV
+    return [NSKeyedArchiver archivedDataWithRootObject:account requiringSecureCoding:YES error:NULL];
+#else
+    if (@available(iOS 11, *)) {
+        return [NSKeyedArchiver archivedDataWithRootObject:account requiringSecureCoding:YES error:NULL];
+    }
+    else {
+        return [NSKeyedArchiver archivedDataWithRootObject:account];
+    }
+#endif
+}
+
 @interface SRGIdentityService ()
 #if TARGET_OS_IOS
 <SFSafariViewControllerDelegate>
@@ -172,7 +210,7 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
 - (SRGAccount *)account
 {
     NSData *accountData = [self.keyChainStore dataForKey:SRGServiceIdentifierAccountStoreKey()];
-    return accountData ? [NSKeyedUnarchiver unarchiveObjectWithData:accountData] : nil;
+    return SRGIdentityAccountFromData(accountData);
 }
 
 - (void)setAccount:(SRGAccount *)account
@@ -180,7 +218,7 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     userInfo[SRGIdentityServicePreviousAccountKey] = self.account;
     
-    NSData *accountData = account ? [NSKeyedArchiver archivedDataWithRootObject:account] : nil;
+    NSData *accountData = SRGIdentityDataFromAccount(account);
     [self.keyChainStore setData:accountData forKey:SRGServiceIdentifierAccountStoreKey()];
     
     userInfo[SRGIdentityServiceAccountKey] = account;

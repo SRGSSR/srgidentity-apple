@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, SRGGender) {
 /**
  *  Account information.
  */
-@interface SRGAccount : MTLModel <MTLJSONSerializing>
+@interface SRGAccount : MTLModel <MTLJSONSerializing, NSSecureCoding>
 
 /**
  *  The unique account identifier.
