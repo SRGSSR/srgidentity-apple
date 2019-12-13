@@ -59,7 +59,12 @@
     
     self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder");
     
-    self.instructionsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Visit %@ on another device to sign up", @"Instructions for signup on Apple TV (visit a website on another device)"), self.websiteURL.absoluteString];
+    NSMutableAttributedString *instructions = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV (visit a website on another device)")];
+    [instructions appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+    [instructions appendAttributedString:[[NSAttributedString alloc] initWithString:self.websiteURL.absoluteString
+                                                                         attributes:@{ NSForegroundColorAttributeName : UIColor.blueColor }]];
+    
+    self.instructionsLabel.attributedText = instructions.copy;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -89,7 +94,7 @@
     NSString *password = self.passwordTextField.text;
     if (password.length == 0) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SRGIdentityLocalizedString(@"Incomplete information", @"Error title for incomplete login information")
-                                                                                 message:SRGIdentityLocalizedString(@"An password is mandatory", @"Error description when no password has been provided")
+                                                                                 message:SRGIdentityLocalizedString(@"A password is mandatory", @"Error description when no password has been provided")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];

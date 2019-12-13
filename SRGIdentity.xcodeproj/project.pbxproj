@@ -44,6 +44,7 @@
 		6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */; };
+		6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FC7C5A223A3A13E0058349C /* Images.xcassets */; };
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */; };
 		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
 		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */; };
@@ -158,6 +159,7 @@
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FC7C5A223A3A13E0058349C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
 		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityNavigationController~ios.m"; sourceTree = "<group>"; };
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityWebViewController~ios.m"; sourceTree = "<group>"; };
@@ -415,8 +417,9 @@
 		6FCBFEF6210B571C006BC355 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6F19DA7D221DF6E100085C7D /* Localizable.strings */,
+				6FC7C5A223A3A13E0058349C /* Images.xcassets */,
 				083FBD9D217A84D60025253D /* Info.plist */,
+				6F19DA7D221DF6E100085C7D /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */,
+				6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */,
 				6F9A1FE023A27199002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard in Resources */,
 				6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */,
 			);
