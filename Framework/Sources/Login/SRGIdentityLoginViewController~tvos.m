@@ -8,6 +8,7 @@
 
 #import "NSBundle+SRGIdentity.h"
 
+#import <SRGAppearance/SRGAppearance.h>
 #import <SRGNetwork/SRGNetwork.h>
 
 @interface SRGIdentityLoginViewController ()
@@ -57,8 +58,12 @@
     
     self.emailAddressTextField.text = self.emailAddress;
     self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder");
+    self.emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
     
     self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder");
+    self.passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
+    
+    self.loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
     
     NSMutableAttributedString *instructions = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV (visit a website on another device)")];
     [instructions appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
@@ -66,6 +71,8 @@
                                                                          attributes:@{ NSForegroundColorAttributeName : UIColor.blueColor }]];
     
     self.instructionsLabel.attributedText = instructions.copy;
+    self.instructionsLabel.font = [UIFont srg_regularFontWithSize:30.f];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated

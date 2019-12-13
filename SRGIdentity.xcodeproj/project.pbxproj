@@ -45,6 +45,8 @@
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */; };
 		6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FC7C5A223A3A13E0058349C /* Images.xcassets */; };
+		6FC7C5A523A3A6D80058349C /* SRGAppearance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; };
+		6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */; };
 		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
 		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */; };
@@ -93,6 +95,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6FC7C5A723A3A6D80058349C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +173,7 @@
 		6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6FC7C5A223A3A13E0058349C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGAppearance.framework; path = Carthage/Build/iOS/SRGAppearance.framework; sourceTree = "<group>"; };
 		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
 		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityNavigationController~ios.m"; sourceTree = "<group>"; };
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityWebViewController~ios.m"; sourceTree = "<group>"; };
@@ -195,6 +209,7 @@
 				080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */,
 				080D0BDA21356A1200AA519A /* UICKeyChainStore.framework in Frameworks */,
 				084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */,
+				6FC7C5A523A3A6D80058349C /* SRGAppearance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +391,7 @@
 				080D0BE42135776000AA519A /* Mantle.framework */,
 				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
+				6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */,
 				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
 				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
 				080D0BD921356A1200AA519A /* UICKeyChainStore.framework */,
@@ -503,6 +519,7 @@
 				6F0EB52D20FC7F58009C02CF /* Frameworks */,
 				6F0EB52E20FC7F58009C02CF /* Headers */,
 				6F0EB52F20FC7F58009C02CF /* Resources */,
+				6FC7C5A723A3A6D80058349C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -671,6 +688,7 @@
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/libextobjc.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/MAKVONotificationCenter.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/Mantle.framework",
+				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGAppearance.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGLogger.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGNetwork.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/UICKeyChainStore.framework",
@@ -932,6 +950,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)/Static",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1058,6 +1077,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)/Static",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1302,6 +1322,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1325,6 +1346,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
