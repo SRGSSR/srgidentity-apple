@@ -200,75 +200,6 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     [self.keyChainStore setString:sessionToken forKey:SRGServiceIdentifierSessionTokenStoreKey()];
 }
 
-#if TARGET_OS_IOS
-
-#pragma mark URL handling
-
-+ (NSString *)applicationURLScheme
-{
-    static NSString *URLScheme;
-    static dispatch_once_t s_onceToken;
-    dispatch_once(&s_onceToken, ^{
-        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
-        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
-        URLScheme = bundleURLSchemes.firstObject;
-        if (! URLScheme) {
-            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
-                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
-                                "to allow a correct authentication workflow.");
-        }
-    });
-    return URLScheme;
-}
-
-- (NSURL *)redirectURL
-{
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
-    URLComponents.scheme = [SRGIdentityService applicationURLScheme];
-    URLComponents.queryItems = @[ [[NSURLQueryItem alloc] initWithName:SRGIdentityServiceQueryItemName value:self.identifier] ];
-    return URLComponents.URL;
-}
-
-- (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
-{
-    NSURL *redirectURL = [self redirectURL];
-    
-    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
-    if (emailAddress) {
-        NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:emailAddress];
-        queryItems = [queryItems arrayByAddingObject:emailQueryItem];
-    }
-    URLComponents.queryItems = queryItems;
-    return URLComponents.URL;
-}
-
-- (BOOL)shouldHandleCallbackURL:(NSURL *)URL
-{
-    NSURL *standardizedURL = URL.standardizedURL;
-    NSURL *standardizedRedirectURL = [self redirectURL].standardizedURL;
-    
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
-    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-    
-    return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
-        && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
-        && [standardizedURL.path isEqual:standardizedRedirectURL.path]
-        && [self.identifier isEqualToString:queryItem.value];
-}
-
-- (NSString *)queryItemValueFromURL:(NSURL *)URL withName:(NSString *)queryName
-{
-    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), queryName];
-    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-    return queryItem.value;
-}
-
-#endif
-
 #pragma mark Login / logout
 
 - (BOOL)loginWithEmailAddress:(NSString *)emailAddress
@@ -346,12 +277,7 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
     SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL websiteURL:self.websiteURL emailAddress:emailAddress tokenBlock:^(NSString * _Nonnull sessionToken) {
         [topViewController dismissViewControllerAnimated:YES completion:nil];
-        
-        self.sessionToken = sessionToken;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
-                                                            object:self
-                                                          userInfo:nil];
-        [self updateAccount];
+        [self handleSessionToken:sessionToken];
     } dismissalBlock:^{
         s_loggingIn = NO;
     }];
@@ -470,6 +396,71 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
 }
 
 #if TARGET_OS_IOS
+
+#pragma mark URL handling
+
++ (NSString *)applicationURLScheme
+{
+    static NSString *URLScheme;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        NSArray *bundleURLTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+        NSArray<NSString *> *bundleURLSchemes = bundleURLTypes.firstObject[@"CFBundleURLSchemes"];
+        URLScheme = bundleURLSchemes.firstObject;
+        if (! URLScheme) {
+            SRGIdentityLogError(@"service", @"No URL scheme declared in your application Info.plist file under the "
+                                "'CFBundleURLTypes' key. The application must at least contain one item with one scheme "
+                                "to allow a correct authentication workflow.");
+        }
+    });
+    return URLScheme;
+}
+
+- (NSURL *)redirectURL
+{
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:self.webserviceURL resolvingAgainstBaseURL:NO];
+    URLComponents.scheme = [SRGIdentityService applicationURLScheme];
+    URLComponents.queryItems = @[ [[NSURLQueryItem alloc] initWithName:SRGIdentityServiceQueryItemName value:self.identifier] ];
+    return URLComponents.URL;
+}
+
+- (NSURL *)loginRequestURLWithEmailAddress:(NSString *)emailAddress
+{
+    NSURL *redirectURL = [self redirectURL];
+    
+    NSURL *URL = [self.websiteURL URLByAppendingPathComponent:@"login"];
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSArray<NSURLQueryItem *> *queryItems = @[ [[NSURLQueryItem alloc] initWithName:@"redirect" value:redirectURL.absoluteString] ];
+    if (emailAddress) {
+        NSURLQueryItem *emailQueryItem = [[NSURLQueryItem alloc] initWithName:@"email" value:emailAddress];
+        queryItems = [queryItems arrayByAddingObject:emailQueryItem];
+    }
+    URLComponents.queryItems = queryItems;
+    return URLComponents.URL;
+}
+
+- (BOOL)shouldHandleCallbackURL:(NSURL *)URL
+{
+    NSURL *standardizedURL = URL.standardizedURL;
+    NSURL *standardizedRedirectURL = [self redirectURL].standardizedURL;
+    
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    
+    return [standardizedURL.scheme isEqualToString:standardizedRedirectURL.scheme]
+        && [standardizedURL.host isEqualToString:standardizedRedirectURL.host]
+        && [standardizedURL.path isEqual:standardizedRedirectURL.path]
+        && [self.identifier isEqualToString:queryItem.value];
+}
+
+- (NSString *)queryItemValueFromURL:(NSURL *)URL withName:(NSString *)queryName
+{
+    NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), queryName];
+    NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+    return queryItem.value;
+}
 
 #pragma mark Account view
 
@@ -617,6 +608,19 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
                                                         object:self
                                                       userInfo:nil];
+}
+
+#else
+
+#pragma mark Token handling
+
+- (void)handleSessionToken:(NSString *)sessionToken
+{
+    self.sessionToken = sessionToken;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidLoginNotification
+                                                        object:self
+                                                      userInfo:nil];
+    [self updateAccount];
 }
 
 #endif
