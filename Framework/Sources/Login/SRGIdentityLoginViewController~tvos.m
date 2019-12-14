@@ -66,7 +66,7 @@
     
     self.loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
     
-    self.instructionsLabel.text = NSLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV (visit a website on another device)");
+    self.instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
     self.instructionsLabel.font = [UIFont srg_regularFontWithSize:30.f];
     
     self.linkLabel.text = self.websiteURL.absoluteString;
@@ -145,7 +145,7 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SRGIdentityLocalizedString(@"Incomplete information", @"Error title for incomplete login information")
                                                                                  message:SRGIdentityLocalizedString(@"An email address is mandatory", @"Error description when no email address has been provided")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:SRGIdentityLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
@@ -155,7 +155,7 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SRGIdentityLocalizedString(@"Incomplete information", @"Error title for incomplete login information")
                                                                                  message:SRGIdentityLocalizedString(@"A password is mandatory", @"Error description when no password has been provided")
                                                                           preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
+        [alertController addAction:[UIAlertAction actionWithTitle:SRGIdentityLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alertController animated:YES completion:nil];
         return;
     }
@@ -170,10 +170,10 @@
                 return;
             }
             
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", "Title of a generic error alert")
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:SRGIdentityLocalizedString(@"Error", "Title of a generic error alert")
                                                                                      message:error.localizedDescription
                                                                               preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
+            [alertController addAction:[UIAlertAction actionWithTitle:SRGIdentityLocalizedString(@"Dismiss", @"Dismiss button label") style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
             return;
         }
