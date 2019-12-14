@@ -46,7 +46,6 @@
 		6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */; };
 		6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FC7C5A223A3A13E0058349C /* Images.xcassets */; };
 		6FC7C5A523A3A6D80058349C /* SRGAppearance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; };
-		6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */; };
 		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
 		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */; };
@@ -95,17 +94,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6FC7C5A723A3A6D80058349C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,7 +507,6 @@
 				6F0EB52D20FC7F58009C02CF /* Frameworks */,
 				6F0EB52E20FC7F58009C02CF /* Headers */,
 				6F0EB52F20FC7F58009C02CF /* Resources */,
-				6FC7C5A723A3A6D80058349C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
