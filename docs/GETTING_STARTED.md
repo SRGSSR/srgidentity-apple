@@ -29,7 +29,10 @@ To allow for a user to login, call the `-loginWithEmailAddress:` instance method
 [SRGIdentityService.currentIdentityService loginWithEmailAddress:nil];
 ```
 
-On iOS this presents a sandboxed Safari browser, in which the user can supply her credentials or open an account. On tvOS a dedicated in-app view is presented, with which currently users can only log in (a message invite them to open an account on a computer or mobile device). A user remains logged in until she logs out.
+- On iOS this presents a sandboxed Safari browser, in which the user can supply her credentials or open an account.
+- On tvOS a dedicated in-app view is presented, with which currently users can only log in (a message invite them to open an account on a computer or mobile device).
+
+A user remains logged in until she logs out.
 
 #### Remark
 
