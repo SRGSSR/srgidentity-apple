@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A basic web view controller class for in-app display.
  */
+API_UNAVAILABLE(tvos)
 @interface SRGIdentityWebViewController : UIViewController <WKNavigationDelegate, UIScrollViewDelegate>
 
 /**

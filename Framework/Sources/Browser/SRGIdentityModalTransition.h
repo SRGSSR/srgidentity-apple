@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Manage a custom modal transition.
  */
+API_UNAVAILABLE(tvos)
 @interface SRGIdentityModalTransition : NSObject <UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning>
 
 /**

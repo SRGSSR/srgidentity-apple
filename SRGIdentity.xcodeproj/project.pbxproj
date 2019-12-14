@@ -38,9 +38,15 @@
 		6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F979F3221F72A18002A2495 /* UIWindow+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */; };
 		6F979F3321F72A18002A2495 /* UIWindow+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */; };
+		6F9A1FDC23A27153002ECFC8 /* SRGIdentityLoginViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9A1FDA23A27153002ECFC8 /* SRGIdentityLoginViewController.h */; };
+		6F9A1FDD23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9A1FDB23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m */; };
+		6F9A1FE023A27199002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F9A1FDE23A27193002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard */; };
 		6F9FFAAC2167924E00F781A0 /* SRGNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */; };
 		6FB74D6C2101D4D200E2D365 /* SRGIdentity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0EB53120FC7F58009C02CF /* SRGIdentity.framework */; };
 		6FB74D772101D5D600E2D365 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */; };
+		6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FC7C5A223A3A13E0058349C /* Images.xcassets */; };
+		6FC7C5A523A3A6D80058349C /* SRGAppearance.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; };
+		6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */; };
 		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
 		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */; };
@@ -89,6 +95,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6F8A940420FDD01B00AA6434 /* SRGIdentity.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6FC7C5A723A3A6D80058349C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6FC7C5A623A3A6D80058349C /* SRGAppearance.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,10 +165,15 @@
 		6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "DemosViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGIdentity.m"; sourceTree = "<group>"; };
 		6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGIdentity.h"; sourceTree = "<group>"; };
+		6F9A1FDA23A27153002ECFC8 /* SRGIdentityLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLoginViewController.h; sourceTree = "<group>"; };
+		6F9A1FDB23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityLoginViewController~tvos.m"; sourceTree = "<group>"; };
+		6F9A1FDE23A27193002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "SRGIdentityLoginViewController~tvos.storyboard"; sourceTree = "<group>"; };
 		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
 		6FB74D672101D4D200E2D365 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB74D742101D5D600E2D365 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
 		6FB74D762101D5D600E2D365 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FC7C5A223A3A13E0058349C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGAppearance.framework; path = Carthage/Build/iOS/SRGAppearance.framework; sourceTree = "<group>"; };
 		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
 		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityNavigationController~ios.m"; sourceTree = "<group>"; };
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityWebViewController~ios.m"; sourceTree = "<group>"; };
@@ -187,6 +209,7 @@
 				080D0BE321356CB600AA519A /* MAKVONotificationCenter.framework in Frameworks */,
 				080D0BDA21356A1200AA519A /* UICKeyChainStore.framework in Frameworks */,
 				084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */,
+				6FC7C5A523A3A6D80058349C /* SRGAppearance.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +302,7 @@
 			children = (
 				6FF8469F221BED95006FC3FC /* Browser */,
 				0829FA792136853C00FE0A28 /* Categories */,
+				6F9A1FD923A2712E002ECFC8 /* Login */,
 				0829FA742136853C00FE0A28 /* Model */,
 				0829FA772136853C00FE0A28 /* SRGIdentity.h */,
 				0829FA782136853C00FE0A28 /* SRGIdentity.m */,
@@ -367,12 +391,23 @@
 				080D0BE42135776000AA519A /* Mantle.framework */,
 				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
 				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
+				6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */,
 				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
 				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
 				080D0BD921356A1200AA519A /* UICKeyChainStore.framework */,
 				086FB2CA21368ADE00DE4CF2 /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F9A1FD923A2712E002ECFC8 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				6F9A1FDA23A27153002ECFC8 /* SRGIdentityLoginViewController.h */,
+				6F9A1FDB23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m */,
+				6F9A1FDE23A27193002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		6FB74D722101D5D600E2D365 /* Tests */ = {
@@ -398,8 +433,9 @@
 		6FCBFEF6210B571C006BC355 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				6F19DA7D221DF6E100085C7D /* Localizable.strings */,
+				6FC7C5A223A3A13E0058349C /* Images.xcassets */,
 				083FBD9D217A84D60025253D /* Info.plist */,
+				6F19DA7D221DF6E100085C7D /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -431,6 +467,7 @@
 				0829FA7C2136853C00FE0A28 /* SRGAccount.h in Headers */,
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
 				6F979F3321F72A18002A2495 /* UIWindow+SRGIdentity.h in Headers */,
+				6F9A1FDC23A27153002ECFC8 /* SRGIdentityLoginViewController.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,
@@ -482,6 +519,7 @@
 				6F0EB52D20FC7F58009C02CF /* Frameworks */,
 				6F0EB52E20FC7F58009C02CF /* Headers */,
 				6F0EB52F20FC7F58009C02CF /* Resources */,
+				6FC7C5A723A3A6D80058349C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -603,6 +641,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */,
+				6FC7C5A323A3A13E0058349C /* Images.xcassets in Resources */,
+				6F9A1FE023A27199002ECFC8 /* SRGIdentityLoginViewController~tvos.storyboard in Resources */,
 				6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,6 +688,7 @@
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/libextobjc.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/MAKVONotificationCenter.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/Mantle.framework",
+				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGAppearance.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGLogger.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGNetwork.framework",
 				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/UICKeyChainStore.framework",
@@ -684,6 +725,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition~ios.m in Sources */,
+				6F9A1FDD23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m in Sources */,
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
 				6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */,
 				6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController~ios.m in Sources */,
@@ -887,13 +929,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 1.0.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Debug-static";
 		};
@@ -908,6 +947,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)/Static",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1013,12 +1053,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 1.0.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Release-static";
@@ -1034,6 +1071,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)/Static",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1201,13 +1239,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 1.0.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -1259,12 +1294,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 1.0.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1278,6 +1310,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1301,6 +1334,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/$(CARTHAGE_PLATFORM)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

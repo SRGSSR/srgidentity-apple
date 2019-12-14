@@ -29,11 +29,14 @@ To allow for a user to login, call the `-loginWithEmailAddress:` instance method
 [SRGIdentityService.currentIdentityService loginWithEmailAddress:nil];
 ```
 
-This presents a sandboxed Safari browser, in which the user can supply her credentials or open an account. A user remains logged in until she logs out.
+- On iOS this presents a sandboxed Safari browser, in which the user can supply her credentials or open an account.
+- On tvOS a dedicated in-app view is presented, with which currently users can only log in (a message invite them to open an account on a computer or mobile device).
+
+A user remains logged in until she logs out.
 
 #### Remark
 
-Login occurs within a simple Safari in-app browser by default. Starting with iOS 11, you might prefer using an authentication session, which lets user credentials be shared between your app and Safari, providing automatic login for apps associated with the same identity provider. Before the user can enter her credentials, a system alert will be displayed to inform her about credential sharing.
+On iOS, login occurs within a simple Safari in-app browser by default. Starting with iOS 11, you might prefer using an authentication session, which lets user credentials be shared between your app and Safari, providing automatic login for apps associated with the same identity provider. Before the user can enter her credentials, a system alert will be displayed to inform her about credential sharing.
 
 To enable this feature, use the corresponding login method when creating the service:
 
@@ -47,13 +50,15 @@ On iOS 10 devices and older, the default Safari in-app browser will be used inst
 
 Once a user has successfully logged in, a corresponding session token is available in the keychain. Use the `SRGIdentityService.currentIdentityService.sessionToken` property when you need to retrieve it.
 
-### Account page
+### Account page (iOS only)
 
 When a user is logged in, its account information can be displayed and edited within your application through a dedicated web page. To display this page, call `-showAccountView`:
 
 ```objective-c
 [SRGIdentityService.currentIdentityService showAccountView];
 ```
+
+tvOS users must currently manage their account from a computer or mobile device.
 
 ### Logout
 
@@ -74,8 +79,8 @@ Instead, if you receive an unauthorization error from a third-party service, cal
 * If still authorized, nothing happens beside an account update. 
 * If confirmed to be unauthorized, the user is automatically logged out. In such cases, the `SRGIdentityServiceUserDidLogoutNotification` notification is sent with `SRGIdentityServiceUnauthorizedKey` set to `@YES` in its `userInfo` dictionary. You can for example use this information to display a corresponding information message to the user.
 
-### Sandboxed Safari browser support
+### Sandboxed Safari browser support (iOS only)
 
-Using `SRGIdentityLoginMethodDefault` or `SRGIdentityLoginMethodSafari` login methods, or any login methods with the iOS 9 or iOS 10 support, your application must declares at least one [custom URL scheme](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), which is then used by the framework to transfer control back from Safari to your application after successful login.
+Using `SRGIdentityLoginMethodDefault` or `SRGIdentityLoginMethodSafari` login methods, or any login methods with the iOS 9 or iOS 10 support, your application must declare at least one [custom URL scheme](https://developer.apple.com/documentation/uikit/core_app/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), which is then used by the framework to transfer control back from Safari to your application after successful login.
 
 If your application uses custom schemes for other purposes, implement the `-application:openURL:options:` application delegate method as usual. If no explicit URL handling is required, implementing this method is not required, as the framework will take care of injecting an implementation at runtime so that URL handling works.

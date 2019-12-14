@@ -44,6 +44,13 @@
     return s_mapping;
 }
 
+#pragma mark NSSecureCoding protocol
+
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 #pragma mark Transformers
 
 + (NSValueTransformer *)genderJSONTransformer
