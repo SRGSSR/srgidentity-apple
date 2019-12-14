@@ -25,7 +25,7 @@ platform :ios do
 
     override_test_product_names
 
-    run_tests_with_devices(['iPhone 11'])
+    run_tests_with_devices(['iPhone 11', 'Apple TV'])
 
     trainer(
       path: './fastlane',
