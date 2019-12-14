@@ -22,6 +22,8 @@
 		0829FA812136853C00FE0A28 /* NSBundle+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */; };
 		084CD6FF21696C0A00905A38 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 084CD6FE21696C0A00905A38 /* SRGLogger.framework */; };
 		086BB714216967220079483E /* SRGIdentityLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 086BB713216967220079483E /* SRGIdentityLogger.h */; };
+		0875854A23A573FC00FA7207 /* UIImage+SRGIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 0875854823A573FC00FA7207 /* UIImage+SRGIdentity.h */; };
+		0875854B23A573FC00FA7207 /* UIImage+SRGIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0875854923A573FC00FA7207 /* UIImage+SRGIdentity.m */; };
 		6F0C98F12121E26A00073AB6 /* SRGIdentity.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F0C98E62121E1C200073AB6 /* SRGIdentity.bundle */; };
 		6F19DA7F221DF6E100085C7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F19DA7D221DF6E100085C7D /* Localizable.strings */; };
 		6F55003C237BCB02003476E2 /* DemosViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */; };
@@ -123,6 +125,8 @@
 		086BB713216967220079483E /* SRGIdentityLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityLogger.h; sourceTree = "<group>"; };
 		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0875854823A573FC00FA7207 /* UIImage+SRGIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SRGIdentity.h"; sourceTree = "<group>"; };
+		0875854923A573FC00FA7207 /* UIImage+SRGIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SRGIdentity.m"; sourceTree = "<group>"; };
 		0895B2E023368DF7009922C6 /* TestApp.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = TestApp.xcconfig; sourceTree = "<group>"; };
 		6F0402F22331318700DA4D97 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		6F0402F3233131A000DA4D97 /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
@@ -242,10 +246,12 @@
 		0829FA792136853C00FE0A28 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */,
-				6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */,
 				0829FA7A2136853C00FE0A28 /* NSBundle+SRGIdentity.h */,
 				0829FA7B2136853C00FE0A28 /* NSBundle+SRGIdentity.m */,
+				0875854823A573FC00FA7207 /* UIImage+SRGIdentity.h */,
+				0875854923A573FC00FA7207 /* UIImage+SRGIdentity.m */,
+				6F979F3121F72A18002A2495 /* UIWindow+SRGIdentity.h */,
+				6F979F3021F72A18002A2495 /* UIWindow+SRGIdentity.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -456,6 +462,7 @@
 				0829FA802136853C00FE0A28 /* NSBundle+SRGIdentity.h in Headers */,
 				6F979F3321F72A18002A2495 /* UIWindow+SRGIdentity.h in Headers */,
 				6F9A1FDC23A27153002ECFC8 /* SRGIdentityLoginViewController.h in Headers */,
+				0875854A23A573FC00FA7207 /* UIImage+SRGIdentity.h in Headers */,
 				0829FA7E2136853C00FE0A28 /* SRGIdentity.h in Headers */,
 				080D0BD8213566C900AA519A /* SRGIdentityService.h in Headers */,
 				086BB714216967220079483E /* SRGIdentityLogger.h in Headers */,
@@ -711,6 +718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0875854B23A573FC00FA7207 /* UIImage+SRGIdentity.m in Sources */,
 				6FF846A9221BF93F006FC3FC /* SRGIdentityModalTransition~ios.m in Sources */,
 				6F9A1FDD23A27153002ECFC8 /* SRGIdentityLoginViewController~tvos.m in Sources */,
 				080D0BD7213566C900AA519A /* SRGIdentityService.m in Sources */,
