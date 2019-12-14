@@ -25,6 +25,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *loginButton;
 
 @property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
+@property (nonatomic, weak) IBOutlet UILabel *linkLabel;
 
 @property (nonatomic, weak) SRGRequest *loginRequest;
 
@@ -65,14 +66,12 @@
     
     self.loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
     
-    NSMutableAttributedString *instructions = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV (visit a website on another device)")];
-    [instructions appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-    [instructions appendAttributedString:[[NSAttributedString alloc] initWithString:self.websiteURL.absoluteString
-                                                                         attributes:@{ NSForegroundColorAttributeName : UIColor.blueColor }]];
-    
-    self.instructionsLabel.attributedText = instructions.copy;
+    self.instructionsLabel.text = NSLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV (visit a website on another device)");
     self.instructionsLabel.font = [UIFont srg_regularFontWithSize:30.f];
     
+    self.linkLabel.text = self.websiteURL.absoluteString;
+    self.linkLabel.font = [UIFont srg_regularFontWithSize:30.f];
+    self.linkLabel.textColor = UIColor.systemBlueColor;
 }
 
 - (void)viewDidDisappear:(BOOL)animated

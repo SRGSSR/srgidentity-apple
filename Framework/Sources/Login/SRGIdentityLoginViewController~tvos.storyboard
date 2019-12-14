@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15505" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sos-sA-1JP">
+<document type="com.apple.InterfaceBuilder.AppleTV.Storyboard" version="3.0" toolsVersion="15702" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sos-sA-1JP">
     <device id="appleTV" appearance="light"/>
     <dependencies>
         <deployment identifier="tvOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -65,27 +65,41 @@
                                     <constraint firstAttribute="width" constant="750" id="pHR-0h-auk"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;instructions&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-WR-E42">
-                                <rect key="frame" x="460" y="958" width="1000" height="42"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="iog-OS-JqJ">
+                                <rect key="frame" x="460" y="958" width="1000" height="84"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;instructions&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpy-WR-E42">
+                                        <rect key="frame" x="0.0" y="0.0" width="1000" height="42"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;link&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeB-7p-Zda" userLabel="Link Label">
+                                        <rect key="frame" x="0.0" y="42" width="1000" height="42"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="1000" id="Ddm-OE-Ruq"/>
+                                    <constraint firstAttribute="width" constant="1000" id="Ws0-Ow-dlu"/>
+                                    <constraint firstItem="BeB-7p-Zda" firstAttribute="width" secondItem="iog-OS-JqJ" secondAttribute="width" id="bKY-hG-X92"/>
+                                    <constraint firstItem="Xpy-WR-E42" firstAttribute="width" secondItem="iog-OS-JqJ" secondAttribute="width" id="zxU-fz-VV4"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="36"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Xpy-WR-E42" secondAttribute="bottom" constant="80" id="4YK-OI-q8O"/>
-                            <constraint firstItem="Xpy-WR-E42" firstAttribute="centerX" secondItem="U0z-dS-IAa" secondAttribute="centerX" id="FRg-fq-6Wl"/>
                             <constraint firstItem="nlH-Xm-iXM" firstAttribute="centerX" secondItem="U0z-dS-IAa" secondAttribute="centerX" id="Iyx-km-E8H"/>
+                            <constraint firstItem="iog-OS-JqJ" firstAttribute="centerX" secondItem="U0z-dS-IAa" secondAttribute="centerX" id="XO2-AT-qyJ"/>
                             <constraint firstItem="nlH-Xm-iXM" firstAttribute="centerY" secondItem="U0z-dS-IAa" secondAttribute="centerY" id="gGs-6d-XFu"/>
+                            <constraint firstItem="iog-OS-JqJ" firstAttribute="bottom" secondItem="U0z-dS-IAa" secondAttribute="bottom" constant="-38" id="l3S-UO-EwK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3ju-Iv-hzD"/>
                     </view>
                     <connections>
                         <outlet property="emailAddressTextField" destination="mUl-KL-pYW" id="fq8-Wm-Wno"/>
                         <outlet property="instructionsLabel" destination="Xpy-WR-E42" id="Swj-Sb-23t"/>
+                        <outlet property="linkLabel" destination="BeB-7p-Zda" id="M53-Bs-GZk"/>
                         <outlet property="loginButton" destination="yxE-1m-7OF" id="6hx-vf-tVE"/>
                         <outlet property="passwordTextField" destination="lOk-Yf-oRb" id="74k-fK-48b"/>
                     </connections>
