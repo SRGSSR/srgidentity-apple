@@ -58,12 +58,13 @@
     [super viewDidLoad];
     
     self.emailAddressTextField.text = self.emailAddress;
-    self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder");
+    self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
     self.emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
     
-    self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder");
+    self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
     self.passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
     
+    [self.loginButton setTitle:SRGIdentityLocalizedString(@"Sign in", @"Sign in button on Apple TV") forState:UIControlStateNormal];
     self.loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
     
     self.instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
