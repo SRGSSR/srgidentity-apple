@@ -1,5 +1,35 @@
+/* Error description when no password has been provided */
+"A password is mandatory" = "A password is mandatory";
+
+/* Error description when no email address has been provided */
+"An email address is mandatory" = "An email address is mandatory";
+
 /* Close button title */
 "Close" = "Close";
 
+/* Dismiss button label */
+"Dismiss" = "Dismiss";
+
+/* Email address text field placeholder on Apple TV */
+"Email address" = "Email address";
+
+/* Title of a generic error alert */
+"Error" = "Error";
+
+/* Error title for incomplete login information */
+"Incomplete information" = "Incomplete information";
+
 /* Title displayed at the top of the account view */
 "My account" = "My account";
+
+/* Password text field placeholder on Apple TV */
+"Password" = "Password";
+
+/* Sign in button on Apple TV */
+"Sign in" = "Sign in";
+
+/* Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device) */
+"To sign up or manage your account, use a computer or mobile device and visit" = "To sign up or manage your account, use a computer or mobile device and visit";
+
+/* Error message displayed when incorrect user credentials have been supplied */
+"Wrong email address or password" = "Wrong email address or password";
