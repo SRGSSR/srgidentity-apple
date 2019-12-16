@@ -109,6 +109,11 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *
  *  @return `YES` if the form could be opened. The method might return `NO` if another attempt is already being made
  *          or if a user is already logged in.
+ *
+ *  @discussion - On iOS this presents a browser, in which the user can supply her credentials or open an account.
+ *              - On tvOS a dedicated in-app view is presented, with which users can only log in (a message invite them
+ *                to open an account on a computer or mobile device). You can customize the logo displayed on this view
+ *                by adding an `identity_service_logo` image file to your project (with recommended size of 150x150 px).
  */
 - (BOOL)loginWithEmailAddress:(nullable NSString *)emailAddress;
 

@@ -7,6 +7,7 @@
 #import "SRGIdentityLoginViewController.h"
 
 #import "NSBundle+SRGIdentity.h"
+#import "UIImage+SRGIdentity.h"
 
 #import <SRGAppearance/SRGAppearance.h>
 #import <SRGNetwork/SRGNetwork.h>
@@ -20,6 +21,7 @@
 @property (nonatomic, copy) void (^tokenBlock)(NSString *sessionToken);
 @property (nonatomic, copy) void (^dismissalBlock)(void);
 
+@property (nonatomic, weak) IBOutlet UIImageView *serviceLogoImageView;
 @property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, weak) IBOutlet UIButton *loginButton;
@@ -56,6 +58,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.serviceLogoImageView.image = [UIImage imageNamed:@"identity_service_logo"] ?: [UIImage srg_identityImageNamed:@"service_logo"];
+    self.serviceLogoImageView.tintColor = UIColor.systemGrayColor;
     
     self.emailAddressTextField.text = self.emailAddress;
     self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
