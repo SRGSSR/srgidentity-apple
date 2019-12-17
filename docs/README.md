@@ -1,6 +1,6 @@
-![SRG Media Player logo](README-images/logo.png)
+[![SRG Identity logo](README-images/logo.png)](https://github.com/SRGSSR/srgidentity-apple)
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgidentity-apple)](https://github.com/SRGSSR/srgidentity-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgidentity-apple) [![Build Status](https://travis-ci.org/SRGSSR/srgidentity-apple.svg?branch=master)](https://travis-ci.org/SRGSSR/srgidentity-apple/branches) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgidentity-apple)](https://github.com/SRGSSR/srgidentity-apple/blob/master/LICENSE)
 
 ## About
 
@@ -8,7 +8,7 @@ The SRG Identity framework is a simple way to authenticate users within SRG SSR 
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version.
+The library is suitable for applications running on iOS 9, tvOS 12 and above. The project is meant to be opened with the latest Xcode version.
 
 ## Contributing
 
@@ -19,7 +19,7 @@ If you want to contribute to the project, have a look at our [contributing guide
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/srgidentity-ios"
+github "SRGSSR/srgidentity-apple"
 ```
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
@@ -32,7 +32,7 @@ The library requires the following frameworks to be added to any target requirin
 * `libextobjc`: An utility framework.
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `Mantle`: The framework used to parse the data.
-* `Masonry`: An autolayout framework.
+* `SRGAppearance`: The appearance framework.
 * `SRGIdentity`: The identity library framework.
 * `SRGLogger`: The framework used for internal logging.
 * `SRGNetwork`: A networking framework.
@@ -87,7 +87,7 @@ To learn about how the library can be used, have a look at the [getting started 
 
 ### Logging
 
-The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging, within the `ch.srgssr.mediaplayer` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
+The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-apple) library for logging, within the `ch.srgssr.identity` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
 
 ## License
 

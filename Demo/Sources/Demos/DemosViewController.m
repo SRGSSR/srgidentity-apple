@@ -7,7 +7,7 @@
 #import "DemosViewController.h"
 
 #import "AppDelegate.h"
-#import "SRGIdentityWebViewController.h"
+#import "Resources.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -26,7 +26,7 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 - (instancetype)init
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -82,10 +82,14 @@ static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
 #pragma mark Actions
 
+#if TARGET_OS_IOS
+
 - (IBAction)showAccount:(id)sender
 {
     [SRGIdentityService.currentIdentityService showAccountView];
 }
+
+#endif
 
 - (void)login:(id)sender
 {

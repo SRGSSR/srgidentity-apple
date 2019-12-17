@@ -21,14 +21,14 @@ typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
     /**
      *  Login is displayed in a dedicated Safari web view.
      */
-    SRGIdentityLoginMethodSafari = SRGIdentityLoginMethodDefault,
+    SRGIdentityLoginMethodSafari API_UNAVAILABLE(tvos) = SRGIdentityLoginMethodDefault,
     /**
      *  Use an authentication session when available (iOS 11 and 12 only). User credentials can be shared between your
      *  app and Safari. This makes it possible for a user to automatically authenticate in another app associated with
      *  the same identity provider (if credentials are still available). Note that a system alert will inform the user
      *  about credentials sharing first.
      */
-    SRGIdentityLoginMethodAuthenticationSession
+    SRGIdentityLoginMethodAuthenticationSession API_UNAVAILABLE(tvos)
 };
 
 /**
@@ -109,6 +109,11 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *
  *  @return `YES` if the form could be opened. The method might return `NO` if another attempt is already being made
  *          or if a user is already logged in.
+ *
+ *  @discussion - On iOS this presents a browser, in which the user can supply her credentials or open an account.
+ *              - On tvOS a dedicated in-app view is presented, with which users can only log in (a message invite them
+ *                to open an account on a computer or mobile device). You can customize the logo displayed on this view
+ *                by adding an `identity_service_logo` image file to your project (with recommended size of 150x150 px).
  */
 - (BOOL)loginWithEmailAddress:(nullable NSString *)emailAddress;
 
@@ -157,7 +162,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
  *              Note that only one account view can be presented at any given time.
  */
-- (void)showAccountView;
+- (void)showAccountView API_UNAVAILABLE(tvos);
 
 /**
  *  If an unauthorized error is received when using a third-party service on behalf of the current identity, call this
