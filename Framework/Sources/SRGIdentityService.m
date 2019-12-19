@@ -32,7 +32,7 @@
 static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
-static NSMutableDictionary<NSString *, NSValue *> *s_identityServices;
+static NSMapTable<NSString *, SRGIdentityService *> *s_identityServices;
 static NSDictionary<NSValue *, NSValue *> *s_originalImplementations;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
@@ -144,9 +144,10 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
         
         static dispatch_once_t s_onceToken;
         dispatch_once(&s_onceToken, ^{
-            s_identityServices = [NSMutableDictionary dictionary];
+            s_identityServices = [NSMapTable mapTableWithKeyOptions:NSHashTableStrongMemory
+                                                       valueOptions:NSHashTableWeakMemory];
         });
-        s_identityServices[self.identifier] = [NSValue valueWithNonretainedObject:self];
+        [s_identityServices setObject:self forKey:self.identifier];
         
         self.webserviceURL = webserviceURL;
         self.websiteURL = websiteURL;
@@ -176,7 +177,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 
 - (void)dealloc
 {
-    s_identityServices[self.identifier] = nil;
+    [s_identityServices removeObjectForKey:self.identifier];
 }
 
 #pragma clang diagnostic push
@@ -743,7 +744,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
     NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
     if (queryItem.value) {
-        SRGIdentityService *identityService = [s_identityServices[queryItem.value] nonretainedObjectValue];
+        SRGIdentityService *identityService = [s_identityServices objectForKey:queryItem.value];
         if ([identityService handleCallbackURL:URL]) {
             return YES;
         }
