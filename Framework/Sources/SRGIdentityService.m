@@ -779,7 +779,6 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
         BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
         if (originalImplementation) {
             return originalImplementation(self, _cmd, application, URL, options);
-            break;
         }
         else {
             cls = class_getSuperclass(cls);
@@ -792,7 +791,33 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 
 static void swizzled_scene_openURLContexts(id self, SEL _cmd, UIScene *scene, NSSet<UIOpenURLContext *> *URLContexts)
 {
-    NSLog(@"Test");
+    for (UIOpenURLContext *URLContext in URLContexts) {
+        NSURL *URL = URLContext.URL;
+        NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
+        NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
+        if (queryItem.value) {
+            SRGIdentityService *identityService = [s_identityServices objectForKey:queryItem.value];
+            if ([identityService handleCallbackURL:URL]) {
+                return;
+            }
+        }
+    }
+    
+    // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
+    // subclassed, either with a lie (e.g. KVO, for which self.class lies about the true class nature) or not.
+    Class cls = object_getClass(self);
+    while (cls != Nil) {
+        NSValue *key = [NSValue valueWithNonretainedObject:cls];
+        BOOL (*originalImplementation)(id, SEL, id, id) = [s_originalImplementations[key] pointerValue];
+        if (originalImplementation) {
+            originalImplementation(self, _cmd, scene, URLContexts);
+            return;
+        }
+        else {
+            cls = class_getSuperclass(cls);
+        }
+    }
 }
 
 #endif
