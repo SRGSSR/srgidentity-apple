@@ -728,7 +728,6 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
     s_originalImplementations = originalImplementations.copy;
 }
 
-
 @implementation NSObject (SRGIdentityApplicationDelegateHooks)
 
 - (BOOL)srg_default_application:(UIApplication *)application openURL:(NSURL *)URL options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
