@@ -33,7 +33,8 @@ static SRGIdentityService *s_currentIdentityService;
 static BOOL s_loggingIn;
 
 static NSMapTable<NSString *, SRGIdentityService *> *s_identityServices;
-static NSDictionary<NSValue *, NSValue *> *s_originalImplementations;
+static NSDictionary<NSValue *, NSValue *> *s_originalAppDelegateImplementations;
+static NSDictionary<NSValue *, NSValue *> *s_originalSceneDelegateImplementations;
 
 NSString * const SRGIdentityServiceUserDidLoginNotification = @"SRGIdentityServiceUserDidLoginNotification";
 NSString * const SRGIdentityServiceUserDidCancelLoginNotification = @"SRGIdentityServiceUserDidCancelLoginNotification";
@@ -709,49 +710,41 @@ static void swizzled_scene_openURLContexts(id self, SEL _cmd, UIScene *scene, NS
 
 __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 {
-    // A single map suffices. UISceneDelegate and UIApplicationDelegate URL handling are namely mutually exclusive (though
-    // both can be used on iOS 13 depending on whether scenes are used or not).
-    NSMutableDictionary<NSValue *, NSValue *> *originalImplementations = [NSMutableDictionary dictionary];
+    // The URL handling methods be available at the time the application is instantiated,
+    // see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
+    void (^replaceMethod)(Class, Protocol *, SEL, SEL, IMP, NSMutableDictionary<NSValue *, NSValue *> *) = ^(Class cls, Protocol *protocol, SEL selector, SEL defaultSelector, IMP sizzledImplementation, NSMutableDictionary<NSValue *, NSValue *> *originalImplementations) {
+        if (! class_conformsToProtocol(cls, protocol)) {
+            return;
+        }
+        
+        Method method = class_getInstanceMethod(cls, selector);
+        if (! method) {
+            method = class_getInstanceMethod(cls, defaultSelector);
+            class_addMethod(cls, selector, method_getImplementation(method), method_getTypeEncoding(method));
+        }
+        
+        NSValue *key = [NSValue valueWithNonretainedObject:cls];
+        originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
+        
+        class_replaceMethod(cls, selector, sizzledImplementation, method_getTypeEncoding(method));
+    };
     
-    // The `-application:openURL:options:` application delegate method must be available at the time the application is
-    // instantiated, see https://stackoverflow.com/questions/14696078/runtime-added-applicationopenurl-not-fires.
+    NSMutableDictionary<NSValue *, NSValue *> *originalAppDelegateImplementations = [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSValue *, NSValue *> *originalSceneDelegateImplementations = [NSMutableDictionary dictionary];
+    
     unsigned int numberOfClasses = 0;
     Class *classList = objc_copyClassList(&numberOfClasses);
     for (unsigned int i = 0; i < numberOfClasses; ++i) {
         Class cls = classList[i];
-        
         if (@available(iOS 13, *)) {
-            if (class_conformsToProtocol(cls, @protocol(UISceneDelegate))) {
-                Method method = class_getInstanceMethod(cls, @selector(scene:openURLContexts:));
-                if (! method) {
-                    method = class_getInstanceMethod(cls, @selector(srg_default_scene:openURLContexts:));
-                    class_addMethod(cls, @selector(scene:openURLContexts:), method_getImplementation(method), method_getTypeEncoding(method));
-                }
-                
-                NSValue *key = [NSValue valueWithNonretainedObject:cls];
-                originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
-                
-                class_replaceMethod(cls, @selector(scene:openURLContexts:), (IMP)swizzled_scene_openURLContexts, method_getTypeEncoding(method));
-                continue;
-            }
+            replaceMethod(cls, @protocol(UISceneDelegate), @selector(scene:openURLContexts:), @selector(srg_default_scene:openURLContexts:), (IMP)swizzled_scene_openURLContexts, originalSceneDelegateImplementations);
         }
-        
-        if (class_conformsToProtocol(cls, @protocol(UIApplicationDelegate))) {
-            Method method = class_getInstanceMethod(cls, @selector(application:openURL:options:));
-            if (! method) {
-                method = class_getInstanceMethod(cls, @selector(srg_default_application:openURL:options:));
-                class_addMethod(cls, @selector(application:openURL:options:), method_getImplementation(method), method_getTypeEncoding(method));
-            }
-            
-            NSValue *key = [NSValue valueWithNonretainedObject:cls];
-            originalImplementations[key] = [NSValue valueWithPointer:method_getImplementation(method)];
-            
-            class_replaceMethod(cls, @selector(application:openURL:options:), (IMP)swizzled_application_openURL_options, method_getTypeEncoding(method));
-        }
+        replaceMethod(cls, @protocol(UIApplicationDelegate), @selector(application:openURL:options:), @selector(srg_default_application:openURL:options:), (IMP)swizzled_application_openURL_options, originalAppDelegateImplementations);
     }
     free(classList);
     
-    s_originalImplementations = originalImplementations.copy;
+    s_originalAppDelegateImplementations = originalAppDelegateImplementations.copy;
+    s_originalSceneDelegateImplementations = originalSceneDelegateImplementations.copy;
 }
 
 @implementation NSObject (SRGIdentityApplicationDelegateHooks)
@@ -770,7 +763,7 @@ __attribute__((constructor)) static void SRGIdentityServiceInit(void)
 
 @end
 
-static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
+static BOOL SRGIdentityHandleCallbackURL(NSURL *URL)
 {
     NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
@@ -781,13 +774,21 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
             return YES;
         }
     }
+    return NO;
+}
+
+static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplication *application, NSURL *URL, NSDictionary<UIApplicationOpenURLOptionsKey,id> *options)
+{
+    if (SRGIdentityHandleCallbackURL(URL)) {
+        return YES;
+    }
     
     // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
     // subclassed, either with a lie (e.g. KVO, for which self.class lies about the true class nature) or not.
     Class cls = object_getClass(self);
     while (cls != Nil) {
         NSValue *key = [NSValue valueWithNonretainedObject:cls];
-        BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalImplementations[key] pointerValue];
+        BOOL (*originalImplementation)(id, SEL, id, id, id) = [s_originalAppDelegateImplementations[key] pointerValue];
         if (originalImplementation) {
             return originalImplementation(self, _cmd, application, URL, options);
         }
@@ -803,16 +804,7 @@ static BOOL swizzled_application_openURL_options(id self, SEL _cmd, UIApplicatio
 static void swizzled_scene_openURLContexts(id self, SEL _cmd, UIScene *scene, NSSet<UIOpenURLContext *> *URLContexts)
 {
     for (UIOpenURLContext *URLContext in URLContexts) {
-        NSURL *URL = URLContext.URL;
-        NSURLComponents *URLComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:YES];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @keypath(NSURLQueryItem.new, name), SRGIdentityServiceQueryItemName];
-        NSURLQueryItem *queryItem = [URLComponents.queryItems filteredArrayUsingPredicate:predicate].firstObject;
-        if (queryItem.value) {
-            SRGIdentityService *identityService = [s_identityServices objectForKey:queryItem.value];
-            if ([identityService handleCallbackURL:URL]) {
-                return;
-            }
-        }
+        SRGIdentityHandleCallbackURL(URLContext.URL);
     }
     
     // Find a proper match along the class hierarchy. This also ensures correct behavior is the app delegate is dynamically
@@ -820,7 +812,7 @@ static void swizzled_scene_openURLContexts(id self, SEL _cmd, UIScene *scene, NS
     Class cls = object_getClass(self);
     while (cls != Nil) {
         NSValue *key = [NSValue valueWithNonretainedObject:cls];
-        BOOL (*originalImplementation)(id, SEL, id, id) = [s_originalImplementations[key] pointerValue];
+        BOOL (*originalImplementation)(id, SEL, id, id) = [s_originalSceneDelegateImplementations[key] pointerValue];
         if (originalImplementation) {
             originalImplementation(self, _cmd, scene, URLContexts);
             return;
@@ -829,6 +821,8 @@ static void swizzled_scene_openURLContexts(id self, SEL _cmd, UIScene *scene, NS
             cls = class_getSuperclass(cls);
         }
     }
+    
+    SRGIdentityLogError(@"service", @"Could not call open URL scene delegate original implementation for %@", self);
 }
 
 #endif
