@@ -104,7 +104,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 
 @interface SRGIdentityService ()
 #if TARGET_OS_IOS
-<SFSafariViewControllerDelegate>
+<SFSafariViewControllerDelegate, ASWebAuthenticationPresentationContextProviding>
 #endif
 
 @property (nonatomic, copy) NSString *identifier;
@@ -286,17 +286,20 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
     
     if (self.loginMethod == SRGIdentityLoginMethodAuthenticationSession) {
         // iOS 12 and later, use `ASWebAuthenticationSession`
-        if (@available(iOS 12.0, *)) {
+        if (@available(iOS 12, *)) {
             ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
                                                                                               callbackURLScheme:[SRGIdentityService applicationURLScheme]
                                                                                               completionHandler:completionHandler];
+            if (@available(iOS 13, *)) {
+                authenticationSession.presentationContextProvider = self;
+            }
             self.authenticationSession = authenticationSession;
             if (! [authenticationSession start]) {
                 return NO;
             }
         }
         // iOS 11, use `SFAuthenticationSession`
-        else if (@available(iOS 11.0, *)) {
+        else if (@available(iOS 11, *)) {
             SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:requestURL
                                                                                         callbackURLScheme:[SRGIdentityService applicationURLScheme]
                                                                                         completionHandler:completionHandler];
@@ -637,6 +640,13 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
     }
     
     return NO;
+}
+
+#pragma mark ASWebAuthenticationPresentationContextProviding protocol
+
+- (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(tvos)
+{
+    return UIApplication.sharedApplication.keyWindow;
 }
 
 #pragma mark SFSafariViewControllerDelegate delegate
