@@ -1,23 +1,23 @@
 /* Error description when no password has been provided */
-"A password is mandatory" = "A password is mandatory";
+"A password is mandatory" = "Bitte geben Sie ein Passwort ein.";
 
 /* Error description when no email address has been provided */
-"An email address is mandatory" = "An email address is mandatory";
+"An email address is mandatory" = "Bitte geben Sie eine E-Mail-Adresse ein.";
 
 /* Close button title */
 "Close" = "Schliessen";
 
 /* Dismiss button label */
-"Dismiss" = "Dismiss";
+"Dismiss" = "Schliessen";
 
 /* Email address text field placeholder on Apple TV */
-"Email address" = "Email address";
+"Email address" = "E-Mail-Adresse";
 
 /* Title of a generic error alert */
-"Error" = "Error";
+"Error" = "Fehler";
 
 /* Error title for incomplete login information */
-"Incomplete information" = "Incomplete information";
+"Incomplete information" = "Unvollständige Angaben";
 
 /* Title displayed at the top of the account view */
 "My account" = "Mein Konto";
@@ -26,10 +26,10 @@
 "Password" = "Passwort";
 
 /* Sign in button on Apple TV */
-"Sign in" = "Sign in";
+"Sign in" = "Anmelden";
 
 /* Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device) */
-"To sign up or manage your account, use a computer or mobile device and visit" = "To sign up or manage your account, use a computer or mobile device and visit";
+"To sign up or manage your account, use a computer or mobile device and visit" = "Um sich anzumelden oder Ihr Konto zu verwalten, benutzen Sie einen Computer oder Mobiltelefon und besuchen Sie";
 
 /* Error message displayed when incorrect user credentials have been supplied */
-"Wrong email address or password" = "Wrong email address or password";
+"Wrong email address or password" = "E-Mail-Adresse oder Passwort ist falsch.";
