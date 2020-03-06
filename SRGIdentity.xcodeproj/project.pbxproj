@@ -51,6 +51,8 @@
 		6FCBBD57221D8E95003CE752 /* SRGIdentityWebViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */; };
 		6FCBBD5A221DB644003CE752 /* SRGIdentityNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */; };
 		6FCBBD5B221DB644003CE752 /* SRGIdentityNavigationController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */; };
+		6FCE031023F5C17A0072EBC4 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE030F23F5C17A0072EBC4 /* Application.m */; };
+		6FE1AAF523ABAB92000266B4 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1AAF423ABAB92000266B4 /* SceneDelegate.m */; };
 		6FF846A3221BED95006FC3FC /* SRGIdentityWebViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController~ios.m */; };
 		6FF846A5221BED95006FC3FC /* SRGIdentityWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */; };
 		6FF846A8221BF93F006FC3FC /* SRGIdentityModalTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FF846A6221BF93F006FC3FC /* SRGIdentityModalTransition.h */; };
@@ -168,6 +170,10 @@
 		6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGAppearance.framework; path = Carthage/Build/iOS/SRGAppearance.framework; sourceTree = "<group>"; };
 		6FCBBD58221DB644003CE752 /* SRGIdentityNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGIdentityNavigationController.h; sourceTree = "<group>"; };
 		6FCBBD59221DB644003CE752 /* SRGIdentityNavigationController~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityNavigationController~ios.m"; sourceTree = "<group>"; };
+		6FCE030E23F5C17A0072EBC4 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
+		6FCE030F23F5C17A0072EBC4 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
+		6FE1AAF323ABAB92000266B4 /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneDelegate.h; path = Demo/Sources/SceneDelegate.h; sourceTree = SOURCE_ROOT; };
+		6FE1AAF423ABAB92000266B4 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneDelegate.m; path = Demo/Sources/SceneDelegate.m; sourceTree = SOURCE_ROOT; };
 		6FF846A0221BED95006FC3FC /* SRGIdentityWebViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGIdentityWebViewController~ios.m"; sourceTree = "<group>"; };
 		6FF846A1221BED95006FC3FC /* SRGIdentityWebViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SRGIdentityWebViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6FF846A2221BED95006FC3FC /* SRGIdentityWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGIdentityWebViewController.h; sourceTree = "<group>"; };
@@ -360,7 +366,11 @@
 			children = (
 				6F8A93F420FDCAA800AA6434 /* AppDelegate.h */,
 				6F8A93F620FDCAA800AA6434 /* AppDelegate.m */,
+				6FCE030E23F5C17A0072EBC4 /* Application.h */,
+				6FCE030F23F5C17A0072EBC4 /* Application.m */,
 				6F8A93F520FDCAA800AA6434 /* main.m */,
+				6FE1AAF323ABAB92000266B4 /* SceneDelegate.h */,
+				6FE1AAF423ABAB92000266B4 /* SceneDelegate.m */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -735,8 +745,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FCE031023F5C17A0072EBC4 /* Application.m in Sources */,
 				6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */,
 				6F550040237BCC04003476E2 /* Resources.m in Sources */,
+				6FE1AAF523ABAB92000266B4 /* SceneDelegate.m in Sources */,
 				6F8A93FD20FDCAA800AA6434 /* main.m in Sources */,
 				6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */,
 			);
