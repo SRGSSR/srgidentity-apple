@@ -29,7 +29,7 @@
 "Sign in" = "Login";
 
 /* Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device) */
-"To sign up or manage your account, use a computer or mobile device and visit" = "To sign up or manage your account, use a computer or mobile device and visit";
+"To sign up or manage your account, use a computer or mobile device and visit" = "Per registrarsi o gestire il proprio account, accedere da un computer o da un apparecchio mobile e visitare";
 
 /* Error message displayed when incorrect user credentials have been supplied */
 "Wrong email address or password" = "Email o password sbagliata";
