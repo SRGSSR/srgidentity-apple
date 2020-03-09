@@ -6,7 +6,7 @@
 
 #import "AppDelegate.h"
 
-#import "DemosViewController.h"
+#import "Application.h"
 
 #import <SRGIdentity/SRGIdentity.h>
 
@@ -27,9 +27,13 @@
                                                name:SRGIdentityServiceUserDidLogoutNotification
                                              object:SRGIdentityService.currentIdentityService];
     
-    DemosViewController *demosViewController = [[DemosViewController alloc] init];
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:demosViewController];
+    self.window.rootViewController = ApplicationRootViewController();
     return YES;
+}
+
+- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options API_AVAILABLE(ios(13.0))
+{
+    return [[UISceneConfiguration alloc] initWithName:@"Default" sessionRole:connectingSceneSession.role];
 }
 
 #pragma mark Notifications
