@@ -125,11 +125,6 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 - (BOOL)logout;
 
 /**
- *  The identity provider URL.
- */
-@property (nonatomic, readonly) NSURL *providerURL;
-
-/**
  *  `YES` iff a user is logged.
  */
 @property (nonatomic, readonly, getter=isLoggedIn) BOOL loggedIn;
