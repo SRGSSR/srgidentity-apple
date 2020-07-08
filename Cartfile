@@ -1,5 +1,5 @@
 github "Mantle/Mantle" "2.1.1"
 github "SRGSSR/FXReachability" "1.3.2_srg4"
 github "SRGSSR/srgappearance-apple" "2.1.0"
-github "SRGSSR/srgnetwork-apple" "4138001f842b3dac4ca248c768cf48898fcb115d"
+github "SRGSSR/srgnetwork-apple" "2.0.2"
 github "SRGSSR/UICKeyChainStore" "v2.1.2_srg1"
