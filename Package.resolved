@@ -1,0 +1,79 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FXReachability",
+        "repositoryURL": "https://github.com/SRGSSR/FXReachability.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "5d70506b9ba5c59c9b0332cc95d1e7dae6dd70a7",
+          "version": null
+        }
+      },
+      {
+        "package": "libextobjc",
+        "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "bec0bafcb6f837267ac58c2babd9ff9e1402e091",
+          "version": null
+        }
+      },
+      {
+        "package": "MAKVONotificationCenter",
+        "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "60395e0601ffd4a784856b423d4cac558366276d",
+          "version": null
+        }
+      },
+      {
+        "package": "Mantle",
+        "repositoryURL": "https://github.com/SRGSSR/Mantle.git",
+        "state": {
+          "branch": "swift-package-manager-support",
+          "revision": "cd18bf7f9c6c5a0d2f4aec6012fe1615b86032fe",
+          "version": null
+        }
+      },
+      {
+        "package": "SRGAppearance",
+        "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "e184fccf142863c9a77b3cb5ce7f3c0221d6d8b9",
+          "version": null
+        }
+      },
+      {
+        "package": "SRGLogger",
+        "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "f4973abf95e8f1809a2ad4ca6f0702662327c9a0",
+          "version": null
+        }
+      },
+      {
+        "package": "SRGNetwork",
+        "repositoryURL": "https://github.com/SRGSSR/srgnetwork-apple.git",
+        "state": {
+          "branch": "feature/spm-support",
+          "revision": "d58e09bab288a5751c611323d9b9458a43511de7",
+          "version": null
+        }
+      },
+      {
+        "package": "UICKeyChainStore",
+        "repositoryURL": "https://github.com/kishikawakatsumi/UICKeyChainStore.git",
+        "state": {
+          "branch": null,
+          "revision": "2f0380d539ec53b66eef211b3c983749ad9e2686",
+          "version": "2.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

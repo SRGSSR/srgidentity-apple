@@ -1,1 +1,8 @@
-#include "../Common.xcconfig"
+// Deployment targets
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
+TVOS_DEPLOYMENT_TARGET = 12.0
+
+// Configuration to have a single target built for all platforms
+// See https://davedelong.com/blog/2018/11/15/building-a-crossplatform-framework/
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator appletvos appletvsimulator
+TARGETED_DEVICE_FAMILY = 1,2,3

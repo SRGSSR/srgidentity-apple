@@ -8,7 +8,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+API_AVAILABLE(ios(13.0))
+@interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
 
 @property (nonatomic) UIWindow *window;
 
