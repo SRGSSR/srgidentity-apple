@@ -30,7 +30,7 @@ let package = Package(
         .target(
             name: "SRGIdentity",
             dependencies: ["FXReachability", "Mantle", "SRGAppearance", "SRGNetwork", "UICKeyChainStore"],
-            exclude: ["SRGIdentityLoginViewController~tvos.storyboard", "SRGIdentityWebViewController~ios.storyboard"],
+            exclude: ["SRGIdentityLoginViewController~tvos.storyboard"],
             resources: [
                 .process("Resources")
             ],

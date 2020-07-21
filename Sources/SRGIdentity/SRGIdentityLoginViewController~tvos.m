@@ -47,7 +47,7 @@
                            tokenBlock:(void (^)(NSString * _Nonnull))tokenBlock
                        dismissalBlock:(void (^)(void))dismissalBlock
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:NSBundle.srg_identityBundle];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:SWIFTPM_MODULE_BUNDLE];
     SRGIdentityLoginViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.emailAddress = emailAddress;
     viewController.webserviceURL = webserviceURL;

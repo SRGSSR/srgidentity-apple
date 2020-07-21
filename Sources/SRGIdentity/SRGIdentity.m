@@ -10,5 +10,5 @@
 
 NSString *SRGIdentityMarketingVersion(void)
 {
-    return NSBundle.srg_identityBundle.infoDictionary[@"CFBundleShortVersionString"];
+    return SWIFTPM_MODULE_BUNDLE.infoDictionary[@"CFBundleShortVersionString"];
 }

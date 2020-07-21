@@ -22,9 +22,9 @@
 @property (nonatomic) NSURLRequest *request;
 @property (nonatomic, copy) WKNavigationActionPolicy (^decisionHandler)(NSURL *);
 
-@property (nonatomic, weak) IBOutlet UIProgressView *progressView;
+@property (nonatomic, weak) UIProgressView *progressView;
 @property (nonatomic, weak) WKWebView *webView;
-@property (nonatomic, weak) IBOutlet UILabel *errorLabel;
+@property (nonatomic, weak) UILabel *errorLabel;
 
 @end
 
@@ -34,8 +34,7 @@
 
 - (instancetype)initWithRequest:(NSURLRequest *)request decisionHandler:(WKNavigationActionPolicy (^)(NSURL *URL))decisionHandler
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:NSBundle.srg_identityBundle];
-    SRGIdentityWebViewController *webViewController = [storyboard instantiateInitialViewController];
+    SRGIdentityWebViewController *webViewController = [[SRGIdentityWebViewController alloc] init];
     webViewController.request = request;
     webViewController.decisionHandler = decisionHandler;
     return webViewController;
@@ -68,6 +67,78 @@
 
 #pragma mark View lifecycle
 
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    view.backgroundColor = UIColor.whiteColor;
+    self.view = view;
+    
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:view.bounds];
+    webView.backgroundColor = UIColor.clearColor;
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    webView.navigationDelegate = self;
+    webView.scrollView.delegate = self;
+    [view addSubview:webView];
+    self.webView = webView;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
+                                                   [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
+                                                   [webView.leftAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leftAnchor],
+                                                   [webView.rightAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.rightAnchor]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
+                                                   [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
+                                                   [webView.leftAnchor constraintEqualToAnchor:view.leftAnchor],
+                                                   [webView.rightAnchor constraintEqualToAnchor:view.rightAnchor]
+        ]];
+    }
+    
+    UIProgressView *progressView = [[UIProgressView alloc] init];
+    progressView.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:progressView];
+    self.progressView = progressView;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[
+            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor],
+            [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+            [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[
+            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor],
+            [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+            [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+        ]];
+    }
+    
+    UILabel *errorLabel = [[UILabel alloc] init];
+    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    errorLabel.font = [UIFont systemFontOfSize:20.f];
+    errorLabel.textColor = UIColor.grayColor;
+    [view addSubview:errorLabel];
+    self.errorLabel = errorLabel;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[
+            [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
+            [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
+            [errorLabel.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor constant:40.f]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[
+            [errorLabel.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
+            [errorLabel.leadingAnchor constraintEqualToAnchor:view.leadingAnchor constant:40.f],
+            [errorLabel.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:40.f]
+        ]];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,30 +149,6 @@
     progressViewAppearance.trackTintColor = nil;
     progressViewAppearance.progressImage = nil;
     progressViewAppearance.trackImage = nil;
-    
-    self.errorLabel.textColor = UIColor.grayColor;
-    self.errorLabel.text = nil;
-        
-    // WKWebView cannot be instantiated in storyboards, do it programmatically
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
-    webView.navigationDelegate = self;
-    webView.scrollView.delegate = self;
-    [self.view insertSubview:webView atIndex:0];
-    
-    if (@available(iOS 11, *)) {
-        webView.translatesAutoresizingMaskIntoConstraints = NO;
-        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                                   [webView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-                                                   [webView.leftAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leftAnchor],
-                                                   [webView.rightAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.rightAnchor] ]];
-    }
-    else {
-        webView.translatesAutoresizingMaskIntoConstraints = YES;
-        webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        webView.frame = self.view.bounds;
-    }
-    
-    self.webView = webView;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                            target:self

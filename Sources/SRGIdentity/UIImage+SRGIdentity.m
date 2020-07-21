@@ -12,7 +12,7 @@
 
 + (UIImage *)srg_identityImageNamed:(NSString *)imageName
 {
-    return [UIImage imageNamed:imageName inBundle:NSBundle.srg_identityBundle compatibleWithTraitCollection:nil];
+    return [UIImage imageNamed:imageName inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
 }
 
 @end
