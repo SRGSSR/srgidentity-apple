@@ -62,6 +62,24 @@
     UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
     self.view = view;
     
+    [self loadCredentialsStackViewInView:view];
+    [self loadInstructionsStackViewInView:view];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (self.movingFromParentViewController || self.beingDismissed) {
+        [self.loginRequest cancel];
+        self.dismissalBlock();
+    }
+}
+
+#pragma mark View construction helpers
+
+- (void)loadCredentialsStackViewInView:(UIView *)view
+{
     UIStackView *credentialsStackView = [[UIStackView alloc] init];
     credentialsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     credentialsStackView.axis = UILayoutConstraintAxisVertical;
@@ -128,7 +146,10 @@
     [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [credentialsStackView addArrangedSubview:loginButton];
     self.loginButton = loginButton;
-    
+}
+
+- (void)loadInstructionsStackViewInView:(UIView *)view
+{
     UIStackView *instructionsStackView = [[UIStackView alloc] init];
     instructionsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     instructionsStackView.axis = UILayoutConstraintAxisVertical;
@@ -156,16 +177,6 @@
     linkLabel.textColor = UIColor.systemBlueColor;
     [instructionsStackView addArrangedSubview:linkLabel];
     self.linkLabel = linkLabel;
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if (self.movingFromParentViewController || self.beingDismissed) {
-        [self.loginRequest cancel];
-        self.dismissalBlock();
-    }
 }
 
 #pragma mark Requests
