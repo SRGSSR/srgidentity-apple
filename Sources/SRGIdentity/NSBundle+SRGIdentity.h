@@ -13,9 +13,4 @@ NS_ASSUME_NONNULL_BEGIN
  */
 #define SRGIdentityLocalizedString(key, comment) [SWIFTPM_MODULE_BUNDLE localizedStringForKey:(key) value:@"" table:nil]
 
-/**
- *  Return the recommended resource name for the main resource (xib, storyboard) associated with a class.
- */
-OBJC_EXPORT NSString *SRGIdentityResourceNameForUIClass(Class cls);
-
 NS_ASSUME_NONNULL_END

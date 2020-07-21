@@ -25,13 +25,12 @@
 @property (nonatomic, copy) void (^tokenBlock)(NSString *sessionToken);
 @property (nonatomic, copy) void (^dismissalBlock)(void);
 
-@property (nonatomic, weak) IBOutlet UIImageView *serviceLogoImageView;
-@property (nonatomic, weak) IBOutlet UITextField *emailAddressTextField;
-@property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet UIButton *loginButton;
+@property (nonatomic, weak) UITextField *emailAddressTextField;
+@property (nonatomic, weak) UITextField *passwordTextField;
+@property (nonatomic, weak) UIButton *loginButton;
 
-@property (nonatomic, weak) IBOutlet UILabel *instructionsLabel;
-@property (nonatomic, weak) IBOutlet UILabel *linkLabel;
+@property (nonatomic, weak) UILabel *instructionsLabel;
+@property (nonatomic, weak) UILabel *linkLabel;
 
 @property (nonatomic, weak) SRGRequest *loginRequest;
 
@@ -47,8 +46,7 @@
                            tokenBlock:(void (^)(NSString * _Nonnull))tokenBlock
                        dismissalBlock:(void (^)(void))dismissalBlock
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:SRGIdentityResourceNameForUIClass(self.class) bundle:SWIFTPM_MODULE_BUNDLE];
-    SRGIdentityLoginViewController *viewController = [storyboard instantiateInitialViewController];
+    SRGIdentityLoginViewController *viewController = [[SRGIdentityLoginViewController alloc] init];
     viewController.emailAddress = emailAddress;
     viewController.webserviceURL = webserviceURL;
     viewController.websiteURL = websiteURL;
@@ -59,29 +57,105 @@
 
 #pragma mark View lifecycle
 
-- (void)viewDidLoad
+- (void)loadView
 {
-    [super viewDidLoad];
+    UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.view = view;
     
-    self.serviceLogoImageView.image = [UIImage imageNamed:@"identity_service_logo"] ?: [UIImage srg_identityImageNamed:@"service_logo"];
-    self.serviceLogoImageView.tintColor = UIColor.systemGrayColor;
+    UIStackView *credentialsStackView = [[UIStackView alloc] init];
+    credentialsStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    credentialsStackView.axis = UILayoutConstraintAxisVertical;
+    credentialsStackView.alignment = UIStackViewAlignmentCenter;
+    credentialsStackView.distribution = UIStackViewDistributionFill;
+    credentialsStackView.spacing = 40.f;
+    [view addSubview:credentialsStackView];
     
-    self.emailAddressTextField.text = self.emailAddress;
-    self.emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
-    self.emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
+    [NSLayoutConstraint activateConstraints:@[
+        [credentialsStackView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
+        [credentialsStackView.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
+        [credentialsStackView.widthAnchor constraintEqualToConstant:750.f]
+    ]];
     
-    self.passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
-    self.passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
+    UIImage *serviceLogoImage = [UIImage imageNamed:@"identity_service_logo"] ?: [UIImage srg_identityImageNamed:@"service_logo"];
+    UIImageView *serviceLogoImageView = [[UIImageView alloc] initWithImage:serviceLogoImage];
+    serviceLogoImageView.tintColor = UIColor.systemGrayColor;
+    [credentialsStackView addArrangedSubview:serviceLogoImageView];
     
-    [self.loginButton setTitle:SRGIdentityLocalizedString(@"Sign in", @"Sign in button on Apple TV") forState:UIControlStateNormal];
-    self.loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
+    // Zero height, but adds two stack spacing contributions and thus some spacing
+    UIView *spacerView = [[UIView alloc] init];
+    spacerView.translatesAutoresizingMaskIntoConstraints = NO;
+    spacerView.backgroundColor = UIColor.clearColor;
+    [credentialsStackView addArrangedSubview:spacerView];
     
-    self.instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
-    self.instructionsLabel.font = [UIFont srg_regularFontWithSize:30.f];
+    [NSLayoutConstraint activateConstraints:@[
+        [spacerView.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
+        [spacerView.heightAnchor constraintEqualToConstant:0.f]
+    ]];
     
-    self.linkLabel.text = self.websiteURL.absoluteString;
-    self.linkLabel.font = [UIFont srg_regularFontWithSize:30.f];
-    self.linkLabel.textColor = UIColor.systemBlueColor;
+    UITextField *emailAddressTextField = [[UITextField alloc] init];
+    emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    emailAddressTextField.text = self.emailAddress;
+    emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
+    emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
+    emailAddressTextField.textContentType = UITextContentTypeEmailAddress;
+    emailAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [credentialsStackView addArrangedSubview:emailAddressTextField];
+    self.emailAddressTextField = emailAddressTextField;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emailAddressTextField.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
+        [emailAddressTextField.heightAnchor constraintEqualToConstant:70.f]
+    ]];
+    
+    UITextField *passwordTextField = [[UITextField alloc] init];
+    emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
+    passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
+    passwordTextField.textContentType = UITextContentTypePassword;
+    passwordTextField.secureTextEntry = YES;
+    passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [credentialsStackView addArrangedSubview:passwordTextField];
+    self.passwordTextField = passwordTextField;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [passwordTextField.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
+        [passwordTextField.heightAnchor constraintEqualToConstant:70.f]
+    ]];
+    
+    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [loginButton setTitle:SRGIdentityLocalizedString(@"Sign in", @"Sign in button on Apple TV") forState:UIControlStateNormal];
+    loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
+    [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventPrimaryActionTriggered];
+    [credentialsStackView addArrangedSubview:loginButton];
+    self.loginButton = loginButton;
+    
+    UIStackView *instructionsStackView = [[UIStackView alloc] init];
+    instructionsStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    instructionsStackView.axis = UILayoutConstraintAxisVertical;
+    instructionsStackView.alignment = UIStackViewAlignmentFill;
+    instructionsStackView.distribution = UIStackViewDistributionFill;
+    [view addSubview:instructionsStackView];
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [instructionsStackView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
+        [instructionsStackView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:-38.f],
+        [instructionsStackView.widthAnchor constraintEqualToConstant:1000.f]
+    ]];
+    
+    UILabel *instructionsLabel = [[UILabel alloc] init];
+    instructionsLabel.textAlignment = NSTextAlignmentCenter;
+    instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
+    instructionsLabel.font = [UIFont srg_regularFontWithSize:30.f];
+    [instructionsStackView addArrangedSubview:instructionsLabel];
+    self.instructionsLabel = instructionsLabel;
+    
+    UILabel *linkLabel = [[UILabel alloc] init];
+    linkLabel.textAlignment = NSTextAlignmentCenter;
+    linkLabel.text = self.websiteURL.absoluteString;
+    linkLabel.font = [UIFont srg_regularFontWithSize:30.f];
+    linkLabel.textColor = UIColor.systemBlueColor;
+    [instructionsStackView addArrangedSubview:linkLabel];
+    self.linkLabel = linkLabel;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -148,7 +222,7 @@
 
 #pragma mark Actions
 
-- (IBAction)login:(id)sender
+- (void)login:(id)sender
 {
     NSString *emailAddress = self.emailAddressTextField.text;
     if (emailAddress.length == 0) {
