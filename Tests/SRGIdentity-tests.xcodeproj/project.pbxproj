@@ -25,15 +25,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		080D0BD921356A1200AA519A /* UICKeyChainStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UICKeyChainStore.framework; path = Carthage/Build/iOS/UICKeyChainStore.framework; sourceTree = "<group>"; };
-		080D0BE021356CB500AA519A /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/iOS/libextobjc.framework; sourceTree = "<group>"; };
-		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
-		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
-		080D0BEE2135A6DD00AA519A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		0826662E216E2B7200FD8E84 /* SRGIdentity-tests-host.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-tests-host.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		08266651216E354000FD8E84 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
-		084CD6FE21696C0A00905A38 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
-		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6F3C7A0C24C631B500199F64 /* IdentityBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityBaseTestCase.m; sourceTree = "<group>"; };
 		6F3C7A0D24C631B500199F64 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
 		6F3C7A0E24C631B500199F64 /* IdentityBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityBaseTestCase.h; sourceTree = "<group>"; };
@@ -42,9 +34,6 @@
 		6F3C7A1824C6331300199F64 /* Tests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Tests.xcconfig; sourceTree = "<group>"; };
 		6F3C7A1924C633B900199F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F3C7A2E24C6363400199F64 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
-		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
-		6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGAppearance.framework; path = Carthage/Build/iOS/SRGAppearance.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,17 +99,6 @@
 		6F8A945521006A9E00AA6434 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
-				080D0BE021356CB500AA519A /* libextobjc.framework */,
-				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
-				080D0BE42135776000AA519A /* Mantle.framework */,
-				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
-				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
-				6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */,
-				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
-				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
-				080D0BD921356A1200AA519A /* UICKeyChainStore.framework */,
-				086FB2CA21368ADE00DE4CF2 /* WebKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
