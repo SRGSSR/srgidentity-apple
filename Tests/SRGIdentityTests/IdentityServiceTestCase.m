@@ -114,14 +114,14 @@ static NSURL *TestIgnored3CallbackURL()
                 redirectURLComponents.queryItems = queryItems;
                 
                 return [[HTTPStubsResponse responseWithData:[NSData data]
-                                                   statusCode:302
+                                                 statusCode:302
                                                     headers:@{ @"Location" : redirectURLComponents.URL.absoluteString }] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
             }
         }
         else if ([request.URL.host isEqualToString:TestWebserviceURL().host]) {
             if ([request.URL.path containsString:@"logout"]) {
                 return [[HTTPStubsResponse responseWithData:[NSData data]
-                                                   statusCode:204
+                                                 statusCode:204
                                                     headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
             }
             else if ([request.URL.path containsString:@"userinfo"]) {
@@ -136,12 +136,12 @@ static NSURL *TestIgnored3CallbackURL()
                                                                @"gender": @"other",
                                                                @"birthdate": @"2001-01-01" };
                     return [[HTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:account options:0 error:NULL]
-                                                       statusCode:200
+                                                     statusCode:200
                                                         headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
                 }
                 else {
                     return [[HTTPStubsResponse responseWithData:[NSData data]
-                                                       statusCode:401
+                                                     statusCode:401
                                                         headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
                 }
             }
@@ -149,7 +149,7 @@ static NSURL *TestIgnored3CallbackURL()
         
         // No match, return 404
         return [[HTTPStubsResponse responseWithData:[NSData data]
-                                           statusCode:404
+                                         statusCode:404
                                             headers:nil] requestTime:1. responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
 }
