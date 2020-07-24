@@ -82,19 +82,18 @@
     self.webView = webView;
     
     if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
-                                                   [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
-                                                   [webView.leftAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leftAnchor],
-                                                   [webView.rightAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.rightAnchor]
+        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
+                                                   [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor]
         ]];
     }
     else {
-        [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
-                                                   [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
-                                                   [webView.leftAnchor constraintEqualToAnchor:view.leftAnchor],
-                                                   [webView.rightAnchor constraintEqualToAnchor:view.rightAnchor]
+        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+                                                   [webView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
         ]];
     }
+    [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
+                                               [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
+    ]];
     
     UIProgressView *progressView = [[UIProgressView alloc] init];
     progressView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -103,18 +102,18 @@
     
     if (@available(iOS 11, *)) {
         [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor],
-            [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-            [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor]
         ]];
     }
     else {
         [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor],
-            [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-            [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor]
         ]];
     }
+    [NSLayoutConstraint activateConstraints:@[
+        [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+        [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+    ]];
     
     UILabel *errorLabel = [[UILabel alloc] init];
     errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
