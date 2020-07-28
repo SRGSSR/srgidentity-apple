@@ -73,69 +73,9 @@
     view.backgroundColor = UIColor.whiteColor;
     self.view = view;
     
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:view.bounds];
-    webView.backgroundColor = UIColor.clearColor;
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
-    webView.navigationDelegate = self;
-    webView.scrollView.delegate = self;
-    [view addSubview:webView];
-    self.webView = webView;
-    
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
-                                                   [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-                                                   [webView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
-        ]];
-    }
-    [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
-                                               [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
-    ]];
-    
-    UIProgressView *progressView = [[UIProgressView alloc] init];
-    progressView.translatesAutoresizingMaskIntoConstraints = NO;
-    [view addSubview:progressView];
-    self.progressView = progressView;
-    
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor]
-        ]];
-    }
-    [NSLayoutConstraint activateConstraints:@[
-        [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-        [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
-    ]];
-    
-    UILabel *errorLabel = [[UILabel alloc] init];
-    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    errorLabel.font = [UIFont systemFontOfSize:20.f];
-    errorLabel.textColor = UIColor.grayColor;
-    [view addSubview:errorLabel];
-    self.errorLabel = errorLabel;
-    
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
-            [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
-            [errorLabel.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor constant:40.f]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[
-            [errorLabel.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
-            [errorLabel.leadingAnchor constraintEqualToAnchor:view.leadingAnchor constant:40.f],
-            [errorLabel.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:40.f]
-        ]];
-    }
+    [self layoutWebViewInView:view];
+    [self layoutProgressViewInView:view];
+    [self layoutErrorLabelInView:view];
 }
 
 - (void)viewDidLoad
@@ -170,6 +110,81 @@
     [super viewWillLayoutSubviews];
     
     [self updateContentInsets];
+}
+
+#pragma mark Layout helpers
+
+- (void)layoutWebViewInView:(UIView *)view
+{
+    WKWebView *webView = [[WKWebView alloc] initWithFrame:view.bounds];
+    webView.backgroundColor = UIColor.clearColor;
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    webView.navigationDelegate = self;
+    webView.scrollView.delegate = self;
+    [view addSubview:webView];
+    self.webView = webView;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
+                                                   [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+                                                   [webView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+        ]];
+    }
+    [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
+                                               [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
+    ]];
+}
+
+- (void)layoutProgressViewInView:(UIView *)view
+{
+    UIProgressView *progressView = [[UIProgressView alloc] init];
+    progressView.translatesAutoresizingMaskIntoConstraints = NO;
+    [view addSubview:progressView];
+    self.progressView = progressView;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[
+            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[
+            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor]
+        ]];
+    }
+    [NSLayoutConstraint activateConstraints:@[
+        [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+        [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+    ]];
+}
+
+- (void)layoutErrorLabelInView:(UIView *)view
+{
+    UILabel *errorLabel = [[UILabel alloc] init];
+    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    errorLabel.font = [UIFont systemFontOfSize:20.f];
+    errorLabel.textColor = UIColor.grayColor;
+    [view addSubview:errorLabel];
+    self.errorLabel = errorLabel;
+    
+    if (@available(iOS 11, *)) {
+        [NSLayoutConstraint activateConstraints:@[
+            [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
+            [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
+            [errorLabel.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor constant:40.f]
+        ]];
+    }
+    else {
+        [NSLayoutConstraint activateConstraints:@[
+            [errorLabel.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
+            [errorLabel.leadingAnchor constraintEqualToAnchor:view.leadingAnchor constant:40.f],
+            [errorLabel.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:40.f]
+        ]];
+    }
 }
 
 #pragma mark UI
