@@ -76,7 +76,7 @@
     }
 }
 
-#pragma mark View construction helpers
+#pragma mark Layout helpers
 
 - (void)loadCredentialsStackViewInView:(UIView *)view
 {
@@ -94,22 +94,37 @@
         [credentialsStackView.widthAnchor constraintEqualToConstant:750.f]
     ]];
     
+    [self loadServiceLogoInStackView:credentialsStackView];
+    [self loadFixedSpacerWithHeight:0.f inStackView:credentialsStackView];
+    [self loadEmailAddressTextFieldInStackView:credentialsStackView];
+    [self loadPasswordTextFieldInStackView:credentialsStackView];
+    [self loadLoginButtonInStackView:credentialsStackView];
+}
+
+- (void)loadServiceLogoInStackView:(UIStackView *)stackView
+{
     UIImage *serviceLogoImage = [UIImage imageNamed:@"identity_service_logo"] ?: [UIImage srg_identityImageNamed:@"service_logo"];
     UIImageView *serviceLogoImageView = [[UIImageView alloc] initWithImage:serviceLogoImage];
     serviceLogoImageView.tintColor = UIColor.systemGrayColor;
-    [credentialsStackView addArrangedSubview:serviceLogoImageView];
-    
+    [stackView addArrangedSubview:serviceLogoImageView];
+}
+
+- (void)loadFixedSpacerWithHeight:(CGFloat)height inStackView:(UIStackView *)stackView
+{
     // Zero height, but adds two stack spacing contributions and thus some spacing
     UIView *spacerView = [[UIView alloc] init];
     spacerView.translatesAutoresizingMaskIntoConstraints = NO;
     spacerView.backgroundColor = UIColor.clearColor;
-    [credentialsStackView addArrangedSubview:spacerView];
+    [stackView addArrangedSubview:spacerView];
     
     [NSLayoutConstraint activateConstraints:@[
-        [spacerView.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
-        [spacerView.heightAnchor constraintEqualToConstant:0.f]
+        [spacerView.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
+        [spacerView.heightAnchor constraintEqualToConstant:height]
     ]];
-    
+}
+
+- (void)loadEmailAddressTextFieldInStackView:(UIStackView *)stackView
+{
     UITextField *emailAddressTextField = [[UITextField alloc] init];
     emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
     emailAddressTextField.text = self.emailAddress;
@@ -117,34 +132,40 @@
     emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
     emailAddressTextField.textContentType = UITextContentTypeEmailAddress;
     emailAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [credentialsStackView addArrangedSubview:emailAddressTextField];
+    [stackView addArrangedSubview:emailAddressTextField];
     self.emailAddressTextField = emailAddressTextField;
     
     [NSLayoutConstraint activateConstraints:@[
-        [emailAddressTextField.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
+        [emailAddressTextField.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
         [emailAddressTextField.heightAnchor constraintEqualToConstant:70.f]
     ]];
-    
+}
+
+- (void)loadPasswordTextFieldInStackView:(UIStackView *)stackView
+{
     UITextField *passwordTextField = [[UITextField alloc] init];
-    emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
     passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
     passwordTextField.textContentType = UITextContentTypePassword;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [credentialsStackView addArrangedSubview:passwordTextField];
+    [stackView addArrangedSubview:passwordTextField];
     self.passwordTextField = passwordTextField;
     
     [NSLayoutConstraint activateConstraints:@[
-        [passwordTextField.widthAnchor constraintEqualToAnchor:credentialsStackView.widthAnchor],
+        [passwordTextField.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
         [passwordTextField.heightAnchor constraintEqualToConstant:70.f]
     ]];
-    
+}
+
+- (void)loadLoginButtonInStackView:(UIStackView *)stackView
+{
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [loginButton setTitle:SRGIdentityLocalizedString(@"Sign in", @"Sign in button on Apple TV") forState:UIControlStateNormal];
     loginButton.titleLabel.font = [UIFont srg_regularFontWithSize:36.f];
     [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventPrimaryActionTriggered];
-    [credentialsStackView addArrangedSubview:loginButton];
+    [stackView addArrangedSubview:loginButton];
     self.loginButton = loginButton;
 }
 
