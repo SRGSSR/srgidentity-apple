@@ -1,0 +1,696 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F3C7A1624C631C300199F64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C7A1324C631C300199F64 /* main.m */; };
+		6F3C7A3A24C6373E00199F64 /* IdentityServiceTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C7A0D24C631B500199F64 /* IdentityServiceTestCase.m */; };
+		6F3C7A3B24C6373E00199F64 /* IdentityBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C7A0C24C631B500199F64 /* IdentityBaseTestCase.m */; };
+		6F3C7A3D24C6376B00199F64 /* SRGIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 6F3C7A3C24C6376B00199F64 /* SRGIdentity */; };
+		6F3C7A4024C637DE00199F64 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = 6F3C7A3F24C637DE00199F64 /* OHHTTPStubs */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6F3C7A3324C6363400199F64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F0EB52820FC7F58009C02CF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0826662D216E2B7200FD8E84;
+			remoteInfo = "SRGIdentity-tests-host";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0826662E216E2B7200FD8E84 /* SRGIdentity-tests-host.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-tests-host.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F3C7A0C24C631B500199F64 /* IdentityBaseTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityBaseTestCase.m; sourceTree = "<group>"; };
+		6F3C7A0D24C631B500199F64 /* IdentityServiceTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdentityServiceTestCase.m; sourceTree = "<group>"; };
+		6F3C7A0E24C631B500199F64 /* IdentityBaseTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityBaseTestCase.h; sourceTree = "<group>"; };
+		6F3C7A1324C631C300199F64 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F3C7A1424C631C300199F64 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F3C7A1824C6331300199F64 /* Tests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Tests.xcconfig; sourceTree = "<group>"; };
+		6F3C7A1924C633B900199F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F3C7A2E24C6363400199F64 /* SRGIdentity-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGIdentity-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0826662B216E2B7200FD8E84 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F3C7A2B24C6363400199F64 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3C7A3D24C6376B00199F64 /* SRGIdentity in Frameworks */,
+				6F3C7A4024C637DE00199F64 /* OHHTTPStubs in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F0EB52720FC7F58009C02CF = {
+			isa = PBXGroup;
+			children = (
+				6F3C7A1824C6331300199F64 /* Tests.xcconfig */,
+				6F3C7A1124C631C300199F64 /* SRGIdentityTestsHost */,
+				6F3C7A0B24C631B500199F64 /* SRGIdentityTests */,
+				6F8A945521006A9E00AA6434 /* Frameworks */,
+				6F0EB53220FC7F58009C02CF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F0EB53220FC7F58009C02CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0826662E216E2B7200FD8E84 /* SRGIdentity-tests-host.app */,
+				6F3C7A2E24C6363400199F64 /* SRGIdentity-tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F3C7A0B24C631B500199F64 /* SRGIdentityTests */ = {
+			isa = PBXGroup;
+			children = (
+				6F3C7A0E24C631B500199F64 /* IdentityBaseTestCase.h */,
+				6F3C7A0C24C631B500199F64 /* IdentityBaseTestCase.m */,
+				6F3C7A0D24C631B500199F64 /* IdentityServiceTestCase.m */,
+				6F3C7A1924C633B900199F64 /* Info.plist */,
+			);
+			path = SRGIdentityTests;
+			sourceTree = "<group>";
+		};
+		6F3C7A1124C631C300199F64 /* SRGIdentityTestsHost */ = {
+			isa = PBXGroup;
+			children = (
+				6F3C7A1324C631C300199F64 /* main.m */,
+				6F3C7A1424C631C300199F64 /* Info.plist */,
+			);
+			path = SRGIdentityTestsHost;
+			sourceTree = "<group>";
+		};
+		6F8A945521006A9E00AA6434 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0826662D216E2B7200FD8E84 /* SRGIdentity-tests-host */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08266641216E2B7400FD8E84 /* Build configuration list for PBXNativeTarget "SRGIdentity-tests-host" */;
+			buildPhases = (
+				0826662A216E2B7200FD8E84 /* Sources */,
+				0826662B216E2B7200FD8E84 /* Frameworks */,
+				0826662C216E2B7200FD8E84 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SRGIdentity-tests-host";
+			productName = "SRGIdentity-testapp";
+			productReference = 0826662E216E2B7200FD8E84 /* SRGIdentity-tests-host.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6F3C7A2D24C6363400199F64 /* SRGIdentity-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F3C7A3524C6363400199F64 /* Build configuration list for PBXNativeTarget "SRGIdentity-tests" */;
+			buildPhases = (
+				6F3C7A2A24C6363400199F64 /* Sources */,
+				6F3C7A2B24C6363400199F64 /* Frameworks */,
+				6F3C7A2C24C6363400199F64 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6F3C7A3424C6363400199F64 /* PBXTargetDependency */,
+			);
+			name = "SRGIdentity-tests";
+			packageProductDependencies = (
+				6F3C7A3C24C6376B00199F64 /* SRGIdentity */,
+				6F3C7A3F24C637DE00199F64 /* OHHTTPStubs */,
+			);
+			productName = "SRGIdentity-tests";
+			productReference = 6F3C7A2E24C6363400199F64 /* SRGIdentity-tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6F0EB52820FC7F58009C02CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1200;
+				ORGANIZATIONNAME = "SRG SSR";
+				TargetAttributes = {
+					0826662D216E2B7200FD8E84 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					6F3C7A2D24C6363400199F64 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 0826662D216E2B7200FD8E84;
+					};
+				};
+			};
+			buildConfigurationList = 6F0EB52B20FC7F58009C02CF /* Build configuration list for PBXProject "SRGIdentity-tests" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				it,
+				de,
+				fr,
+				rm,
+			);
+			mainGroup = 6F0EB52720FC7F58009C02CF;
+			packageReferences = (
+				6F3C7A3E24C637DE00199F64 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
+			);
+			productRefGroup = 6F0EB53220FC7F58009C02CF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F3C7A2D24C6363400199F64 /* SRGIdentity-tests */,
+				0826662D216E2B7200FD8E84 /* SRGIdentity-tests-host */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0826662C216E2B7200FD8E84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F3C7A2C24C6363400199F64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0826662A216E2B7200FD8E84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3C7A1624C631C300199F64 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F3C7A2A24C6363400199F64 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3C7A3B24C6373E00199F64 /* IdentityBaseTestCase.m in Sources */,
+				6F3C7A3A24C6373E00199F64 /* IdentityServiceTestCase.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6F3C7A3424C6363400199F64 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0826662D216E2B7200FD8E84 /* SRGIdentity-tests-host */;
+			targetProxy = 6F3C7A3324C6363400199F64 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08266642216E2B7400FD8E84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = SRGIdentityTestsHost/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests-host";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		08266643216E2B7400FD8E84 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = SRGIdentityTestsHost/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests-host";
+				SDKROOT = iphoneos;
+			};
+			name = "Debug-static";
+		};
+		08266644216E2B7400FD8E84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = SRGIdentityTestsHost/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests-host";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		08266645216E2B7400FD8E84 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = SRGIdentityTestsHost/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests-host";
+				SDKROOT = iphoneos;
+			};
+			name = "Release-static";
+		};
+		6F0C98DA2121E14000073AB6 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-static";
+		};
+		6F0C98DE2121E14600073AB6 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-static";
+		};
+		6F0EB53720FC7F58009C02CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6F0EB53820FC7F58009C02CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6F3C7A3624C6363400199F64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SRGIdentityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-tests-host.app/SRGIdentity-tests-host";
+			};
+			name = Debug;
+		};
+		6F3C7A3724C6363400199F64 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SRGIdentityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-tests-host.app/SRGIdentity-tests-host";
+			};
+			name = "Debug-static";
+		};
+		6F3C7A3824C6363400199F64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SRGIdentityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-tests-host.app/SRGIdentity-tests-host";
+			};
+			name = Release;
+		};
+		6F3C7A3924C6363400199F64 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F3C7A1824C6331300199F64 /* Tests.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SRGIdentityTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRGIdentity-tests-host.app/SRGIdentity-tests-host";
+			};
+			name = "Release-static";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08266641216E2B7400FD8E84 /* Build configuration list for PBXNativeTarget "SRGIdentity-tests-host" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08266642216E2B7400FD8E84 /* Debug */,
+				08266643216E2B7400FD8E84 /* Debug-static */,
+				08266644216E2B7400FD8E84 /* Release */,
+				08266645216E2B7400FD8E84 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F0EB52B20FC7F58009C02CF /* Build configuration list for PBXProject "SRGIdentity-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F0EB53720FC7F58009C02CF /* Debug */,
+				6F0C98DA2121E14000073AB6 /* Debug-static */,
+				6F0EB53820FC7F58009C02CF /* Release */,
+				6F0C98DE2121E14600073AB6 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F3C7A3524C6363400199F64 /* Build configuration list for PBXNativeTarget "SRGIdentity-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F3C7A3624C6363400199F64 /* Debug */,
+				6F3C7A3724C6363400199F64 /* Debug-static */,
+				6F3C7A3824C6363400199F64 /* Release */,
+				6F3C7A3924C6363400199F64 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6F3C7A3E24C637DE00199F64 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6F3C7A3C24C6376B00199F64 /* SRGIdentity */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SRGIdentity;
+		};
+		6F3C7A3F24C637DE00199F64 /* OHHTTPStubs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6F3C7A3E24C637DE00199F64 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubs;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 6F0EB52820FC7F58009C02CF /* Project object */;
+}

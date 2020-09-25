@@ -1,3 +1,0 @@
-#include "../Common.xcconfig"
-
-OTHER_LDFLAGS = -framework FXReachability -framework libextobjc -framework MAKVONotificationCenter -framework Mantle -framework SRGAppearance -framework SRGLogger -framework SRGNetwork -framework UICKeyChainStore

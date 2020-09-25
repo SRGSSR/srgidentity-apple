@@ -6,12 +6,16 @@
 
 @import UIKit;
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
 @property (nonatomic) UIWindow *window;
-
 @end
 
-NS_ASSUME_NONNULL_END
+@implementation AppDelegate
+@end
+
+int main(int argc, char *argv[])
+{
+    @autoreleasepool {
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
+}

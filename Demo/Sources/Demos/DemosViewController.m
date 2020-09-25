@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "Resources.h"
 
-#import <SRGIdentity/SRGIdentity.h>
+@import SRGIdentity;
 
 static NSString * const LastLoggedInEmailAddress = @"LastLoggedInEmailAddress";
 
