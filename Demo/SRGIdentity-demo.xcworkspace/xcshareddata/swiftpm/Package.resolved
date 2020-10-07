@@ -30,10 +30,10 @@
       },
       {
         "package": "Mantle",
-        "repositoryURL": "https://github.com/SRGSSR/Mantle.git",
+        "repositoryURL": "https://github.com/Mantle/Mantle.git",
         "state": {
-          "branch": "swift-package-manager-support",
-          "revision": "cd18bf7f9c6c5a0d2f4aec6012fe1615b86032fe",
+          "branch": "master",
+          "revision": "d123b3aa351b6b98155ab489deaacc56e1a84b4b",
           "version": null
         }
       },
