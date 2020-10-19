@@ -32,9 +32,9 @@
         "package": "Mantle",
         "repositoryURL": "https://github.com/Mantle/Mantle.git",
         "state": {
-          "branch": "master",
-          "revision": "d123b3aa351b6b98155ab489deaacc56e1a84b4b",
-          "version": null
+          "branch": null,
+          "revision": "eb4ad298d81c023bcba20810ceffba695378ded4",
+          "version": "2.1.6"
         }
       },
       {
