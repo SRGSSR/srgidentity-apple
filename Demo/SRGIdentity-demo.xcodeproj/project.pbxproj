@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F3C7A0624C62F5900199F64 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C7A0424C62F5900199F64 /* SceneDelegate.m */; };
+		6F3C7A0824C62FB000199F64 /* SRGIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = 6F3C7A0724C62FB000199F64 /* SRGIdentity */; };
+		6F55003C237BCB02003476E2 /* DemosViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */; };
+		6F550040237BCC04003476E2 /* Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F55003F237BCC04003476E2 /* Resources.m */; };
+		6F8A93FB20FDCAA800AA6434 /* LaunchScreen~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */; };
+		6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A93F120FDCAA800AA6434 /* Images.xcassets */; };
+		6F8A93FD20FDCAA800AA6434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F520FDCAA800AA6434 /* main.m */; };
+		6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F620FDCAA800AA6434 /* AppDelegate.m */; };
+		6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8A93F920FDCAA800AA6434 /* DemosViewController.m */; };
+		6F8A940220FDCBA600AA6434 /* DemosViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */; };
+		6FCE031023F5C17A0072EBC4 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE030F23F5C17A0072EBC4 /* Application.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		080D0BD921356A1200AA519A /* UICKeyChainStore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UICKeyChainStore.framework; path = Carthage/Build/iOS/UICKeyChainStore.framework; sourceTree = "<group>"; };
+		080D0BE021356CB500AA519A /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/iOS/libextobjc.framework; sourceTree = "<group>"; };
+		080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		080D0BE42135776000AA519A /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mantle.framework; path = Carthage/Build/iOS/Mantle.framework; sourceTree = "<group>"; };
+		080D0BEE2135A6DD00AA519A /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		08266651216E354000FD8E84 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
+		084CD6FE21696C0A00905A38 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
+		086FB2CA21368ADE00DE4CF2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		086FB33521380D9300DE4CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F0402F4233131AE00DA4D97 /* Demo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Demo.xcconfig; sourceTree = "<group>"; };
+		6F3C7A0424C62F5900199F64 /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		6F3C7A0524C62F5900199F64 /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "DemosViewController~tvos.storyboard"; sourceTree = "<group>"; };
+		6F55003E237BCC04003476E2 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		6F55003F237BCC04003476E2 /* Resources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resources.m; sourceTree = "<group>"; };
+		6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FXReachability.framework; path = Carthage/Build/iOS/FXReachability.framework; sourceTree = "<group>"; };
+		6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGIdentity-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "LaunchScreen~ios.storyboard"; sourceTree = "<group>"; };
+		6F8A93F120FDCAA800AA6434 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6F8A93F420FDCAA800AA6434 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6F8A93F520FDCAA800AA6434 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F8A93F620FDCAA800AA6434 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6F8A93F820FDCAA800AA6434 /* DemosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemosViewController.h; sourceTree = "<group>"; };
+		6F8A93F920FDCAA800AA6434 /* DemosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosViewController.m; sourceTree = "<group>"; };
+		6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "DemosViewController~ios.storyboard"; sourceTree = "<group>"; };
+		6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGNetwork.framework; path = Carthage/Build/iOS/SRGNetwork.framework; sourceTree = "<group>"; };
+		6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGAppearance.framework; path = Carthage/Build/iOS/SRGAppearance.framework; sourceTree = "<group>"; };
+		6FCE030E23F5C17A0072EBC4 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
+		6FCE030F23F5C17A0072EBC4 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6F8A93D520FDCA0800AA6434 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3C7A0824C62FB000199F64 /* SRGIdentity in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F0EB52720FC7F58009C02CF = {
+			isa = PBXGroup;
+			children = (
+				6F0402F4233131AE00DA4D97 /* Demo.xcconfig */,
+				086FB33521380D9300DE4CF2 /* Info.plist */,
+				6F8A93F220FDCAA800AA6434 /* Sources */,
+				6F8A93EF20FDCAA800AA6434 /* Resources */,
+				6F8A945521006A9E00AA6434 /* Frameworks */,
+				6F0EB53220FC7F58009C02CF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F0EB53220FC7F58009C02CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F55003D237BCC04003476E2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6F55003E237BCC04003476E2 /* Resources.h */,
+				6F55003F237BCC04003476E2 /* Resources.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6F8A93EF20FDCAA800AA6434 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6F8A93F120FDCAA800AA6434 /* Images.xcassets */,
+				6F8A93F020FDCAA800AA6434 /* LaunchScreen~ios.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6F8A93F220FDCAA800AA6434 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6F8A93F320FDCAA800AA6434 /* Application */,
+				6F8A93F720FDCAA800AA6434 /* Demos */,
+				6F55003D237BCC04003476E2 /* Helpers */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		6F8A93F320FDCAA800AA6434 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				6F8A93F420FDCAA800AA6434 /* AppDelegate.h */,
+				6F8A93F620FDCAA800AA6434 /* AppDelegate.m */,
+				6FCE030E23F5C17A0072EBC4 /* Application.h */,
+				6FCE030F23F5C17A0072EBC4 /* Application.m */,
+				6F8A93F520FDCAA800AA6434 /* main.m */,
+				6F3C7A0524C62F5900199F64 /* SceneDelegate.h */,
+				6F3C7A0424C62F5900199F64 /* SceneDelegate.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		6F8A93F720FDCAA800AA6434 /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				6F8A93F820FDCAA800AA6434 /* DemosViewController.h */,
+				6F8A93F920FDCAA800AA6434 /* DemosViewController.m */,
+				6F8A940120FDCBA600AA6434 /* DemosViewController~ios.storyboard */,
+				6F55003B237BCB02003476E2 /* DemosViewController~tvos.storyboard */,
+			);
+			path = Demos;
+			sourceTree = "<group>";
+		};
+		6F8A945521006A9E00AA6434 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F6ED0FF216BA9D800D7E786 /* FXReachability.framework */,
+				080D0BE021356CB500AA519A /* libextobjc.framework */,
+				080D0BE121356CB500AA519A /* MAKVONotificationCenter.framework */,
+				080D0BE42135776000AA519A /* Mantle.framework */,
+				08266651216E354000FD8E84 /* OHHTTPStubs.framework */,
+				080D0BEE2135A6DD00AA519A /* SafariServices.framework */,
+				6FC7C5A423A3A6D70058349C /* SRGAppearance.framework */,
+				084CD6FE21696C0A00905A38 /* SRGLogger.framework */,
+				6F9FFAAB2167924E00F781A0 /* SRGNetwork.framework */,
+				080D0BD921356A1200AA519A /* UICKeyChainStore.framework */,
+				086FB2CA21368ADE00DE4CF2 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo" */;
+			buildPhases = (
+				6F8A93D420FDCA0800AA6434 /* Sources */,
+				6F8A93D520FDCA0800AA6434 /* Frameworks */,
+				6F8A93D620FDCA0800AA6434 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SRGIdentity-demo";
+			packageProductDependencies = (
+				6F3C7A0724C62FB000199F64 /* SRGIdentity */,
+			);
+			productName = "SRGIdentity-demo1";
+			productReference = 6F8A93D820FDCA0800AA6434 /* SRGIdentity-demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6F0EB52820FC7F58009C02CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1220;
+				ORGANIZATIONNAME = "SRG SSR";
+				TargetAttributes = {
+					6F8A93D720FDCA0800AA6434 = {
+						CreatedOnToolsVersion = 9.4;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 6F0EB52B20FC7F58009C02CF /* Build configuration list for PBXProject "SRGIdentity-demo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				it,
+				de,
+				fr,
+				rm,
+			);
+			mainGroup = 6F0EB52720FC7F58009C02CF;
+			productRefGroup = 6F0EB53220FC7F58009C02CF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F8A93D720FDCA0800AA6434 /* SRGIdentity-demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F8A93D620FDCA0800AA6434 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F8A93FB20FDCAA800AA6434 /* LaunchScreen~ios.storyboard in Resources */,
+				6F55003C237BCB02003476E2 /* DemosViewController~tvos.storyboard in Resources */,
+				6F8A940220FDCBA600AA6434 /* DemosViewController~ios.storyboard in Resources */,
+				6F8A93FC20FDCAA800AA6434 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6F8A93D420FDCA0800AA6434 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6FCE031023F5C17A0072EBC4 /* Application.m in Sources */,
+				6F3C7A0624C62F5900199F64 /* SceneDelegate.m in Sources */,
+				6F8A93FE20FDCAA800AA6434 /* AppDelegate.m in Sources */,
+				6F550040237BCC04003476E2 /* Resources.m in Sources */,
+				6F8A93FD20FDCAA800AA6434 /* main.m in Sources */,
+				6F8A93FF20FDCAA800AA6434 /* DemosViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6F0EB53720FC7F58009C02CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6F0EB53820FC7F58009C02CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.$(TARGET_NAME)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6F8A93EC20FDCA0900AA6434 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(APP_ICONS_SOURCE)";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6F8A93ED20FDCA0900AA6434 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "$(APP_ICONS_SOURCE)";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6F0EB52B20FC7F58009C02CF /* Build configuration list for PBXProject "SRGIdentity-demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F0EB53720FC7F58009C02CF /* Debug */,
+				6F0EB53820FC7F58009C02CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F8A93EB20FDCA0900AA6434 /* Build configuration list for PBXNativeTarget "SRGIdentity-demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F8A93EC20FDCA0900AA6434 /* Debug */,
+				6F8A93ED20FDCA0900AA6434 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6F3C7A0724C62FB000199F64 /* SRGIdentity */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SRGIdentity;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 6F0EB52820FC7F58009C02CF /* Project object */;
+}

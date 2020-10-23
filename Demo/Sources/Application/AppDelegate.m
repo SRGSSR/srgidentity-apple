@@ -8,7 +8,7 @@
 
 #import "Application.h"
 
-#import <SRGIdentity/SRGIdentity.h>
+@import SRGIdentity;
 
 @implementation AppDelegate
 
