@@ -5,27 +5,27 @@
         "package": "FXReachability",
         "repositoryURL": "https://github.com/SRGSSR/FXReachability.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "1eac916df0045630e779fa60eef22ed0d185e15f",
-          "version": null
+          "version": "1.3.2-srg5"
         }
       },
       {
         "package": "libextobjc",
         "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
-          "version": null
+          "version": "0.6.0-srg3"
         }
       },
       {
         "package": "MAKVONotificationCenter",
         "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "60395e0601ffd4a784856b423d4cac558366276d",
-          "version": null
+          "version": "1.0.0-srg5"
         }
       },
       {
@@ -41,27 +41,27 @@
         "package": "SRGAppearance",
         "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
         "state": {
-          "branch": "develop",
-          "revision": "6274a2d02f98f5624016023822b323c59545442f",
-          "version": null
+          "branch": null,
+          "revision": "48258a788952348c7fa38b5b8e9181b25f3c87b8",
+          "version": "3.0.0"
         }
       },
       {
         "package": "SRGLogger",
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
-          "branch": "develop",
-          "revision": "0f40b67ae8f93c31271570deb16c6a5bd0a17419",
-          "version": null
+          "branch": null,
+          "revision": "cfc39d1223ed039aeb7df38c6c7570977b22d1aa",
+          "version": "3.0.0"
         }
       },
       {
         "package": "SRGNetwork",
         "repositoryURL": "https://github.com/SRGSSR/srgnetwork-apple.git",
         "state": {
-          "branch": "develop",
-          "revision": "98c50251b8f2c94e626e1a264eb560c52662aa57",
-          "version": null
+          "branch": null,
+          "revision": "734fe399088b2f846e9e69d48a43118f6a8dc0d2",
+          "version": "3.0.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/UICKeyChainStore.git",
         "state": {
           "branch": null,
-          "revision": "2f0380d539ec53b66eef211b3c983749ad9e2686",
-          "version": "2.2.0"
+          "revision": "8220ac38124613fb709508426f75fbac6921e261",
+          "version": "2.2.1"
         }
       }
     ]

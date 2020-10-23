@@ -20,11 +20,11 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "FXReachability", url: "https://github.com/SRGSSR/FXReachability.git", .branch("master")),
-        .package(name: "Mantle", url: "https://github.com/Mantle/Mantle.git", .upToNextMinor(from: "2.1.5")),
-        .package(name: "SRGAppearance", url: "https://github.com/SRGSSR/srgappearance-apple.git", .branch("develop")),
-        .package(name: "SRGNetwork", url: "https://github.com/SRGSSR/srgnetwork-apple.git", .branch("develop")),
-        .package(name: "UICKeyChainStore", url: "https://github.com/kishikawakatsumi/UICKeyChainStore.git", .exact("2.2.0"))
+        .package(name: "FXReachability", url: "https://github.com/SRGSSR/FXReachability.git", .exact("1.3.2-srg5")),
+        .package(name: "Mantle", url: "https://github.com/Mantle/Mantle.git", .upToNextMinor(from: "2.1.6")),
+        .package(name: "SRGAppearance", url: "https://github.com/SRGSSR/srgappearance-apple.git", .upToNextMinor(from: "3.0.0")),
+        .package(name: "SRGNetwork", url: "https://github.com/SRGSSR/srgnetwork-apple.git", .upToNextMinor(from: "3.0.0")),
+        .package(name: "UICKeyChainStore", url: "https://github.com/kishikawakatsumi/UICKeyChainStore.git", .upToNextMinor(from: "2.2.1"))
     ],
     targets: [
         .target(
