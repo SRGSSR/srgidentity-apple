@@ -3,7 +3,7 @@
 import PackageDescription
 
 struct ProjectSettings {
-    static let marketingVersion: String = "3.0.0"
+    static let marketingVersion: String = "3.0.1"
 }
 
 let package = Package(
@@ -34,7 +34,8 @@ let package = Package(
                 .process("Resources")
             ],
             cSettings: [
-                .define("MARKETING_VERSION", to: "\"\(ProjectSettings.marketingVersion)\"")
+                .define("MARKETING_VERSION", to: "\"\(ProjectSettings.marketingVersion)\""),
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
             ]
         )
     ]
