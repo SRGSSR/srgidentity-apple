@@ -10,6 +10,7 @@
 
 #import "SRGIdentityNavigationController.h"
 
+#import "SRGIdentityModalPresentationController.h"
 #import "SRGIdentityModalTransition.h"
 
 @interface SRGIdentityNavigationController ()
@@ -82,6 +83,11 @@
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {
     return self.interactiveTransition;
+}
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+{
+    return [[SRGIdentityModalPresentationController alloc] initWithPresentedViewController:presented presentingViewController:presenting];
 }
 
 #pragma mark Gesture recognizers

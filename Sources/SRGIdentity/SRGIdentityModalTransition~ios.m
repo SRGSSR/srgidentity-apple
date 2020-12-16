@@ -67,14 +67,15 @@
         NSAssert(toViewController.modalPresentationStyle == UIModalPresentationCustom, @"A custom modal presentation style must be used");
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        NSAssert(toView != nil, @"Presented view must be available");
         [containerView addSubview:toView];
         [containerView insertSubview:dimmingView belowSubview:toView];
     }
     else {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        NSAssert(fromView != nil, @"Dismissed view must be available");
         [containerView insertSubview:dimmingView belowSubview:fromView];
+        
+        UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+        [containerView insertSubview:toView atIndex:0];
     }
     
     [self updateTransition:transitionContext withProgress:0.f];
