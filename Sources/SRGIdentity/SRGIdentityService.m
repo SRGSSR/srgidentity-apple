@@ -530,7 +530,8 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
                                                                                              target:self
                                                                                              action:@selector(dismissAccountView:)];
     SRGIdentityNavigationController *accountNavigationController = [[SRGIdentityNavigationController alloc] initWithRootViewController:accountViewController];
-    accountNavigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    accountNavigationController.modalPresentationStyle = UIModalPresentationCustom;
+    accountNavigationController.modalPresentationCapturesStatusBarAppearance = YES;
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     

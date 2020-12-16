@@ -41,18 +41,20 @@
     return [self initForPresentation:YES];
 }
 
+#pragma mark Getters and setters
+
+- (BOOL)wasCancelled
+{
+    return self.transitionContext.transitionWasCancelled;
+}
+
 #pragma mark Common transition implementation
 
 - (void)setupTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     NSParameterAssert(transitionContext);
     
-    // Warning: Do not set the presentation style to custom, otherwise the from / to values will be missing
-    //          when presenting / dismissing. See https://stackoverflow.com/a/36124432/760435.
     UIView *containerView = [transitionContext containerView];
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-    NSAssert(fromView && toView, @"Do not use UIModalPresentationCustom for presentation");
     
     UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
     dimmingView.frame = containerView.bounds;
@@ -61,12 +63,18 @@
     self.dimmingView = dimmingView;
     
     if (self.presentation) {
+        __unused UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+        NSAssert(toViewController.modalPresentationStyle == UIModalPresentationCustom, @"A custom modal presentation style must be used");
+        
+        UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+        NSAssert(toView != nil, @"Presented view must be available");
         [containerView addSubview:toView];
-        [containerView insertSubview:dimmingView aboveSubview:fromView];
+        [containerView insertSubview:dimmingView belowSubview:toView];
     }
     else {
-        [containerView insertSubview:toView belowSubview:fromView];
-        [containerView insertSubview:dimmingView aboveSubview:toView];
+        UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+        NSAssert(fromView != nil, @"Dismissed view must be available");
+        [containerView insertSubview:dimmingView belowSubview:fromView];
     }
     
     [self updateTransition:transitionContext withProgress:0.f];
@@ -117,9 +125,8 @@
 {
     NSParameterAssert(transitionContext);
     
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    
     if (! success) {
+        UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
         [toView removeFromSuperview];
     }
     
