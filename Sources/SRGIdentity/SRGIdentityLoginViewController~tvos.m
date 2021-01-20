@@ -142,7 +142,8 @@
     emailAddressTextField.text = self.emailAddress;
     emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
     emailAddressTextField.font = [UIFont srg_regularFontWithSize:42.f];
-    emailAddressTextField.textContentType = UITextContentTypeEmailAddress;
+    emailAddressTextField.textContentType = UITextContentTypeUsername;
+    emailAddressTextField.keyboardType = UIKeyboardTypeEmailAddress;
     emailAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [stackView addArrangedSubview:emailAddressTextField];
     self.emailAddressTextField = emailAddressTextField;
