@@ -16,7 +16,7 @@
 @import SRGAppearance;
 @import SRGNetwork;
 
-@interface SRGIdentityLoginViewController ()
+@interface SRGIdentityLoginViewController () <UITextFieldDelegate>
 
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic) NSURL *webserviceURL;
@@ -73,6 +73,18 @@
     if (self.movingFromParentViewController || self.beingDismissed) {
         [self.loginRequest cancel];
         self.dismissalBlock();
+    }
+}
+
+#pragma mark Focus management
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments
+{
+    if (self.emailAddressTextField.text.length != 0 && self.passwordTextField.text.length != 0) {
+        return @[self.loginButton];
+    }
+    else {
+        return @[];
     }
 }
 
@@ -145,6 +157,7 @@
 {
     UITextField *passwordTextField = [[UITextField alloc] init];
     passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    passwordTextField.delegate = self;
     passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
     passwordTextField.font = [UIFont srg_regularFontWithSize:42.f];
     passwordTextField.textContentType = UITextContentTypePassword;
@@ -251,6 +264,14 @@
         
         completionHandler(sessionToken, nil);
     }];
+}
+
+#pragma mark UITextFieldDelegate protocol
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self setNeedsFocusUpdate];
+    [self updateFocusIfNeeded];
 }
 
 #pragma mark Actions
