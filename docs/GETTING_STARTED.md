@@ -41,7 +41,9 @@ To allow for a user to login, call the `-loginWithEmailAddress:` instance method
 ```
 
 - On iOS this presents a browser, in which the user can supply her credentials or open an account.
-- On tvOS a dedicated in-app view is presented, with which users can only log in (a message invite them to open an account on a computer or mobile device). You can customize the logo displayed on this view by adding an `identity_service_logo` image file to your project (with recommended size of 150x150 px).
+- On tvOS a dedicated in-app view is presented, with which users can only log in (a message invites them to open an account on a computer or mobile device).
+	- You can customize the logo displayed on this view by adding an `identity_service_logo` image file to your project (with recommended size of 150x150 px).
+	- To allow credentials autofill from a companion device, enable web credentials sharing by [adding the associated domains entitlement to your application and the associated domain file on your website.](https://developer.apple.com/documentation/safariservices/supporting_associated_domains)
 
 A user remains logged in until she logs out.
 

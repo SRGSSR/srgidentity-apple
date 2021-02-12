@@ -181,7 +181,8 @@
     [NSLayoutConstraint activateConstraints:@[
         [instructionsStackView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
         [instructionsStackView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:-38.f],
-        [instructionsStackView.widthAnchor constraintEqualToConstant:1000.f]
+        [instructionsStackView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor constant:40.f],
+        [instructionsStackView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:-40.f],
     ]];
     
     UILabel *instructionsLabel = [[UILabel alloc] init];
