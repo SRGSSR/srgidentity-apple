@@ -324,6 +324,12 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
         [self handleSessionToken:sessionToken];
     } dismissalBlock:^{
         s_loggingIn = NO;
+        
+        if (! self.sessionToken) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
+        }
     }];
     [topViewController presentViewController:loginViewController animated:YES completion:nil];
 #endif
