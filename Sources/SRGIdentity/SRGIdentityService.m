@@ -96,7 +96,9 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
-@property (nonatomic) ASWebAuthenticationSession *authenticationSession          /* Must be strong to avoid cancellation */;
+#if TARGET_OS_IOS
+@property (nonatomic) ASWebAuthenticationSession *authenticationSession;          /* Must be strong to avoid cancellation */
+#endif
 
 @property (nonatomic, weak) SRGRequest *accountRequest;
 @property (nonatomic, weak) UIViewController *accountNavigationController;
