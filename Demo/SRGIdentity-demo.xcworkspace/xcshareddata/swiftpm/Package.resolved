@@ -41,9 +41,9 @@
         "package": "SRGAppearance",
         "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
         "state": {
-          "branch": null,
-          "revision": "48258a788952348c7fa38b5b8e9181b25f3c87b8",
-          "version": "3.0.0"
+          "branch": "feature/font-overhaul",
+          "revision": "47eb91c047d2dcab0cef665d795037db11d01a30",
+          "version": null
         }
       },
       {

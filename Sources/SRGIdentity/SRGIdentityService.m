@@ -65,42 +65,22 @@ static NSString *SRGServiceIdentifierAccountStoreKey(void)
     return [NSBundle.mainBundle.bundleIdentifier stringByAppendingString:@".account"];
 }
 
-// TODO: Use secure unarchiving directly once iOS 11 is the minimum version
 static SRGAccount *SRGIdentityAccountFromData(NSData *data)
 {
     if (! data) {
         return nil;
     }
     
-#if TARGET_OS_TV
     return [NSKeyedUnarchiver unarchivedObjectOfClass:SRGAccount.class fromData:data error:NULL];
-#else
-    if (@available(iOS 11, *)) {
-        return [NSKeyedUnarchiver unarchivedObjectOfClass:SRGAccount.class fromData:data error:NULL];
-    }
-    else {
-        return [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    }
-#endif
 }
 
-// TODO: Use secure archiving directly once iOS 11 is the minimum version
 static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 {
     if (! account) {
         return nil;
     }
     
-#if TARGET_OS_TV
     return [NSKeyedArchiver archivedDataWithRootObject:account requiringSecureCoding:YES error:NULL];
-#else
-    if (@available(iOS 11, *)) {
-        return [NSKeyedArchiver archivedDataWithRootObject:account requiringSecureCoding:YES error:NULL];
-    }
-    else {
-        return [NSKeyedArchiver archivedDataWithRootObject:account];
-    }
-#endif
 }
 
 @interface SRGIdentityService ()
@@ -116,7 +96,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 
 @property (nonatomic) UICKeyChainStore *keyChainStore;
 
-@property (nonatomic) id authenticationSession          /* Must be strong to avoid cancellation. Contains ASWebAuthenticationSession or SFAuthenticationSession (have compatible APIs) */;
+@property (nonatomic) ASWebAuthenticationSession *authenticationSession          /* Must be strong to avoid cancellation */;
 
 @property (nonatomic, weak) SRGRequest *accountRequest;
 @property (nonatomic, weak) UIViewController *accountNavigationController;
@@ -252,70 +232,37 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 #if TARGET_OS_IOS
     @weakify(self)
     void (^completionHandler)(NSURL * _Nullable, NSError * _Nullable) = ^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-        void (^notifyCancel)(void) = ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
-                                                                object:self
-                                                              userInfo:nil];
-        };
-        
         s_loggingIn = NO;
         
         @strongify(self)
         if (callbackURL) {
             [self handleCallbackURL:callbackURL];
         }
-        else if (@available(iOS 12.0, *)) {
-            if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
-                notifyCancel();
-            }
-        }
-        else if (@available(iOS 11.0, *)) {
-            if ([error.domain isEqualToString:SFAuthenticationErrorDomain] && error.code == SFAuthenticationErrorCanceledLogin) {
-                notifyCancel();
-            }
+        else if ([error.domain isEqualToString:ASWebAuthenticationSessionErrorDomain] && error.code == ASWebAuthenticationSessionErrorCodeCanceledLogin) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGIdentityServiceUserDidCancelLoginNotification
+                                                                object:self
+                                                              userInfo:nil];
         }
     };
     
     NSURL *requestURL = [self loginRequestURLWithEmailAddress:emailAddress];
     
-    void (^loginWithSafari)(void) = ^{
+    if (self.loginMethod == SRGIdentityLoginMethodAuthenticationSession) {
+        self.authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
+                                                                   callbackURLScheme:[SRGIdentityService applicationURLScheme]
+                                                                   completionHandler:completionHandler];
+        if (@available(iOS 13, *)) {
+            self.authenticationSession.presentationContextProvider = self;
+        }
+        if (! [self.authenticationSession start]) {
+            return NO;
+        }
+    }
+    else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         safariViewController.delegate = self;
         UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
         [topViewController presentViewController:safariViewController animated:YES completion:nil];
-    };
-    
-    if (self.loginMethod == SRGIdentityLoginMethodAuthenticationSession) {
-        // iOS 12 and later, use `ASWebAuthenticationSession`
-        if (@available(iOS 12, *)) {
-            ASWebAuthenticationSession *authenticationSession = [[ASWebAuthenticationSession alloc] initWithURL:requestURL
-                                                                                              callbackURLScheme:[SRGIdentityService applicationURLScheme]
-                                                                                              completionHandler:completionHandler];
-            if (@available(iOS 13, *)) {
-                authenticationSession.presentationContextProvider = self;
-            }
-            self.authenticationSession = authenticationSession;
-            if (! [authenticationSession start]) {
-                return NO;
-            }
-        }
-        // iOS 11, use `SFAuthenticationSession`
-        else if (@available(iOS 11, *)) {
-            SFAuthenticationSession *authenticationSession = [[SFAuthenticationSession alloc] initWithURL:requestURL
-                                                                                        callbackURLScheme:[SRGIdentityService applicationURLScheme]
-                                                                                        completionHandler:completionHandler];
-            self.authenticationSession = authenticationSession;
-            if (! [authenticationSession start]) {
-                return NO;
-            }
-        }
-        // iOS 9 and 10, use `SFSafariViewController`
-        else {
-            loginWithSafari();
-        }
-    }
-    else {
-        loginWithSafari();
     }
 #else
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
@@ -405,7 +352,6 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
         if (! JSONDictionary) {
             return nil;
         }
-        
         return [MTLJSONAdapter modelOfClass:SRGAccount.class fromJSONDictionary:JSONDictionary error:pError];
     } completionBlock:^(SRGAccount * _Nullable account, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error) {

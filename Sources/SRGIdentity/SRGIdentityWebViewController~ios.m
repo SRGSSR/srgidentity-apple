@@ -124,18 +124,11 @@
     [view addSubview:webView];
     self.webView = webView;
     
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
-                                                   [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[ [webView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
-                                                   [webView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
-        ]];
-    }
-    [NSLayoutConstraint activateConstraints:@[ [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
-                                               [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
+    [NSLayoutConstraint activateConstraints:@[
+        [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
+        [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor],
+        [webView.topAnchor constraintEqualToAnchor:view.topAnchor],
+        [webView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
     ]];
 }
 
@@ -146,17 +139,8 @@
     [view addSubview:progressView];
     self.progressView = progressView;
     
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[
-            [progressView.topAnchor constraintEqualToAnchor:view.topAnchor]
-        ]];
-    }
     [NSLayoutConstraint activateConstraints:@[
+        [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor],
         [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
         [progressView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
     ]];
@@ -171,20 +155,11 @@
     [view addSubview:errorLabel];
     self.errorLabel = errorLabel;
     
-    if (@available(iOS 11, *)) {
-        [NSLayoutConstraint activateConstraints:@[
-            [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
-            [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
-            [errorLabel.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor constant:40.f]
-        ]];
-    }
-    else {
-        [NSLayoutConstraint activateConstraints:@[
-            [errorLabel.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
-            [errorLabel.leadingAnchor constraintEqualToAnchor:view.leadingAnchor constant:40.f],
-            [errorLabel.trailingAnchor constraintEqualToAnchor:view.trailingAnchor constant:40.f]
-        ]];
-    }
+    [NSLayoutConstraint activateConstraints:@[
+        [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
+        [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
+        [errorLabel.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor constant:40.f]
+    ]];
 }
 
 #pragma mark UI
@@ -194,21 +169,13 @@
     UIScrollView *scrollView = self.webView.scrollView;
     
     // Must adjust depending on the web page viewport-fit setting, see https://modelessdesign.com/backdrop/283
-    if (@available(iOS 11, *)) {
-        if (scrollView.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentAlways) {
-            scrollView.contentInset = UIEdgeInsetsZero;
-            return;
-        }
-    }
-    
-    if (@available(iOS 12, *)) {
-        scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    if (scrollView.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentAlways) {
+        scrollView.contentInset = UIEdgeInsetsZero;
     }
     else {
-        scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
+        scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+        scrollView.contentInset = UIEdgeInsetsMake(self.view.safeAreaInsets.top, 0.f, self.view.safeAreaInsets.bottom, 0.f);
     }
-    
-    scrollView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.f, self.bottomLayoutGuide.length, 0.f);
 }
 
 #pragma mark UIScrollViewDelegate protocol
