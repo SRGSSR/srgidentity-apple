@@ -141,7 +141,7 @@
     emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
     emailAddressTextField.text = self.emailAddress;
     emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
-    emailAddressTextField.font = [SRGFont fontWithWeight:SRGFontWeightRegular fixedSize:42.f];
+    emailAddressTextField.font = [SRGFont fontWithFamily:SRGFontFamilyText weight:SRGFontWeightRegular fixedSize:42.f];
     emailAddressTextField.textContentType = UITextContentTypeUsername;
     emailAddressTextField.keyboardType = UIKeyboardTypeEmailAddress;
     emailAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -160,7 +160,7 @@
     passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     passwordTextField.delegate = self;
     passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
-    passwordTextField.font = [SRGFont fontWithWeight:SRGFontWeightRegular fixedSize:42.f];
+    passwordTextField.font = [SRGFont fontWithFamily:SRGFontFamilyText weight:SRGFontWeightRegular fixedSize:42.f];
     passwordTextField.textContentType = UITextContentTypePassword;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -177,7 +177,7 @@
 {
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [loginButton setTitle:SRGIdentityLocalizedString(@"Sign in", @"Sign in button on Apple TV") forState:UIControlStateNormal];
-    loginButton.titleLabel.font = [SRGFont fontWithWeight:SRGFontWeightRegular fixedSize:36.f];
+    loginButton.titleLabel.font = [SRGFont fontWithFamily:SRGFontFamilyText weight:SRGFontWeightRegular fixedSize:36.f];
     [loginButton addTarget:self action:@selector(login:) forControlEvents:UIControlEventPrimaryActionTriggered];
     [stackView addArrangedSubview:loginButton];
     self.loginButton = loginButton;
@@ -202,14 +202,14 @@
     UILabel *instructionsLabel = [[UILabel alloc] init];
     instructionsLabel.textAlignment = NSTextAlignmentCenter;
     instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
-    instructionsLabel.font = [SRGFont fontWithWeight:SRGFontWeightRegular fixedSize:30.f];
+    instructionsLabel.font = [SRGFont fontWithFamily:SRGFontFamilyText weight:SRGFontWeightRegular fixedSize:30.f];
     [instructionsStackView addArrangedSubview:instructionsLabel];
     self.instructionsLabel = instructionsLabel;
     
     UILabel *linkLabel = [[UILabel alloc] init];
     linkLabel.textAlignment = NSTextAlignmentCenter;
     linkLabel.text = self.websiteURL.absoluteString;
-    linkLabel.font = [SRGFont fontWithWeight:SRGFontWeightRegular fixedSize:30.f];
+    linkLabel.font = [SRGFont fontWithFamily:SRGFontFamilyText weight:SRGFontWeightRegular fixedSize:30.f];
     linkLabel.textColor = UIColor.systemBlueColor;
     [instructionsStackView addArrangedSubview:linkLabel];
     self.linkLabel = linkLabel;
