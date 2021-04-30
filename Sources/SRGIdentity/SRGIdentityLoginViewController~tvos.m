@@ -141,7 +141,7 @@
     emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
     emailAddressTextField.text = self.emailAddress;
     emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
-    emailAddressTextField.font = [SRGFont fontWithStyle:SRGFontStyleH3];
+    emailAddressTextField.font = [SRGFont fontWithStyle:SRGFontStyleButton];
     emailAddressTextField.textContentType = UITextContentTypeUsername;
     emailAddressTextField.keyboardType = UIKeyboardTypeEmailAddress;
     emailAddressTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -160,7 +160,7 @@
     passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     passwordTextField.delegate = self;
     passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
-    passwordTextField.font = [SRGFont fontWithStyle:SRGFontStyleH3];
+    passwordTextField.font = [SRGFont fontWithStyle:SRGFontStyleButton];
     passwordTextField.textContentType = UITextContentTypePassword;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -202,14 +202,14 @@
     UILabel *instructionsLabel = [[UILabel alloc] init];
     instructionsLabel.textAlignment = NSTextAlignmentCenter;
     instructionsLabel.text = SRGIdentityLocalizedString(@"To sign up or manage your account, use a computer or mobile device and visit", @"Instructions for signup on Apple TV followed by a website url (i.e. visit a website on another device)");
-    instructionsLabel.font = [SRGFont fontWithStyle:SRGFontStyleBody];
+    instructionsLabel.font = [SRGFont fontWithStyle:SRGFontStyleH4];
     [instructionsStackView addArrangedSubview:instructionsLabel];
     self.instructionsLabel = instructionsLabel;
     
     UILabel *linkLabel = [[UILabel alloc] init];
     linkLabel.textAlignment = NSTextAlignmentCenter;
     linkLabel.text = self.websiteURL.absoluteString;
-    linkLabel.font = [SRGFont fontWithStyle:SRGFontStyleBody];
+    linkLabel.font = [SRGFont fontWithStyle:SRGFontStyleH4];
     linkLabel.textColor = UIColor.systemBlueColor;
     [instructionsStackView addArrangedSubview:linkLabel];
     self.linkLabel = linkLabel;
