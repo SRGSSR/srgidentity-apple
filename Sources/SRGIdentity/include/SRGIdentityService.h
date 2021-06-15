@@ -23,10 +23,9 @@ typedef NS_ENUM(NSInteger, SRGIdentityLoginMethod) {
      */
     SRGIdentityLoginMethodSafari API_UNAVAILABLE(tvos) = SRGIdentityLoginMethodDefault,
     /**
-     *  Use an authentication session when available (iOS 11 and 12 only). User credentials can be shared between your
-     *  app and Safari. This makes it possible for a user to automatically authenticate in another app associated with
-     *  the same identity provider (if credentials are still available). Note that a system alert will inform the user
-     *  about credentials sharing first.
+     *  Use an authentication session. User credentials can be shared between your app and Safari. This makes it possible
+     *  for a user to automatically authenticate in another app associated with the same identity provider (if credentials
+     *  are still available). Note that a system alert will inform the user about credentials sharing first.
      */
     SRGIdentityLoginMethodAuthenticationSession API_UNAVAILABLE(tvos)
 };
@@ -69,14 +68,13 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  identity services can be instantiated within an application, though most application should only require one. For
  *  convenience, a global identity service can be set using the `currentIdentityService` class property.
  *
- *  A user must correctly supply her credentials (email address and password) to receive a session token. This procedure
+ *  A user must correctly supply their credentials (email address and password) to receive a session token. This procedure
  *  is initiated by calling the `-loginWithEmailAddress:` method, which opens a login / signup page. This page is opened
  *  modally in a sandboxed Safari browser, ensuring that the passord is not accessible to the host application. Tokens
  *  themselves are stored within the keychain and therefore secured by the system.
  *
- *  Identities are stored per app and are therefore not shared, and are not synchronized over iCloud. Only one user
- *  can be logged in at any time for a given service. To logout the current user, simply call `-logout`, at which point
- *  a new user can log in.
+ *  Identities are stored per app and are neither shared nor synchronized over iCloud. Only one user can be logged in at
+ *  any time for a given service. To logout the current user, simply call `-logout`, at which point a new user can log in.
  *
  *  Note that though several services can coexist within an application, only one login process can be made at any time.
  */
@@ -105,12 +103,12 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  Initiate a login procedure. Calling this method opens the service login / signup form with Safari. After successful
  *  login, an `SRGIdentityServiceUserDidLoginNotification` notification is emitted.
  *
- *  @param emailAddress An optional email address, with which the form is filled initially. If not specified, the form starts empty.
+ *  @param emailAddress An optional email address, with which the form is filled initially. If not specified the form starts empty.
  *
  *  @return `YES` if the form could be opened. The method might return `NO` if another attempt is already being made
  *          or if a user is already logged in.
  *
- *  @discussion - On iOS this presents a browser, in which the user can supply her credentials or open an account.
+ *  @discussion - On iOS this presents a browser, in which the user can supply their credentials or open an account.
  *              - On tvOS a dedicated in-app view is presented, with which users can only log in (a message invite them
  *                to open an account on a computer or mobile device). You can customize the logo displayed on this view
  *                by adding an `identity_service_logo` image file to your project (with recommended size of 150x150 px).
@@ -120,7 +118,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 /**
  *  Logout the current user, if any.
  *
- *  @return `YES` if a user was logged out. If no user was logged in before calling this method, `NO` is returned.
+ *  @return `YES` if a user was logged out. If no user was logged in before calling this method `NO` is returned.
  */
 - (BOOL)logout;
 
@@ -133,7 +131,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  The email address (username) of the logged in user, if available.
  *
  *  @discussion This property must be used for informative purposes. If you want to find out whether a user is logged
- *              in, check the `loggedIn` property instead.
+ *              in check the `loggedIn` property instead.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *emailAddress;
 
@@ -141,7 +139,7 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
  *  Detailed account information, if available.
  *
  *  @discussion This property must be used for informative purposes. If you want to find out whether a user is logged
- *              in, check the `loggedIn` property instead.
+ *              in check the `loggedIn` property instead.
  */
 @property (nonatomic, readonly, nullable) SRGAccount *account;
 
@@ -151,10 +149,10 @@ OBJC_EXPORT NSString * const SRGIdentityServiceDeletedKey;              // Key t
 @property (nonatomic, readonly, copy, nullable) NSString *sessionToken;
 
 /**
- *  Show the account view. The account view has a similar look & feel as the login view, and cannot be customized
+ *  Show the account view. The account view has a similar look & feel as the login view and cannot be customized
  *  through `UIAppearance`.
  *
- *  @discussion This method must be called from the main thread. If no user is logged in, calling the method does nothing.
+ *  @discussion This method must be called from the main thread. If no user is logged in calling the method does nothing.
  *              Note that only one account view can be presented at any given time.
  */
 - (void)showAccountView API_UNAVAILABLE(tvos);

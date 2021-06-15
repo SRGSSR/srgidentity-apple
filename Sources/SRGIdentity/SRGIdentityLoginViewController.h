@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A view controller to be presented modally, allowing a user to enter her credentials.
+ *  A view controller to be presented modally, allowing a user to enter their credentials.
  */
 API_AVAILABLE(tvos(9.0)) API_UNAVAILABLE(ios)
 @interface SRGIdentityLoginViewController : UIViewController
