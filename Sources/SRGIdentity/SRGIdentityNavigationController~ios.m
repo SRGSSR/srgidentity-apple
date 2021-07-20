@@ -47,13 +47,11 @@
     navigationBarAppearance.shadowImage = nil;
     navigationBarAppearance.backIndicatorImage = nil;
     navigationBarAppearance.backIndicatorTransitionMaskImage = nil;
+    navigationBarAppearance.prefersLargeTitles = NO;
+    navigationBarAppearance.largeTitleTextAttributes = nil;
+    
     [navigationBarAppearance setTitleVerticalPositionAdjustment:0.f forBarMetrics:UIBarMetricsDefault];
     [navigationBarAppearance setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    
-    if (@available(iOS 11, *)) {
-        navigationBarAppearance.prefersLargeTitles = NO;
-        navigationBarAppearance.largeTitleTextAttributes = nil;
-    }
     
     UIScreenEdgePanGestureRecognizer *panGestureRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(pullBack:)];
     panGestureRecognizer.edges = UIRectEdgeLeft;
