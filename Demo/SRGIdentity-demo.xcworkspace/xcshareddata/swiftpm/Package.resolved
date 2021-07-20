@@ -41,9 +41,9 @@
         "package": "SRGAppearance",
         "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
         "state": {
-          "branch": "develop",
-          "revision": "960ce81ff9c6c180d9d6af765eb0ce8da2637572",
-          "version": null
+          "branch": null,
+          "revision": "fe65fea10fc080bc58305fe9a5a406e3730e4d91",
+          "version": "4.0.0"
         }
       },
       {
