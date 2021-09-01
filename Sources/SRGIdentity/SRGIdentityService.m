@@ -9,6 +9,7 @@
 #import "NSBundle+SRGIdentity.h"
 #import "SRGIdentityLogger.h"
 #import "SRGIdentityNavigationController.h"
+#import "UIApplication+SRGIdentity.h"
 #import "UIWindow+SRGIdentity.h"
 
 #if TARGET_OS_TV
@@ -263,11 +264,11 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
     else {
         SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:requestURL];
         safariViewController.delegate = self;
-        UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+        UIViewController *topViewController = UIApplication.sharedApplication.srgidentity_mainWindow.srgidentity_topViewController;
         [topViewController presentViewController:safariViewController animated:YES completion:nil];
     }
 #else
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.srgidentity_mainWindow.srgidentity_topViewController;
     SRGIdentityLoginViewController *loginViewController = [[SRGIdentityLoginViewController alloc] initWithWebserviceURL:self.webserviceURL websiteURL:self.websiteURL emailAddress:emailAddress tokenBlock:^(NSString * _Nonnull sessionToken) {
         [topViewController dismissViewControllerAnimated:YES completion:nil];
         [self handleSessionToken:sessionToken];
@@ -486,7 +487,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
     SRGIdentityNavigationController *accountNavigationController = [[SRGIdentityNavigationController alloc] initWithRootViewController:accountViewController];
     accountNavigationController.modalPresentationStyle = UIModalPresentationCustom;
     accountNavigationController.modalPresentationCapturesStatusBarAppearance = YES;
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.srgidentity_mainWindow.srgidentity_topViewController;
     [topViewController presentViewController:accountNavigationController animated:YES completion:nil];
     
     self.accountNavigationController = accountNavigationController;
@@ -587,7 +588,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
             self.authenticationSession = nil;
         }
         else {
-            UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srgidentity_topViewController;
+            UIViewController *topViewController = UIApplication.sharedApplication.srgidentity_mainWindow.srgidentity_topViewController;
             [topViewController dismissViewControllerAnimated:YES completion:^{
                 s_loggingIn = NO;
             }];
@@ -602,7 +603,7 @@ static NSData *SRGIdentityDataFromAccount(SRGAccount *account)
 
 - (ASPresentationAnchor)presentationAnchorForWebAuthenticationSession:(ASWebAuthenticationSession *)session API_AVAILABLE(ios(13.0)) API_UNAVAILABLE(tvos)
 {
-    return UIApplication.sharedApplication.keyWindow;
+    return UIApplication.sharedApplication.srgidentity_mainWindow;
 }
 
 #pragma mark SFSafariViewControllerDelegate delegate
