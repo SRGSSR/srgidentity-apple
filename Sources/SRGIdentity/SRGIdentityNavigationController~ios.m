@@ -37,7 +37,12 @@
 {
     [super viewDidLoad];
     
-    // Force properties to avoid overrides with UIAppearance    
+    if (@available(iOS 13, *)) {
+        UINavigationBar *navigationBar = self.navigationBar;
+        navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance;
+    }
+    
+    // Force properties to avoid overrides with UIAppearance
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
     navigationBarAppearance.barStyle = UIBarStyleDefault;
     navigationBarAppearance.barTintColor = nil;

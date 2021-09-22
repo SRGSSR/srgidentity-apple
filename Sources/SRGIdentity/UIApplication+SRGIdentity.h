@@ -8,10 +8,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface UIApplication (SRGIdentity)
 
-// TODO: Remove when SRG Analytics demo requires iOS 13
-@property (nonatomic) UIWindow *window;
+@property (nonatomic, readonly, nullable) UIWindow *srgidentity_mainWindow;
 
 @end
 
