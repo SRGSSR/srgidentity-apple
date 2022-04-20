@@ -93,13 +93,13 @@
 - (void)loadCredentialsStackViewInView:(UIView *)view
 {
     UIStackView *credentialsStackView = [[UIStackView alloc] init];
-    credentialsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     credentialsStackView.axis = UILayoutConstraintAxisVertical;
     credentialsStackView.alignment = UIStackViewAlignmentCenter;
     credentialsStackView.distribution = UIStackViewDistributionFill;
     credentialsStackView.spacing = 40.f;
     [view addSubview:credentialsStackView];
     
+    credentialsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [credentialsStackView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
         [credentialsStackView.centerYAnchor constraintEqualToAnchor:view.centerYAnchor],
@@ -125,10 +125,10 @@
 {
     // Zero height, but adds two stack spacing contributions and thus some spacing
     UIView *spacerView = [[UIView alloc] init];
-    spacerView.translatesAutoresizingMaskIntoConstraints = NO;
     spacerView.backgroundColor = UIColor.clearColor;
     [stackView addArrangedSubview:spacerView];
     
+    spacerView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [spacerView.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
         [spacerView.heightAnchor constraintEqualToConstant:height]
@@ -138,7 +138,6 @@
 - (void)loadEmailAddressTextFieldInStackView:(UIStackView *)stackView
 {
     UITextField *emailAddressTextField = [[UITextField alloc] init];
-    emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
     emailAddressTextField.text = self.emailAddress;
     emailAddressTextField.placeholder = SRGIdentityLocalizedString(@"Email address", @"Email address text field placeholder on Apple TV");
     emailAddressTextField.font = [SRGFont fontWithStyle:SRGFontStyleButton];
@@ -148,6 +147,7 @@
     [stackView addArrangedSubview:emailAddressTextField];
     self.emailAddressTextField = emailAddressTextField;
     
+    emailAddressTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [emailAddressTextField.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
         [emailAddressTextField.heightAnchor constraintEqualToConstant:70.f]
@@ -157,7 +157,6 @@
 - (void)loadPasswordTextFieldInStackView:(UIStackView *)stackView
 {
     UITextField *passwordTextField = [[UITextField alloc] init];
-    passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     passwordTextField.delegate = self;
     passwordTextField.placeholder = SRGIdentityLocalizedString(@"Password", @"Password text field placeholder on Apple TV");
     passwordTextField.font = [SRGFont fontWithStyle:SRGFontStyleButton];
@@ -167,6 +166,7 @@
     [stackView addArrangedSubview:passwordTextField];
     self.passwordTextField = passwordTextField;
     
+    passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [passwordTextField.widthAnchor constraintEqualToAnchor:stackView.widthAnchor],
         [passwordTextField.heightAnchor constraintEqualToConstant:70.f]
@@ -186,12 +186,12 @@
 - (void)loadInstructionsStackViewInView:(UIView *)view
 {
     UIStackView *instructionsStackView = [[UIStackView alloc] init];
-    instructionsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     instructionsStackView.axis = UILayoutConstraintAxisVertical;
     instructionsStackView.alignment = UIStackViewAlignmentFill;
     instructionsStackView.distribution = UIStackViewDistributionFill;
     [view addSubview:instructionsStackView];
     
+    instructionsStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [instructionsStackView.centerXAnchor constraintEqualToAnchor:view.centerXAnchor],
         [instructionsStackView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor constant:-38.f],
