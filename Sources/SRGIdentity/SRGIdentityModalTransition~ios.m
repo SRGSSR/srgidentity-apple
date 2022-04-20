@@ -56,7 +56,7 @@
     
     UIView *containerView = [transitionContext containerView];
     
-    UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
+    UIView *dimmingView = [[UIView alloc] init];
     dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.3f];
     self.dimmingView = dimmingView;
     
