@@ -116,14 +116,14 @@
 
 - (void)layoutWebViewInView:(UIView *)view
 {
-    WKWebView *webView = [[WKWebView alloc] initWithFrame:view.bounds];
+    WKWebView *webView = [[WKWebView alloc] init];
     webView.backgroundColor = UIColor.clearColor;
-    webView.translatesAutoresizingMaskIntoConstraints = NO;
     webView.navigationDelegate = self;
     webView.scrollView.delegate = self;
     [view addSubview:webView];
     self.webView = webView;
     
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [webView.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor],
         [webView.trailingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.trailingAnchor],
@@ -135,10 +135,10 @@
 - (void)layoutProgressViewInView:(UIView *)view
 {
     UIProgressView *progressView = [[UIProgressView alloc] init];
-    progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:progressView];
     self.progressView = progressView;
     
+    progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [progressView.topAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.topAnchor],
         [progressView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
@@ -149,12 +149,12 @@
 - (void)layoutErrorLabelInView:(UIView *)view
 {
     UILabel *errorLabel = [[UILabel alloc] init];
-    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     errorLabel.font = [UIFont systemFontOfSize:20.f];
     errorLabel.textColor = UIColor.grayColor;
     [view addSubview:errorLabel];
     self.errorLabel = errorLabel;
     
+    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [errorLabel.centerYAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.centerYAnchor],
         [errorLabel.leadingAnchor constraintEqualToAnchor:view.safeAreaLayoutGuide.leadingAnchor constant:40.f],
