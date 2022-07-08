@@ -5,27 +5,27 @@
         "package": "FXReachability",
         "repositoryURL": "https://github.com/SRGSSR/FXReachability.git",
         "state": {
-          "branch": null,
-          "revision": "1eac916df0045630e779fa60eef22ed0d185e15f",
-          "version": "1.3.2-srg5"
+          "branch": "master",
+          "revision": "b8d60cfbe6eddf1a622476548465efed88afb564",
+          "version": null
         }
       },
       {
         "package": "libextobjc",
         "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
         "state": {
-          "branch": null,
-          "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
-          "version": "0.6.0-srg3"
+          "branch": "master",
+          "revision": "9c9a7327410fe3f7cdb695965ced43b9a7766ee0",
+          "version": null
         }
       },
       {
         "package": "MAKVONotificationCenter",
         "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
         "state": {
-          "branch": null,
-          "revision": "60395e0601ffd4a784856b423d4cac558366276d",
-          "version": "1.0.0-srg5"
+          "branch": "master",
+          "revision": "8bde3cdc872085bd31f4cfe546bdf8e6932a0806",
+          "version": null
         }
       },
       {
@@ -50,27 +50,27 @@
         "package": "SRGAppearance",
         "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
         "state": {
-          "branch": null,
-          "revision": "8fb77eac6855c4b2765e15b597665b951893f3f2",
-          "version": "5.1.0"
+          "branch": "feature/ios16-tvos16-xcode14",
+          "revision": "a08d0704a6c171aed77b3291f233333b0aac30b2",
+          "version": null
         }
       },
       {
         "package": "SRGLogger",
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
-          "branch": null,
-          "revision": "5840af9ccbbc23a1269ff53feb3832f56ffde1eb",
-          "version": "3.0.2"
+          "branch": "develop",
+          "revision": "318d30c30b5979732137949f0987277f5c703931",
+          "version": null
         }
       },
       {
         "package": "SRGNetwork",
         "repositoryURL": "https://github.com/SRGSSR/srgnetwork-apple.git",
         "state": {
-          "branch": null,
-          "revision": "9d79d6649de885876577c28e7b19f24f7ce16399",
-          "version": "3.0.3"
+          "branch": "feature/ios16-tvos16-xcode14",
+          "revision": "fa4b57b56d78f0fe6711409df3aa3d3c4bf278d0",
+          "version": null
         }
       },
       {
