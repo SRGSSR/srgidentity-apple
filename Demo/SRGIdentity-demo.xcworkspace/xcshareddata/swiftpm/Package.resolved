@@ -41,8 +41,8 @@
         "package": "SRGAppearance",
         "repositoryURL": "https://github.com/SRGSSR/srgappearance-apple.git",
         "state": {
-          "branch": "feature/ios16-tvos16-xcode14",
-          "revision": "09f1de4c62fceb2a7e822cf5b7b43366700eb034",
+          "branch": "develop",
+          "revision": "108eb3aa7cbd61bfc585d15e68bc1cee8f08c22b",
           "version": null
         }
       },
@@ -59,8 +59,8 @@
         "package": "SRGNetwork",
         "repositoryURL": "https://github.com/SRGSSR/srgnetwork-apple.git",
         "state": {
-          "branch": "feature/ios16-tvos16-xcode14",
-          "revision": "fa4b57b56d78f0fe6711409df3aa3d3c4bf278d0",
+          "branch": "develop",
+          "revision": "dedfb9032837c72ec1c3365f3dfb3ff04d65ec75",
           "version": null
         }
       },
