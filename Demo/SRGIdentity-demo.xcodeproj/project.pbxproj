@@ -377,13 +377,13 @@
 			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.Identity-demo";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -393,13 +393,13 @@
 			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.Identity-demo";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
