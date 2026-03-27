@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -186,7 +186,8 @@
 		6F0EB52820FC7F58009C02CF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1400;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
 					6F8A93D720FDCA0800AA6434 = {
@@ -294,6 +295,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -357,6 +359,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -377,13 +380,13 @@
 			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.Identity-demo";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -393,13 +396,13 @@
 			baseConfigurationReference = 6F0402F4233131AE00DA4D97 /* Demo.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Demo.entitlements;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGIdentity-demo";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.Identity-demo";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
