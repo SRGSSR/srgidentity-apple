@@ -6,7 +6,7 @@ all: test-ios test-tvos
 .PHONY: test-ios
 test-ios:
 	@echo "Running iOS unit tests..."
-	@pushd Tests > /dev/null; xcodebuild test -workspace SRGIdentity-tests.xcworkspace -scheme SRGIdentity-tests -destination 'platform=iOS Simulator,name=iPhone 11' 2> /dev/null
+	@pushd Tests > /dev/null; xcodebuild test -workspace SRGIdentity-tests.xcworkspace -scheme SRGIdentity-tests -destination 'platform=iOS Simulator,name=iPhone 17' 2> /dev/null
 	@echo "... done.\n"
 
 .PHONY: test-tvos

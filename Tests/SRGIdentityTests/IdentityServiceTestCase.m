@@ -67,7 +67,7 @@ static NSURL *TestIgnored2CallbackURL(SRGIdentityService *identityService)
     return [NSURL URLWithString:URLString];
 }
 
-static NSURL *TestIgnored3CallbackURL()
+static NSURL *TestIgnored3CallbackURL(void)
 {
     NSString *URLString = [NSString stringWithFormat:@"https://www.srgssr.ch"];
     return [NSURL URLWithString:URLString];
